@@ -202,7 +202,8 @@ public class Activity {
     }
     
     public String getPlannedProgressPercentage(){
-        return ""+PP*100+"%";
+        Double percentage = PP*100;
+        return  percentage.toString();
     }
     
     public void setPlannedProgress(double PP){

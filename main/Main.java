@@ -5,20 +5,28 @@
  */
 package main;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import main.model.Activity;
+import main.model.ActivityListWrapper;
 
 /**
  *
@@ -116,6 +124,92 @@ public class Main extends Application {
             return false;
         }
     }
+    
+    public File getActivityFilePath(){
+        Preferences prefs = Preferences.userNodeForPackage(Main.class);
+        String filePath = prefs.get("filePath", null);
+       
+        if(filePath != null)
+            return new File(filePath);
+        else
+            return null;
+        
+    }
+    
+    public void setActivityFilePath(File file){
+        Preferences prefs = Preferences.userNodeForPackage(Main.class);
+        if(file!=null){
+            prefs.put("filePath", file.getPath());
+            
+            //Update titullin e stage
+            primaryStage.setTitle("AdressApp - " + file.getName());
+        }
+        else{
+            prefs.remove("filePath");
+            
+            //Update titullin e stage
+        primaryStage.setTitle("AddressApp");
+        }
+        
+    }
+    
+    
+    public void loadActivityDataFromFile(File file){
+        try{
+            JAXBContext context = JAXBContext
+                    .newInstance(ActivityListWrapper.class);
+            
+            Unmarshaller um = context.createUnmarshaller();
+            
+            //Lexon XML-n nga skedari dhe ben unmarshall
+            ActivityListWrapper wrapper = (ActivityListWrapper) um.unmarshal(file);
+            
+            tableData.clear();
+            tableData.addAll(wrapper.getActivities());
+            
+            // Save the file path to the registry.
+            setActivityFilePath(file);
+        }
+        catch (Exception e) { // catches ANY exception
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Te dhenat nuk mund te ngarkoheshin!");
+        alert.setContentText("Te dhenat nuk mund te ngarkoheshin nga skedari:\n" + file.getPath());
+
+        alert.showAndWait();
+     }
+    }
+    
+    public void saveActivityDataToFile(File file){
+        try{
+            JAXBContext context = JAXBContext
+                    .newInstance(ActivityListWrapper.class);
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            
+            //Wrapping e te dhenave te activity
+            ActivityListWrapper wrapper = new ActivityListWrapper();
+            wrapper.setActivities(tableData);
+            
+            
+            //Marshalling dhe ruajtja e XML ne skedar
+            m.marshal(wrapper, file);
+            
+            // Save the file path to the registry.
+            setActivityFilePath(file);    
+        }
+        catch (Exception e) { // catches ANY exception
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Could not save data");
+        alert.setContentText("Could not save data to file:\n" + file.getPath());
+
+        alert.showAndWait();
+        
+        }
+        
+    }
+    
     
     public Stage getPrimaryStage(){
         return primaryStage;
