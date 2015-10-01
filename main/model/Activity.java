@@ -10,6 +10,7 @@ import javafx.beans.property.StringProperty;
 public class Activity {
 
 	// Emrat e objekteve SimpleStringProperty me te vogla
+        private final StringProperty name;
 	private final StringProperty id;
 	private final StringProperty duration;
 	private final StringProperty budget;
@@ -37,13 +38,16 @@ public class Activity {
 	public double valCPI;
 	public double valSPI;
 
+        public int parent=0;
+        
 	public Activity() {
-		this("", "", "", "", "", "", "", "", "", "", "", "");
+		this("","", "", "", "", "", "", "", "", "", "", "", "");
 	}
 
-	public Activity(String id, String duration, String budget, String plannedProgress, String current_progress,
+	public Activity(String name, String id, String duration, String budget, String plannedProgress, String current_progress,
 			String pv, String ac, String ev, String cv, String sv, String cpi, String spi) {
-		this.id = new SimpleStringProperty(id);
+		this.name = new SimpleStringProperty(name);
+                this.id = new SimpleStringProperty(id);
 		this.duration = new SimpleStringProperty(duration);
 		this.budget = new SimpleStringProperty(budget);
 		this.plannedProgress = new SimpleStringProperty(plannedProgress);
@@ -58,7 +62,20 @@ public class Activity {
 	}
 
 	/*---------------METODAT PER STRINGS-----------------*/
-
+        
+        //Name
+        public String getName(){
+            return name.get();
+        }
+        
+        public void setName(String data){
+            name.set(data);
+        }
+        
+        public StringProperty nameProperty() {
+		return name;
+	}
+        
 	// ID
 	public String getIdString() {
 		return id.get();
@@ -351,4 +368,12 @@ public class Activity {
 		setCpiString("" + valCPI);
 		setSpiString("" + valSPI);
 	}
+        
+        public int getParentValue(){
+            return this.parent;
+        }
+        
+        public void setParentValue(int p){
+            this.parent = p;
+        }
 }

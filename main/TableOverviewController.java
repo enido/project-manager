@@ -9,6 +9,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import main.model.Activity;
+import main.model.SubActivity;
 
 /**
  *
@@ -22,6 +23,9 @@ public class TableOverviewController {
 	@FXML
 	private TableView<Activity> activityTable;
 
+        @FXML
+        private TableColumn<Activity, String> nameColumn;       
+        
 	@FXML
 	private TableColumn<Activity, String> idColumn;
 
@@ -61,9 +65,23 @@ public class TableOverviewController {
 	private Main mainApp;
 
 	private ObservableList<Activity> activityData = FXCollections.observableArrayList();
+        
+        private int subActivityParent;
 
 	@FXML
 	public void initialize() {
+                nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+		nameColumn.setCellFactory(new TextFieldCellFactory());
+		nameColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
+
+			@Override
+			public void handle(CellEditEvent<Activity, String> t) {
+				int index = activityData.indexOf(t.getTableView().getItems().get(t.getTablePosition().getRow()));
+				activityData.get(index).setIdString(t.getNewValue());
+				((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+						.setIdString(t.getNewValue());
+			}
+		});
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty());
 		idColumn.setCellFactory(new TextFieldCellFactory());
 		idColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
@@ -226,8 +244,8 @@ public class TableOverviewController {
 		Activity temp = new Activity();
 		boolean saveClicked = mainApp.showInputDialog(temp);
 		if (saveClicked) {
-			mainApp.getTableData().add(temp);
-		}
+			mainApp.getTableData().add(temp);  
+                }
 	}
 
 	public void setMainApp(Main mainApp) {
@@ -238,4 +256,5 @@ public class TableOverviewController {
 	public void setTableData(ObservableList<Activity> activityData) {
 		this.activityData = activityData;
 	}
+        
 }

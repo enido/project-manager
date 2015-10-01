@@ -12,6 +12,8 @@
 			<center>
 				<TableView fx:id="activityTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 					<columns>
+                                                <TableColumn fx:id="nameColumn" prefWidth="100.0" text="Name">
+						</TableColumn>
 						<TableColumn fx:id="idColumn" prefWidth="30.0" text="ID">
 						</TableColumn>
 						<TableColumn fx:id="durationColumn" prefWidth="70.0" text="Dur.">

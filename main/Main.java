@@ -18,6 +18,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -27,6 +29,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import main.model.Activity;
 import main.model.ActivityListWrapper;
+import main.model.SubActivity;
 
 /**
  *
@@ -38,6 +41,7 @@ public class Main extends Application {
     private BorderPane rootLayout;
     private ObservableList<Activity> tableData = FXCollections.observableArrayList();
     
+    
     @Override
     public void start(Stage stage) throws Exception {
         this.primaryStage = stage;
@@ -45,8 +49,10 @@ public class Main extends Application {
        
         initRootLayout();
         
+        showActivityPaneOverview();
         showTabPaneOverview();
         showTableOverview();
+        
     }
     
     public void initRootLayout(){
@@ -68,6 +74,26 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
+    
+    public void showActivityPaneOverview(){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("view/ActivityPane.fxml"));
+            AnchorPane activityPaneOverview = (AnchorPane) loader.load();
+            
+            rootLayout.setLeft(activityPaneOverview);
+            
+            ActivityPaneController controller = loader.getController();
+            controller.setMainApp(this);
+            controller.setTableData(tableData);
+            controller.startTreeView();
+            
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+    
     
     public void showTableOverview(){
         try{
@@ -117,6 +143,7 @@ public class Main extends Application {
             
             
             InputDialogController controller = loader.getController();
+            controller.setListData(tableData);
             controller.setDialogStage(dialogStage);
             controller.setData(aktivitet);
             
@@ -157,7 +184,6 @@ public class Main extends Application {
         }
         
     }
-    
     
     public void loadActivityDataFromFile(File file){
         try{
@@ -224,6 +250,7 @@ public class Main extends Application {
     public ObservableList<Activity> getTableData(){
         return tableData;
     }
+  
 
     /**
      * @param args the command line arguments
