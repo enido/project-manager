@@ -70,7 +70,8 @@ public class InputDialogController{
         int i=0;
         option.add("none");
         for(i=0;i<temp.size();i++){
-            option.add(temp.get(i).getIdString());
+            if(temp.get(i).getParentValue()==0)
+                option.add(temp.get(i).getIdString());
         }
         
         comboBox.setValue("none");
@@ -85,20 +86,24 @@ public class InputDialogController{
     @FXML
     private void handleSave(){        
         
-        if(!comboBox.getValue().toString().contains("none"))
-            activity.setParentValue(Integer.parseInt(comboBox.getValue().toString()));
+        int parent;
         activity.setName(nameTF.getText());
         activity.setID(Integer.parseInt(idTF.getText()));
-        activity.setDuration(Integer.parseInt(durTF.getText()));
-        activity.setBudget(Integer.parseInt(budgTF.getText()));
-        activity.setPlannedProgress(Double.parseDouble(paTF.getText()));
-        activity.setCurrentProgress(Double.parseDouble(caTF.getText()));
-        activity.setPV(Integer.parseInt(pvTF.getText()));
-        activity.setAC(Integer.parseInt(acTF.getText()));
-        activity.setEV(Integer.parseInt(evTF.getText()));
-        activity.Calculate();
-        activity.ConvertToStringProperty();
+        if(!durTF.isDisabled()) {
+            if(!comboBox.getValue().toString().contains("none"))
+                activity.setParentValue(Integer.parseInt(comboBox.getValue().toString()));    
+            activity.setDuration(Integer.parseInt(durTF.getText()));
+            activity.setBudget(Integer.parseInt(budgTF.getText()));
+            activity.setPlannedProgress(Double.parseDouble(paTF.getText()));
+            activity.setCurrentProgress(Double.parseDouble(caTF.getText()));
+            activity.setPV(Integer.parseInt(pvTF.getText()));
+            activity.setAC(Integer.parseInt(acTF.getText()));
+            activity.setEV(Integer.parseInt(evTF.getText()));
+            activity.Calculate();
             
+        }
+        
+        activity.ConvertToStringProperty();    
         saveClicked = true;
         dialogStage.close();
     }
@@ -124,7 +129,6 @@ public class InputDialogController{
     @FXML
      public void valueChanged(){
           if(comboBox.getValue().toString().contains("none")){
-              idTF.setDisable(true);
               durTF.setDisable(true);
               budgTF.setDisable(true);
               paTF.setDisable(true);
