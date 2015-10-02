@@ -30,7 +30,7 @@
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                      </FlowPane.margin>
                   </Label>
-                  <TextField fx:id="idTF" prefWidth="50.0">
+                  <TextField fx:id="idTF"  prefWidth="50.0">
                      <FlowPane.margin>
                         <Insets bottom="15.0" left="15.0" right="15.0" top="20.0" />
                      </FlowPane.margin>
@@ -44,7 +44,7 @@
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                      </FlowPane.margin>
                   </Label>
-                  <TextField fx:id="durTF" prefWidth="50.0">
+                  <TextField fx:id="durTF" disable="true" prefWidth="50.0">
                      <FlowPane.margin>
                         <Insets bottom="15.0" left="15.0" right="15.0" top="20.0" />
                      </FlowPane.margin>
@@ -61,7 +61,7 @@
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                      </FlowPane.margin>
                   </Label>
-                  <TextField fx:id="budgTF" prefWidth="50.0">
+                  <TextField fx:id="budgTF" disable="true" prefWidth="50.0">
                      <FlowPane.margin>
                         <Insets bottom="15.0" left="15.0" right="15.0" top="20.0" />
                      </FlowPane.margin>
@@ -75,7 +75,7 @@
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                      </FlowPane.margin>
                   </Label>
-                  <TextField fx:id="paTF" prefWidth="50.0">
+                  <TextField fx:id="paTF" disable="true" prefWidth="50.0">
                      <FlowPane.margin>
                         <Insets bottom="15.0" left="15.0" right="15.0" top="20.0" />
                      </FlowPane.margin>
@@ -89,7 +89,7 @@
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                      </FlowPane.margin>
                   </Label>
-                  <TextField fx:id="caTF" prefWidth="50.0">
+                  <TextField fx:id="caTF" disable="true" prefWidth="50.0">
                      <FlowPane.margin>
                         <Insets bottom="15.0" left="15.0" right="15.0" top="20.0" />
                      </FlowPane.margin>
@@ -103,7 +103,7 @@
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                      </FlowPane.margin>
                   </Label>
-                  <TextField fx:id="pvTF" prefWidth="50.0">
+                  <TextField fx:id="pvTF" disable="true" prefWidth="50.0">
                      <FlowPane.margin>
                         <Insets bottom="15.0" left="15.0" right="15.0" top="20.0" />
                      </FlowPane.margin>
@@ -117,7 +117,7 @@
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                      </FlowPane.margin>
                   </Label>
-                  <TextField fx:id="acTF" prefWidth="50.0">
+                  <TextField fx:id="acTF" disable="true" prefWidth="50.0">
                      <FlowPane.margin>
                         <Insets bottom="15.0" left="15.0" right="15.0" top="20.0" />
                      </FlowPane.margin>
@@ -131,7 +131,7 @@
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                      </FlowPane.margin>
                   </Label>
-                  <TextField fx:id="evTF" prefWidth="50.0">
+                  <TextField fx:id="evTF" disable="true" prefWidth="50.0">
                      <FlowPane.margin>
                         <Insets bottom="15.0" left="15.0" right="15.0" top="20.0" />
                      </FlowPane.margin>

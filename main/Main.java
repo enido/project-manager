@@ -86,6 +86,7 @@ public class Main extends Application {
             controller.setMainApp(this);
             controller.setTableData(tableData);
             controller.startTreeView();
+            activityPaneOverview.getChildren().add(controller.getTree());
             
         }
         catch(IOException e){
@@ -232,8 +233,8 @@ public class Main extends Application {
             e.printStackTrace();
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error");
-        alert.setHeaderText("Could not save data");
-        alert.setContentText("Could not save data to file:\n" + file.getPath());
+        alert.setHeaderText("Te dhenat nuk mund te ruhen!");
+        alert.setContentText("Te dhenat nuk mund te ruhen ne skedarin:\n" + file.getPath());
 
         alert.showAndWait();
         
@@ -249,8 +250,90 @@ public class Main extends Application {
     public ObservableList<Activity> getTableData(){
         return tableData;
     }
+    
+    public void Refresh(){
+        CalculateAndSort();
+        showActivityPaneOverview();
+        showTabPaneOverview();
+        showTableOverview();
+    }
   
-
+    public void CalculateAndSort(){
+        ObservableList<Activity> temp;
+        int i=0;
+        int j=0;
+        int k;
+        int size = tableData.size();
+        int sumDur=0, sumBudg=0,  sumPV=0, sumAC=0, sumEV=0, sumCV=0, sumSV=0;
+        double totCPI, totSPI, totPP, totCP, sumPP=0, sumCP=0, sumCPI=0, sumSPI=0;
+        int parent;
+        int id;
+        
+        //Calculation
+        for(i=0;i<size;i++){
+            k=0;
+            sumDur = 0;
+            sumBudg = 0;
+            sumPV = 0;
+            sumAC = 0;
+            sumEV = 0;
+            sumCV = 0;
+            sumSV = 0;
+            totCPI = 0;
+            totSPI = 0;
+            totPP = 0;
+            totCP = 0;
+            sumPP = 0;
+            sumCP = 0;
+            sumCPI = 0;
+            sumSPI = 0;
+            parent = tableData.get(i).getParentValue();
+            id = tableData.get(i).getID();
+            if(parent==0){
+                for(j=i+1;j<size;j++){
+                    if(tableData.get(j).getParentValue()== id){
+                        sumDur += tableData.get(j).getDuration();
+                        sumBudg += tableData.get(j).getBudget();
+                        sumPP += tableData.get(j).getPlannedProgress();
+                        sumCP += tableData.get(j).getCurrentProgress();
+                        sumPV += tableData.get(j).getPV();
+                        sumAC += tableData.get(j).getAC();
+                        sumEV += tableData.get(j).getEV();
+                        sumCV += tableData.get(j).getCV();
+                        sumSV += tableData.get(j).getSV();
+                        sumCPI += tableData.get(j).getCPI();
+                        sumSPI += tableData.get(j).getSPI();
+                        k++;
+                        
+                    }
+                }
+                if(k!=0 && sumAC!=0 && sumPV!=0){
+                     totPP = (double)sumPP/k;
+                     totCP = (double)sumCP/k;
+                     totCPI = (double)sumEV/sumAC;
+                     totSPI = (double)sumEV/sumPV;
+                     if(k==1){
+                         totCPI = sumCPI;
+                         totSPI = sumSPI;
+                     }
+                }
+                tableData.get(i).setDuration(sumDur);
+                tableData.get(i).setBudget(sumBudg);
+                tableData.get(i).setPlannedProgress(totPP);
+                tableData.get(i).setCurrentProgress(totCP);
+                tableData.get(i).setPV(sumPV);
+                tableData.get(i).setAC(sumAC);
+                tableData.get(i).setEV(sumEV);
+                tableData.get(i).setCV(sumCV);
+                tableData.get(i).setSV(sumSV);
+                tableData.get(i).setCPI(totCPI);
+                tableData.get(i).setSPI(totSPI);
+                tableData.get(i).ConvertToStringProperty();
+            }
+                
+        }
+        
+    }
     /**
      * @param args the command line arguments
      */

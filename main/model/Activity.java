@@ -343,10 +343,16 @@ public class Activity {
 	}
 
 	public void Calculate() {
+            if(valAC == 0 || valPV== 0){
+                valCPI = 0;
+                valSPI = 0;
+            }
+            else{
 		valCV = valEV - valAC;
 		valSV = valEV - valPV;
 		valCPI = (double) valEV / valAC;
 		valSPI = (double) valEV / valPV;
+            }
 	}
 
 	/*
@@ -355,7 +361,12 @@ public class Activity {
 	 */
 
 	public void ConvertToStringProperty() {
-		setIdString(toString(valID));
+            String iString = ""+valID;
+            if(this.parent!=0){
+                iString = parent+"."+valID;
+   
+            }
+		setIdString(iString);
 		setDurationString(toString(valDUR));
 		setBudgetString(toString(valBUDG));
 		setPlannedProgressString(getPlannedProgressPercentage());
