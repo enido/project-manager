@@ -5,70 +5,66 @@
  */
 package main;
 
-import java.io.File;
-
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 
+import java.io.File;
+
 /**
- *
  * @author krisli
  */
 public class RootLayoutController {
-     
-    private Main mainApp;
-    
-    public void setMainApp(Main mainApp){
+
+    private main.Main mainApp;
+
+    public void setMainApp(main.Main mainApp) {
         this.mainApp = mainApp;
     }
-    
-    
+
+
     @FXML
-    private void handleNew(){
-        
+    private void handleNew() {
+
     }
-    
+
     @FXML
-    private void handleOpen(){
+    private void handleOpen() {
         FileChooser fileChooser = new FileChooser();
-        
+
         //Set extension filter
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-             "XML files (*.xml)", "*.xml");
+                "XML files (*.xml)", "*.xml");
         fileChooser.getExtensionFilters().add(extFilter);
-        
+
         // Show save File Dialog
         File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
-        
-        if(file != null){
+
+        if (file != null) {
             mainApp.loadActivityDataFromFile(file);
             mainApp.Refresh();
         }
-        
+
     }
-    
+
     @FXML
-    private void handleSave(){
+    private void handleSave() {
         File activityFile = mainApp.getActivityFilePath();
-        if(activityFile != null){
+        if (activityFile != null) {
             mainApp.saveActivityDataToFile(activityFile);
-        }
-        else{
+        } else {
             handleSaveAs();
         }
     }
-    
+
     @FXML
-    private void handleSaveAs(){
-        FileChooser fileChooser  = new FileChooser();
-        
+    private void handleSaveAs() {
+        FileChooser fileChooser = new FileChooser();
+
         //Set extension filter
-         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
                 "XML files (*.xml)", "*.xml");
         fileChooser.getExtensionFilters().add(extFilter);
-        
+
         // Show save file dialog
         File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
 
@@ -80,10 +76,10 @@ public class RootLayoutController {
             mainApp.saveActivityDataToFile(file);
         }
     }
-    
+
     @FXML
     private void handleExit() {
         System.exit(0);
     }
-    
+
 }
