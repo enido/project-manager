@@ -97,7 +97,7 @@ public class Main extends Application {
     public void showTableOverview(){
         try{
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/fxml_table.fxml"));
+            loader.setLocation(Main.class.getResource("view/TableLayout.fxml"));
             AnchorPane tableOverview = (AnchorPane) loader.load();
             
             rootLayout.setBottom(tableOverview);
