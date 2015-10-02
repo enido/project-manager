@@ -29,7 +29,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import main.model.Activity;
 import main.model.ActivityListWrapper;
-import main.model.SubActivity;
 
 /**
  *

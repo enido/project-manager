@@ -12,7 +12,6 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import main.model.Activity;
-import main.model.SubActivity;
 
 public class TableOverviewController {
 
