@@ -27,14 +27,14 @@ public class Activity {
 	// Emrat e variablave int,double, me te medha
 	public int valID;
 	public int valDUR;
-	public int valBUDG;
+	public double valBUDG;
 	public double valPP; // Planned Progress(PP)
 	public double valCP; // Current Progress(CP)
-	public int valPV;
-	public int valAC;
-	public int valEV;
-	public int valCV;
-	public int valSV;
+	public double valPV;
+	public double valAC;
+	public double valEV;
+	public double valCV;
+	public double valSV;
 	public double valCPI;
 	public double valSPI;
 
@@ -250,11 +250,11 @@ public class Activity {
 		this.valDUR = Duration;
 	}
 
-	public int getBudget() {
+	public double getBudget() {
 		return valBUDG;
 	}
 
-	public void setBudget(int Budget) {
+	public void setBudget(double Budget) {
 		this.valBUDG = Budget;
 	}
 
@@ -282,43 +282,43 @@ public class Activity {
 		this.valCP = CP;
 	}
 
-	public int getPV() {
+	public double getPV() {
 		return valPV;
 	}
 
-	public void setPV(int PV) {
+	public void setPV(double PV) {
 		this.valPV = PV;
 	}
 
-	public int getAC() {
+	public double getAC() {
 		return valAC;
 	}
 
-	public void setAC(int AC) {
+	public void setAC(double AC) {
 		this.valAC = AC;
 	}
 
-	public int getEV() {
+	public double getEV() {
 		return valEV;
 	}
 
-	public void setEV(int EV) {
+	public void setEV(double EV) {
 		this.valEV = EV;
 	}
 
-	public int getCV() {
+	public double getCV() {
 		return valCV;
 	}
 
-	public void setCV(int CV) {
+	public void setCV(double CV) {
 		this.valCV = CV;
 	}
 
-	public int getSV() {
+	public double getSV() {
 		return valSV;
 	}
 
-	public void setSV(int SV) {
+	public void setSV(double SV) {
 		this.valSV = SV;
 	}
 
@@ -338,7 +338,7 @@ public class Activity {
 		this.valSPI = SPI;
 	}
 
-	public String toString(int data) {
+	public String toString(double data) {
 		return "" + data;
 	}
 
@@ -348,11 +348,13 @@ public class Activity {
                 valSPI = 0;
             }
             else{
+                valEV = valBUDG * valCP;
 		valCV = valEV - valAC;
 		valSV = valEV - valPV;
-		valCPI = (double) valEV / valAC;
-		valSPI = (double) valEV / valPV;
+		valCPI = valEV / valAC;
+		valSPI = valEV / valPV;
             }
+            
 	}
 
 	/*
@@ -367,8 +369,8 @@ public class Activity {
    
             }
 		setIdString(iString);
-		setDurationString(toString(valDUR));
-		setBudgetString(toString(valBUDG));
+		setDurationString(""+valDUR);
+		setBudgetString(""+valBUDG);
 		setPlannedProgressString(getPlannedProgressPercentage());
 		setCurrentProgressString(getCurrentProgressPercentage());
 		setPvString(toString(valPV));
@@ -376,8 +378,8 @@ public class Activity {
 		setEvString(toString(valEV));
 		setCvString(toString(valCV));
 		setSvString(toString(valSV));
-		setCpiString("" + valCPI);
-		setSpiString("" + valSPI);
+		setCpiString(toString(valCPI));
+		setSpiString(toString(valSPI));
 	}
         
         public int getParentValue(){

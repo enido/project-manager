@@ -264,7 +264,8 @@ public class Main extends Application {
         int j=0;
         int k;
         int size = tableData.size();
-        int sumDur=0, sumBudg=0,  sumPV=0, sumAC=0, sumEV=0, sumCV=0, sumSV=0;
+        int sumDur = 0;
+        double  sumBudg=0,  sumPV=0, sumAC=0, sumEV=0, sumCV=0, sumSV=0;
         double totCPI, totSPI, totPP, totCP, sumPP=0, sumCP=0, sumCPI=0, sumSPI=0;
         int parent;
         int id;
