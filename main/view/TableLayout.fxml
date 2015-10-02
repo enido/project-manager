@@ -14,7 +14,7 @@
 			AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
 			AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
 			<center>
-				<TableView fx:id="activityTable" prefHeight="200.0"
+				<TableView fx:id="activityTable" editable="true" prefHeight="200.0"
 					prefWidth="200.0" BorderPane.alignment="CENTER">
 					<columns>
 						<TableColumn fx:id="nameColumn" prefWidth="100.0"
@@ -90,3 +90,4 @@
 		</BorderPane>
 	</children>
 </AnchorPane>
+
