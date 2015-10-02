@@ -4,10 +4,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.TextFieldTableCell;
 import main.model.Activity;
 import main.model.SubActivity;
 
@@ -21,6 +24,9 @@ public class TableOverviewController {
 
 	@FXML
 	private TableView<Activity> activityTable;
+        
+        @FXML
+        private TableColumn<Activity, String> nameColumn;
 
 	@FXML
 	private TableColumn<Activity, String> idColumn;
@@ -64,6 +70,20 @@ public class TableOverviewController {
 	
 	@FXML
 	public void initialize() {
+                nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+		// durationColumn.setCellFactory(new TextFieldCellFactory());
+		nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+		nameColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
+
+			@Override
+			public void handle(CellEditEvent<Activity, String> t) {
+				int index = activityData.indexOf(t.getTableView().getItems().get(t.getTablePosition().getRow()));
+				activityData.get(index).setName(t.getNewValue());
+				((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+						.setName(t.getNewValue());
+			}
+		});
+            
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty());
 		// durationColumn.setCellFactory(new TextFieldCellFactory());
 		idColumn.setCellFactory(TextFieldTableCell.forTableColumn());
