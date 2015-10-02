@@ -6,23 +6,33 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="250.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.TableOverviewController">
+<AnchorPane id="AnchorPane" prefHeight="250.0" prefWidth="600.0"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="main.TableOverviewController">
 	<children>
-		<BorderPane prefHeight="500.0" prefWidth="600.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+		<BorderPane prefHeight="500.0" prefWidth="600.0"
+			AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0"
+			AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
 			<center>
-				<TableView fx:id="activityTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+				<TableView fx:id="activityTable" prefHeight="200.0"
+					prefWidth="200.0" BorderPane.alignment="CENTER">
 					<columns>
-                                                <TableColumn fx:id="nameColumn" prefWidth="100.0" text="Name">
+						<TableColumn fx:id="nameColumn" prefWidth="100.0"
+							text="Name">
 						</TableColumn>
 						<TableColumn fx:id="idColumn" prefWidth="30.0" text="ID">
 						</TableColumn>
-						<TableColumn fx:id="durationColumn" prefWidth="70.0" text="Dur.">
+						<TableColumn fx:id="durationColumn" prefWidth="70.0"
+							text="Dur.">
 						</TableColumn>
-						<TableColumn fx:id="budgetColumn" prefWidth="75.0" text="Budget">
+						<TableColumn fx:id="budgetColumn" prefWidth="75.0"
+							text="Budget">
 						</TableColumn>
-						<TableColumn fx:id="plannedProgressColumn" prefWidth="90.0" text="Planned progress">
+						<TableColumn fx:id="plannedProgressColumn" prefWidth="90.0"
+							text="Planned progress">
 						</TableColumn>
-						<TableColumn fx:id="currentProgressColumn" prefWidth="90.0" text="Current progress">
+						<TableColumn fx:id="currentProgressColumn" prefWidth="90.0"
+							text="Current progress">
 						</TableColumn>
 						<TableColumn fx:id="pvColumn" prefWidth="75.0" text="PV">
 						</TableColumn>
@@ -52,15 +62,26 @@
 			<bottom>
 				<GridPane BorderPane.alignment="CENTER">
 					<columnConstraints>
-						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+						<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+							prefWidth="100.0" />
 					</columnConstraints>
 					<rowConstraints>
-						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+						<RowConstraints minHeight="10.0" prefHeight="30.0"
+							vgrow="SOMETIMES" />
 					</rowConstraints>
 					<children>
-						<Button fx:id="add" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleAdd" text="Add..." GridPane.halignment="CENTER">
+						<Button fx:id="add" contentDisplay="CENTER"
+							mnemonicParsing="false" onAction="#handleAdd" text="Add"
+							GridPane.halignment="CENTER">
 							<GridPane.margin>
 								<Insets right="20.0" />
+							</GridPane.margin>
+						</Button>
+						<Button fx:id="delete" contentDisplay="CENTER"
+							mnemonicParsing="false" onAction="#handleDelete" text="Delete"
+							GridPane.halignment="CENTER">
+							<GridPane.margin>
+								<Insets right="150.0" />
 							</GridPane.margin>
 						</Button>
 					</children>
