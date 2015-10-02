@@ -5,8 +5,11 @@
  */
 package main;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -72,7 +75,7 @@ public class InputDialogController{
         
         comboBox.setValue("none");
         comboBox.setItems(option);
-        
+
     }
     
     public boolean isSaveClicked(){
@@ -80,7 +83,7 @@ public class InputDialogController{
     }
     
     @FXML
-    private void handleSave(){
+    private void handleSave(){        
         
         if(!comboBox.getValue().toString().contains("none"))
             activity.setParentValue(Integer.parseInt(comboBox.getValue().toString()));
@@ -117,5 +120,29 @@ public class InputDialogController{
     public int getParentOfSubActivity(){
         return Integer.parseInt(comboBox.getValue().toString());
     }
+    
+    @FXML
+     public void valueChanged(){
+          if(comboBox.getValue().toString().contains("none")){
+              idTF.setDisable(true);
+              durTF.setDisable(true);
+              budgTF.setDisable(true);
+              paTF.setDisable(true);
+              caTF.setDisable(true);
+              pvTF.setDisable(true);
+              acTF.setDisable(true);
+              evTF.setDisable(true);
+          }
+          else{
+              idTF.setDisable(false);
+              durTF.setDisable(false);
+              budgTF.setDisable(false);
+              paTF.setDisable(false);
+              caTF.setDisable(false);
+              pvTF.setDisable(false);
+              acTF.setDisable(false);
+              evTF.setDisable(false);
+          }
+     }
     
 }
