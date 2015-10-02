@@ -84,12 +84,12 @@ public class InputDialogController {
             if (!comboBox.getValue().toString().contains("none"))
                 activity.setParentValue(Integer.parseInt(comboBox.getValue().toString()));
             activity.setDuration(Integer.parseInt(durTF.getText()));
-            activity.setBudget(Integer.parseInt(budgTF.getText()));
+            activity.setBudget(Double.parseDouble(budgTF.getText()));
             activity.setPlannedProgress(Double.parseDouble(paTF.getText()));
             activity.setCurrentProgress(Double.parseDouble(caTF.getText()));
-            activity.setPV(Integer.parseInt(pvTF.getText()));
-            activity.setAC(Integer.parseInt(acTF.getText()));
-            activity.setEV(Integer.parseInt(evTF.getText()));
+            activity.setPV(Double.parseDouble(pvTF.getText()));
+            activity.setAC(Double.parseDouble(acTF.getText()));
+            //activity.setEV(Integer.parseInt(evTF.getText()));
             activity.Calculate();
 
         }
