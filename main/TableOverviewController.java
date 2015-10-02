@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
@@ -23,9 +24,9 @@ public class TableOverviewController {
 
 	@FXML
 	private TableView<Activity> activityTable;
-        
-        @FXML
-        private TableColumn<Activity, String> nameColumn;
+
+	@FXML
+	private TableColumn<Activity, String> nameColumn;
 
 	@FXML
 	private TableColumn<Activity, String> idColumn;
@@ -66,10 +67,13 @@ public class TableOverviewController {
 	private Main mainApp;
 
 	private ObservableList<Activity> activityData = FXCollections.observableArrayList();
-	
+
 	@FXML
 	public void initialize() {
-                nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+
+		activityTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		
+		nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 		// durationColumn.setCellFactory(new TextFieldCellFactory());
 		nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		nameColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
@@ -78,11 +82,10 @@ public class TableOverviewController {
 			public void handle(CellEditEvent<Activity, String> t) {
 				int index = activityData.indexOf(t.getTableView().getItems().get(t.getTablePosition().getRow()));
 				activityData.get(index).setName(t.getNewValue());
-				((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-						.setName(t.getNewValue());
+				((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow())).setName(t.getNewValue());
 			}
 		});
-            
+
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty());
 		// durationColumn.setCellFactory(new TextFieldCellFactory());
 		idColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -252,10 +255,11 @@ public class TableOverviewController {
 
 	@FXML
 	public void handleDelete() {
-		int selectedIndex = activityTable.getSelectionModel().getSelectedIndex();
-		if (selectedIndex >= 0) {
-			activityTable.getItems().remove(selectedIndex);
-			
+
+		ObservableList<Activity> selectedIndex = activityTable.getSelectionModel().getSelectedItems();
+
+		if (selectedIndex.size() > 0) {
+			activityTable.getItems().removeAll(selectedIndex);
 		} else {
 			// Nothing selected.
 			Alert alert = new Alert(AlertType.WARNING);
