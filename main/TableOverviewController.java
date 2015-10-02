@@ -11,21 +11,17 @@ import javafx.scene.control.TableView;
 import main.model.Activity;
 import main.model.SubActivity;
 
-/**
- *
- * @author krisli
- */
 public class TableOverviewController {
 
 	@FXML
 	private Button add;
 
 	@FXML
+	private Button delete;
+
+	@FXML
 	private TableView<Activity> activityTable;
 
-        @FXML
-        private TableColumn<Activity, String> nameColumn;       
-        
 	@FXML
 	private TableColumn<Activity, String> idColumn;
 
@@ -65,25 +61,12 @@ public class TableOverviewController {
 	private Main mainApp;
 
 	private ObservableList<Activity> activityData = FXCollections.observableArrayList();
-        
-        private int subActivityParent;
-
+	
 	@FXML
 	public void initialize() {
-                nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-		nameColumn.setCellFactory(new TextFieldCellFactory());
-		nameColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
-
-			@Override
-			public void handle(CellEditEvent<Activity, String> t) {
-				int index = activityData.indexOf(t.getTableView().getItems().get(t.getTablePosition().getRow()));
-				activityData.get(index).setIdString(t.getNewValue());
-				((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-						.setIdString(t.getNewValue());
-			}
-		});
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty());
-		idColumn.setCellFactory(new TextFieldCellFactory());
+		// durationColumn.setCellFactory(new TextFieldCellFactory());
+		idColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		idColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
 
 			@Override
@@ -96,7 +79,7 @@ public class TableOverviewController {
 		});
 
 		durationColumn.setCellValueFactory(cellData -> cellData.getValue().durationProperty());
-		durationColumn.setCellFactory(new TextFieldCellFactory());
+		durationColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		durationColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
 
 			@Override
@@ -109,7 +92,7 @@ public class TableOverviewController {
 		});
 
 		budgetColumn.setCellValueFactory(cellData -> cellData.getValue().budgetProperty());
-		budgetColumn.setCellFactory(new TextFieldCellFactory());
+		budgetColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		budgetColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
 
 			@Override
@@ -122,7 +105,7 @@ public class TableOverviewController {
 		});
 
 		plannedProgressColumn.setCellValueFactory(cellData -> cellData.getValue().plannedProgressProperty());
-		plannedProgressColumn.setCellFactory(new TextFieldCellFactory());
+		plannedProgressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		plannedProgressColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
 
 			@Override
@@ -135,7 +118,7 @@ public class TableOverviewController {
 		});
 
 		currentProgressColumn.setCellValueFactory(cellData -> cellData.getValue().currentProgressProperty());
-		currentProgressColumn.setCellFactory(new TextFieldCellFactory());
+		currentProgressColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		currentProgressColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
 
 			@Override
@@ -148,7 +131,7 @@ public class TableOverviewController {
 		});
 
 		pvColumn.setCellValueFactory(cellData -> cellData.getValue().pvProperty());
-		pvColumn.setCellFactory(new TextFieldCellFactory());
+		pvColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		pvColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
 
 			@Override
@@ -161,7 +144,7 @@ public class TableOverviewController {
 		});
 
 		acColumn.setCellValueFactory(cellData -> cellData.getValue().acProperty());
-		acColumn.setCellFactory(new TextFieldCellFactory());
+		acColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		acColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
 
 			@Override
@@ -174,7 +157,7 @@ public class TableOverviewController {
 		});
 
 		evColumn.setCellValueFactory(cellData -> cellData.getValue().evProperty());
-		evColumn.setCellFactory(new TextFieldCellFactory());
+		evColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		evColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
 
 			@Override
@@ -187,7 +170,7 @@ public class TableOverviewController {
 		});
 
 		cvColumn.setCellValueFactory(cellData -> cellData.getValue().cvProperty());
-		cvColumn.setCellFactory(new TextFieldCellFactory());
+		cvColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		cvColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
 
 			@Override
@@ -200,7 +183,7 @@ public class TableOverviewController {
 		});
 
 		svColumn.setCellValueFactory(cellData -> cellData.getValue().svProperty());
-		svColumn.setCellFactory(new TextFieldCellFactory());
+		svColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		svColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
 
 			@Override
@@ -213,7 +196,7 @@ public class TableOverviewController {
 		});
 
 		cpiColumn.setCellValueFactory(cellData -> cellData.getValue().cpiProperty());
-		cpiColumn.setCellFactory(new TextFieldCellFactory());
+		cpiColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		cpiColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
 
 			@Override
@@ -226,7 +209,7 @@ public class TableOverviewController {
 		});
 
 		spiColumn.setCellValueFactory(cellData -> cellData.getValue().spiProperty());
-		spiColumn.setCellFactory(new TextFieldCellFactory());
+		spiColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		spiColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
 
 			@Override
@@ -244,8 +227,26 @@ public class TableOverviewController {
 		Activity temp = new Activity();
 		boolean saveClicked = mainApp.showInputDialog(temp);
 		if (saveClicked) {
-			mainApp.getTableData().add(temp);  
-                }
+			mainApp.getTableData().add(temp);
+		}
+	}
+
+	@FXML
+	public void handleDelete() {
+		int selectedIndex = activityTable.getSelectionModel().getSelectedIndex();
+		if (selectedIndex >= 0) {
+			activityTable.getItems().remove(selectedIndex);
+			
+		} else {
+			// Nothing selected.
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.initOwner(mainApp.getPrimaryStage());
+			alert.setTitle("No Selection");
+			alert.setHeaderText("No Activity Selected");
+			alert.setContentText("Please select an activity from the table.");
+
+			alert.showAndWait();
+		}
 	}
 
 	public void setMainApp(Main mainApp) {
@@ -256,5 +257,8 @@ public class TableOverviewController {
 	public void setTableData(ObservableList<Activity> activityData) {
 		this.activityData = activityData;
 	}
-        
+
+	public TableView<Activity> getTable() {
+		return activityTable;
+	}
 }
