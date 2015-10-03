@@ -5,29 +5,27 @@
  */
 package main.model;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 
 /**
- *
  * @author krisli
  */
 
 @XmlRootElement(name = "activities")
 public class ActivityListWrapper {
-    
+
     private List<Activity> activities;
-    
-    @XmlElement(name="activity")
-    public List<Activity> getActivities(){
+
+    @XmlElement(name = "activity")
+    public List<Activity> getActivities() {
         return activities;
     }
-    
-    public void setActivities(List<Activity> activities){
+
+    public void setActivities(List<Activity> activities) {
         this.activities = activities;
     }
-    
+
 }
