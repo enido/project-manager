@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.GridPane;
 
 /**
  * @author krisli
@@ -35,7 +37,10 @@ public class Main extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
+    private TabPane tabRootLayout;
     private ObservableList<Activity> tableData = FXCollections.observableArrayList();
+    private Activity sum;
+    //sGanttChart<Activity> gantt = new GanttChart<Activity>(new Activity());
 
     /**
      * @param args the command line arguments
@@ -52,7 +57,7 @@ public class Main extends Application {
         initRootLayout();
 
         showActivityPaneOverview();
-        showTabPaneOverview();
+        initTabRootLayout();
         showTableOverview();
 
     }
@@ -72,6 +77,25 @@ public class Main extends Application {
             primaryStage.show();
 
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void initTabRootLayout(){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("view/TabRoot.fxml"));
+            tabRootLayout = (TabPane) loader.load();
+            
+            showChartOverview();
+            rootLayout.setCenter(tabRootLayout);
+            
+            TabMenuController controller = loader.getController();
+            controller.setMainApp(this);
+            
+            
+        }
+        catch(IOException e){
             e.printStackTrace();
         }
     }
@@ -112,21 +136,6 @@ public class Main extends Application {
         }
     }
 
-    public void showTabPaneOverview() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/TabRoot.fxml"));
-            AnchorPane TabOverview = (AnchorPane) loader.load();
-
-            rootLayout.setCenter(TabOverview);
-
-            TabMenuController controller = loader.getController();
-            controller.setMainApp(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public boolean showInputDialog(Activity aktivitet) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -152,6 +161,23 @@ public class Main extends Application {
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }
+    }
+
+    public void showChartOverview(){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("view/tabmenu/ChartTab.fxml"));
+            GridPane chartOverview = (GridPane) loader.load();
+            
+            tabRootLayout.getTabs().get(0).setContent(chartOverview);
+            
+            //TableOverviewController controller = loader.getController();
+            //controller.setMainApp(this);
+            
+        }
+        catch(IOException e){
+            e.printStackTrace();
         }
     }
 
@@ -246,10 +272,14 @@ public class Main extends Application {
         return tableData;
     }
 
+    public Activity getSum(){
+        return sum;
+    }
+
     public void Refresh() {
         CalculateAndSort();
         showActivityPaneOverview();
-        showTabPaneOverview();
+        initTabRootLayout();
         showTableOverview();
     }
 

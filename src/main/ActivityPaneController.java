@@ -56,4 +56,3 @@ public class ActivityPaneController implements Initializable {
         return tree;
     }
 }
-
