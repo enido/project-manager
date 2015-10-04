@@ -39,7 +39,8 @@ public class Main extends Application {
     private BorderPane rootLayout;
     private TabPane tabRootLayout;
     private ObservableList<Activity> tableData = FXCollections.observableArrayList();
-    private Activity sum;
+    private Activity sum = new Activity();
+    private ChartTabController chartTabController = new ChartTabController();
     //sGanttChart<Activity> gantt = new GanttChart<Activity>(new Activity());
 
     /**
@@ -69,6 +70,7 @@ public class Main extends Application {
             rootLayout = (BorderPane) loader.load();
 
             Scene scene = new Scene(rootLayout);
+            scene.getStylesheets().add(getClass().getResource("view/application.css").toExternalForm());
             primaryStage.setScene(scene);
 
             RootLayoutController controller = loader.getController();
@@ -87,7 +89,10 @@ public class Main extends Application {
             loader.setLocation(Main.class.getResource("view/TabRoot.fxml"));
             tabRootLayout = (TabPane) loader.load();
             
-            showChartOverview();
+            chartTabController.setTabPane(tabRootLayout);
+            chartTabController.setMainApp(this);
+            chartTabController.setActivitySum(sum);
+	    chartTabController.showChartOverview();
             rootLayout.setCenter(tabRootLayout);
             
             TabMenuController controller = loader.getController();
@@ -198,12 +203,12 @@ public class Main extends Application {
             prefs.put("filePath", file.getPath());
 
             //Update titullin e stage
-            primaryStage.setTitle("AdressApp - " + file.getName());
+            primaryStage.setTitle("PROING - " + file.getName());
         } else {
             prefs.remove("filePath");
 
             //Update titullin e stage
-            primaryStage.setTitle("AddressApp");
+            primaryStage.setTitle("PROING");
         }
 
     }
@@ -278,6 +283,7 @@ public class Main extends Application {
 
     public void Refresh() {
         CalculateAndSort();
+        calculateSum();
         showActivityPaneOverview();
         initTabRootLayout();
         showTableOverview();
@@ -289,10 +295,12 @@ public class Main extends Application {
         int j = 0;
         int k;
         int size = tableData.size();
-        int sumDur = 0, sumBudg = 0, sumPV = 0, sumAC = 0, sumEV = 0, sumCV = 0, sumSV = 0;
+        long sumDur = 0;
+        double sumBudg = 0, sumPV = 0, sumAC = 0, sumEV = 0, sumCV = 0, sumSV = 0;
         double totCPI, totSPI, totPP, totCP, sumPP = 0, sumCP = 0, sumCPI = 0, sumSPI = 0;
         int parent;
         int id;
+        
 
         //Calculation
         for (i = 0; i < size; i++) {
@@ -359,5 +367,24 @@ public class Main extends Application {
         }
 
     }
+    
+        public void calculateSum(){
+            int size = tableData.size();
+            double tempEV = 0;
+            double tempPV = 0;
+            double tempAC = 0;
+            
+            for(int i=0;i<size;i++){
+                Activity current = tableData.get(i);
+                if(current.getParentValue() == 0){
+                    tempEV += current.getEV();
+                    tempPV += current.getPV();
+                    tempAC += current.getAC();
+                }
+            }
+            sum.setEV(tempEV);
+            sum.setPV(tempPV);
+            sum.setAC(tempAC);
+        }
 
 }

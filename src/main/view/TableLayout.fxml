@@ -28,6 +28,21 @@
 						<TableColumn fx:id="budgetColumn" prefWidth="75.0"
 							text="Budget">
 						</TableColumn>
+                                                <TableColumn fx:id="unitColumn" prefWidth="75.0"
+							text="Unit">
+						</TableColumn>
+                                                <TableColumn fx:id="plannedAmountColumn" prefWidth="75.0"
+							text="Planned Amount">
+						</TableColumn>
+                                                <TableColumn fx:id="priceColumn" prefWidth="75.0"
+							text="Price">
+						</TableColumn>
+                                                <TableColumn fx:id="currentAmountColumn" prefWidth="75.0"
+							text="Current Amount">
+						</TableColumn>
+                                                <TableColumn fx:id="actualAmountColumn" prefWidth="75.0"
+							text="Actual Amount">
+						</TableColumn>
 						<TableColumn fx:id="plannedProgressColumn" prefWidth="90.0"
 							text="Planned progress">
 						</TableColumn>

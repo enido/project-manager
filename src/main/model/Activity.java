@@ -2,6 +2,9 @@ package main.model;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author krisli
@@ -13,6 +16,11 @@ public class Activity {
     private final StringProperty id;
     private final StringProperty duration;
     private final StringProperty budget;
+    private final StringProperty unit;
+    private final StringProperty price;
+    private final StringProperty plannedAmount;
+    private final StringProperty currentAmount;
+    private final StringProperty actualAmount;
     private final StringProperty plannedProgress;
     private final StringProperty currentProgress;
     private final StringProperty pv;
@@ -25,8 +33,12 @@ public class Activity {
 
     // Emrat e variablave int,double, me te medha
     public int valID;
-    public int valDUR;
+    public long valDUR;
     public double valBUDG;
+    public double valPRICE;
+    public double valPA; // Planned Amount(PA)
+    public double valCA; // Current Amount(CA)
+    public double valAA; // Actual Amount(AA)
     public double valPP; // Planned Progress(PP)
     public double valCP; // Current Progress(CP)
     public double valPV;
@@ -36,19 +48,26 @@ public class Activity {
     public double valSV;
     public double valCPI;
     public double valSPI;
+    public Calendar startTime;
+    public Calendar endTime;
 
     public int parent = 0;
 
     public Activity() {
-        this("", "", "", "", "", "", "", "", "", "", "", "", "");
+        this("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
     }
 
-    public Activity(String name, String id, String duration, String budget, String plannedProgress, String current_progress,
+    public Activity(String name, String id, String duration, String budget, String unit, String price, String plannedAmount, String currentAmount, String actualAmount, String plannedProgress, String current_progress,
                     String pv, String ac, String ev, String cv, String sv, String cpi, String spi) {
         this.name = new SimpleStringProperty(name);
         this.id = new SimpleStringProperty(id);
         this.duration = new SimpleStringProperty(duration);
         this.budget = new SimpleStringProperty(budget);
+        this.unit = new SimpleStringProperty(unit);
+        this.price = new SimpleStringProperty(price);
+        this.plannedAmount = new SimpleStringProperty(plannedAmount);
+        this.currentAmount = new SimpleStringProperty(currentAmount);
+        this.actualAmount = new SimpleStringProperty(actualAmount);
         this.plannedProgress = new SimpleStringProperty(plannedProgress);
         this.currentProgress = new SimpleStringProperty(current_progress);
         this.pv = new SimpleStringProperty(pv);
@@ -112,6 +131,71 @@ public class Activity {
 
     public StringProperty budgetProperty() {
         return budget;
+    }
+    
+    // UNIT
+    public String getUnitString() {
+        return unit.get();
+    }
+
+    public void setUnitString(String data) {
+        unit.set(data);
+    }
+
+    public StringProperty unitProperty() {
+        return unit;
+    }
+    
+    // PRICE
+    public String getPriceString() {
+        return price.get();
+    }
+
+    public void setPriceString(String data) {
+        price.set(data);
+    }
+
+    public StringProperty priceProperty() {
+        return price;
+    }
+    
+    // PLANNED AMOUNT
+    public String getPlannedAmountString() {
+        return plannedAmount.get();
+    }
+
+    public void setPlannedAmountString(String data) {
+        plannedAmount.set(data);
+    }
+
+    public StringProperty plannedAmountProperty() {
+        return plannedAmount;
+    }
+    
+    // CURRENT AMOUNT
+    public String getCurrentAmountString() {
+        return currentAmount.get();
+    }
+
+    public void setCurrentAmountString(String data) {
+        currentAmount.set(data);
+    }
+
+    public StringProperty currentAmountProperty() {
+        return currentAmount;
+    }
+    
+    // ACTUAL AMOUNT
+    public String getActualAmountString() {
+        return actualAmount.get();
+    }
+
+    public void setActualAmountString(String data) {
+        actualAmount.set(data);
+    }
+
+    public StringProperty actualAmountProperty() {
+        return actualAmount;
     }
 
     // PLANNED PROGRESS
@@ -241,11 +325,11 @@ public class Activity {
         this.valID = ID;
     }
 
-    public int getDuration() {
+    public long getDuration() {
         return valDUR;
     }
 
-    public void setDuration(int Duration) {
+    public void setDuration(long Duration) {
         this.valDUR = Duration;
     }
 
@@ -255,6 +339,38 @@ public class Activity {
 
     public void setBudget(double Budget) {
         this.valBUDG = Budget;
+    }
+    
+    public double getPriceValue() {
+        return valPRICE;
+    }
+
+    public void setPriceValue(double PRC) {
+        this.valPRICE = PRC;
+    }
+    
+    public double getPlannedAmount(){
+        return valPA;
+    }
+    
+    public void setPlannedAmount(double PA){
+        this.valPA = PA;
+    }
+    
+    public double getCurrentAmount(){
+        return valCA;
+    }
+    
+    public void setCurrentAmount(double CA){
+        this.valCA = CA;
+    }
+    
+    public double getActualAmount(){
+        return valAA;
+    }
+    
+    public void setActualAmount(double AA){
+        this.valAA = AA;
     }
 
     public double getPlannedProgress() {
@@ -340,19 +456,41 @@ public class Activity {
     public String toString(double data) {
         return "" + data;
     }
+    
+    public Calendar getStartTimeValue(){
+        return this.startTime;
+    }
+    
+    public void setStartTimeValue(Calendar sT){
+        this.startTime = sT;
+    }
+    
+    public Calendar getEndTimeValue(){
+        return this.endTime;
+    }
+    
+    public void setEndTimeValue(Calendar eT){
+        this.endTime = eT;
+    }
 
     public void Calculate() {
+        getDateDiff(endTime, startTime, TimeUnit.DAYS);
         if (valAC == 0 || valPV == 0) {
             valCPI = 0;
             valSPI = 0;
         } else {
-            valEV = valBUDG * valCP;
+            valEV = valPRICE * valAA;
             valCV = valEV - valAC;
             valSV = valEV - valPV;
             valCPI = valEV / valAC;
             valSPI = valEV / valPV;
         }
 
+    }
+    
+    public void getDateDiff(Calendar date1, Calendar date2, TimeUnit timeUnit) {
+        long diff = date1.getTime().getTime() - date2.getTime().getTime();
+        setDuration(diff/86400000);
     }
 
 	/*
@@ -368,7 +506,11 @@ public class Activity {
         }
         setIdString(iString);
         setDurationString("" + valDUR);
-        setBudgetString("" + valBUDG);
+        setBudgetString(toString(valBUDG));
+        setPriceString(toString(valPRICE));
+        setPlannedAmountString(toString(valPA));
+        setCurrentAmountString(toString(valCA));
+        setActualAmountString(toString(valAA));
         setPlannedProgressString(getPlannedProgressPercentage());
         setCurrentProgressString(getCurrentProgressPercentage());
         setPvString(toString(valPV));

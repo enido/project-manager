@@ -32,6 +32,21 @@ public class TableOverviewController {
 
     @FXML
     private TableColumn<Activity, String> budgetColumn;
+    
+    @FXML
+    private TableColumn<Activity, String> unitColumn;
+    
+    @FXML
+    private TableColumn<Activity, String> priceColumn;
+    
+    @FXML
+    private TableColumn<Activity, String> plannedAmountColumn;
+    
+    @FXML
+    private TableColumn<Activity, String> currentAmountColumn;
+    
+    @FXML
+    private TableColumn<Activity, String> actualAmountColumn;
 
     @FXML
     private TableColumn<Activity, String> plannedProgressColumn;
@@ -106,7 +121,7 @@ public class TableOverviewController {
                         .setDurationString(t.getNewValue());
             }
         });
-
+        
         budgetColumn.setCellValueFactory(cellData -> cellData.getValue().budgetProperty());
         budgetColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         budgetColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
@@ -117,6 +132,71 @@ public class TableOverviewController {
                 activityData.get(index).setBudgetString(t.getNewValue());
                 ((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setBudgetString(t.getNewValue());
+            }
+        });
+
+        unitColumn.setCellValueFactory(cellData -> cellData.getValue().unitProperty());
+        unitColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        unitColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
+
+            @Override
+            public void handle(CellEditEvent<Activity, String> t) {
+                int index = activityData.indexOf(t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                activityData.get(index).setUnitString(t.getNewValue());
+                ((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+                        .setUnitString(t.getNewValue());
+            }
+        });
+        
+        priceColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
+        priceColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        priceColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
+
+            @Override
+            public void handle(CellEditEvent<Activity, String> t) {
+                int index = activityData.indexOf(t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                activityData.get(index).setPriceString(t.getNewValue());
+                ((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+                        .setPriceString(t.getNewValue());
+            }
+        });
+        
+        plannedAmountColumn.setCellValueFactory(cellData -> cellData.getValue().plannedAmountProperty());
+        plannedAmountColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        plannedAmountColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
+
+            @Override
+            public void handle(CellEditEvent<Activity, String> t) {
+                int index = activityData.indexOf(t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                activityData.get(index).setPlannedAmountString(t.getNewValue());
+                ((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+                        .setPlannedAmountString(t.getNewValue());
+            }
+        });
+        
+        currentAmountColumn.setCellValueFactory(cellData -> cellData.getValue().currentAmountProperty());
+        currentAmountColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        currentAmountColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
+
+            @Override
+            public void handle(CellEditEvent<Activity, String> t) {
+                int index = activityData.indexOf(t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                activityData.get(index).setCurrentAmountString(t.getNewValue());
+                ((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+                        .setCurrentAmountString(t.getNewValue());
+            }
+        });
+        
+        actualAmountColumn.setCellValueFactory(cellData -> cellData.getValue().actualAmountProperty());
+        actualAmountColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        actualAmountColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
+
+            @Override
+            public void handle(CellEditEvent<Activity, String> t) {
+                int index = activityData.indexOf(t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                activityData.get(index).setActualAmountString(t.getNewValue());
+                ((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+                        .setActualAmountString(t.getNewValue());
             }
         });
 

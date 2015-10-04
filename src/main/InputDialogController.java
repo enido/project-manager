@@ -13,6 +13,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import main.model.Activity;
+import main.util.CalendarUtil;
 
 /**
  * @author krisli
@@ -24,19 +25,29 @@ public class InputDialogController {
     @FXML
     private TextField idTF;
     @FXML
-    private TextField durTF;
+    private TextField startTimeTF;
+    @FXML
+    private TextField endTimeTF;
     @FXML
     private TextField budgTF;
     @FXML
-    private TextField paTF;
+    private ComboBox unitCombo;
     @FXML
-    private TextField caTF;
+    private TextField priceTF;
+    @FXML
+    private TextField paTF; // planned Amount
+    @FXML
+    private TextField caTF; // current Amount
+    @FXML
+    private TextField aaTF; // actual Amount
+    @FXML
+    private TextField ppTF; // planned Progress
+    @FXML 
+    private TextField cpTF; // current Progress
     @FXML
     private TextField pvTF;
     @FXML
     private TextField acTF;
-    @FXML
-    private TextField evTF;
     @FXML
     private Button cancel;
     @FXML
@@ -51,12 +62,13 @@ public class InputDialogController {
 
     @FXML
     private void initialize() {
-
+          
     }
 
     public void setListData(ObservableList<Activity> data) {
         this.temp = data;
 
+        ObservableList<String> units = FXCollections.observableArrayList(); 
         ObservableList<String> option = FXCollections.observableArrayList();
         int i = 0;
         option.add("none");
@@ -67,7 +79,20 @@ public class InputDialogController {
 
         comboBox.setValue("none");
         comboBox.setItems(option);
-
+        
+        units.add("l");
+        units.add("ml");
+        units.add("m3");
+        units.add("ton");
+        units.add("kv");
+        units.add("kg");
+        units.add("g");
+        units.add("m");
+        units.add("cm");
+        
+        unitCombo.setValue("ton");
+        unitCombo.setItems(units);
+        
     }
 
     public boolean isSaveClicked() {
@@ -80,16 +105,21 @@ public class InputDialogController {
         int parent;
         activity.setName(nameTF.getText());
         activity.setID(Integer.parseInt(idTF.getText()));
-        if (!durTF.isDisabled()) {
+        if (!startTimeTF.isDisabled()) {
             if (!comboBox.getValue().toString().contains("none"))
                 activity.setParentValue(Integer.parseInt(comboBox.getValue().toString()));
-            activity.setDuration(Integer.parseInt(durTF.getText()));
+            activity.setStartTimeValue(CalendarUtil.parse(startTimeTF.getText()));
+            activity.setEndTimeValue(CalendarUtil.parse(endTimeTF.getText()));
             activity.setBudget(Double.parseDouble(budgTF.getText()));
-            activity.setPlannedProgress(Double.parseDouble(paTF.getText()));
-            activity.setCurrentProgress(Double.parseDouble(caTF.getText()));
+            activity.setUnitString(unitCombo.getValue().toString());
+            activity.setPlannedAmount(Double.parseDouble(paTF.getText()));
+            activity.setCurrentAmount(Double.parseDouble(caTF.getText()));
+            activity.setActualAmount(Double.parseDouble(aaTF.getText()));
+            activity.setPlannedProgress(Double.parseDouble(ppTF.getText()));
+            activity.setCurrentProgress(Double.parseDouble(cpTF.getText()));
             activity.setPV(Double.parseDouble(pvTF.getText()));
             activity.setAC(Double.parseDouble(acTF.getText()));
-            //activity.setEV(Integer.parseInt(evTF.getText()));
+            activity.setPriceValue(Double.parseDouble(priceTF.getText()));
             activity.Calculate();
 
         }
@@ -123,22 +153,31 @@ public class InputDialogController {
     @FXML
     public void valueChanged() {
         if (comboBox.getValue().toString().contains("none")) {
-            durTF.setDisable(true);
-            budgTF.setDisable(true);
+            unitCombo.setDisable(true);
+            startTimeTF.setDisable(true);
+            endTimeTF.setDisable(true);
             paTF.setDisable(true);
             caTF.setDisable(true);
+            aaTF.setDisable(true);
+            budgTF.setDisable(true);
+            ppTF.setDisable(true);
+            cpTF.setDisable(true);
             pvTF.setDisable(true);
             acTF.setDisable(true);
-            evTF.setDisable(true);
+            priceTF.setDisable(true);
         } else {
-            idTF.setDisable(false);
-            durTF.setDisable(false);
+            unitCombo.setDisable(false);
+            startTimeTF.setDisable(false);
+            endTimeTF.setDisable(false);
             budgTF.setDisable(false);
             paTF.setDisable(false);
             caTF.setDisable(false);
+            aaTF.setDisable(false);
+            ppTF.setDisable(false);
+            cpTF.setDisable(false);
             pvTF.setDisable(false);
             acTF.setDisable(false);
-            evTF.setDisable(false);
+            priceTF.setDisable(false);
         }
     }
 
