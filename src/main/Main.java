@@ -15,7 +15,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.model.Activity;
@@ -70,7 +69,7 @@ public class Main extends Application {
             rootLayout = (BorderPane) loader.load();
 
             Scene scene = new Scene(rootLayout);
-            scene.getStylesheets().add(getClass().getResource("view/application.css").toExternalForm());
+            // scene.getStylesheets().add(getClass().getResource("view/application.css").toExternalForm());
             primaryStage.setScene(scene);
 
             RootLayoutController controller = loader.getController();
@@ -165,22 +164,6 @@ public class Main extends Application {
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }
-    }
-
-    public void showChartOverview() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/tabmenu/ChartTab.fxml"));
-            GridPane chartOverview = (GridPane) loader.load();
-
-            tabRootLayout.getTabs().get(0).setContent(chartOverview);
-
-            //TableOverviewController controller = loader.getController();
-            //controller.setMainApp(this);
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

@@ -101,6 +101,11 @@ public class ChartTabController {
         tabPane.getTabs().get(0).setContent(gridPane);
     }
 
+    public void showGanttOverview() {
+        GridPane gridPane = new GridPane();
+        tabPane.getTabs().get(1).setContent(gridPane);
+    }
+
     public void setTabPane(TabPane tabPane) {
         this.tabPane = tabPane;
     }
