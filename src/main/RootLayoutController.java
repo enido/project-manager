@@ -41,7 +41,7 @@ public class RootLayoutController {
 
         if (file != null) {
             mainApp.loadActivityDataFromFile(file);
-            mainApp.Refresh();
+            mainApp.refresh();
         }
 
     }

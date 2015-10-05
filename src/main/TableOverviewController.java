@@ -244,7 +244,7 @@ public class TableOverviewController {
         boolean saveClicked = mainApp.showInputDialog(temp);
         if (saveClicked) {
             mainApp.getTableData().add(temp);
-            mainApp.Refresh();
+            mainApp.refresh();
         }
     }
 
@@ -255,7 +255,7 @@ public class TableOverviewController {
 
         if (selectedIndex.size() > 0) {
             activityTable.getItems().removeAll(selectedIndex);
-            mainApp.Refresh();
+            mainApp.refresh();
         } else {
             // Nothing selected.
             Alert alert = new Alert(AlertType.WARNING);
