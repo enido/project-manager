@@ -92,6 +92,7 @@ public class Main extends Application {
             chartTabController.setMainApp(this);
             chartTabController.setActivitySum(sum);
             chartTabController.showChartOverview();
+            chartTabController.showGanttOverview();
             rootLayout.setCenter(tabRootLayout);
 
             TabMenuController controller = loader.getController();
@@ -137,6 +138,10 @@ public class Main extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void showGanttChartOverview() {
+
     }
 
     public boolean showInputDialog(Activity aktivitet) {

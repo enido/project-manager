@@ -1,5 +1,6 @@
 package main;
 
+import javafx.embed.swing.SwingNode;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.chart.NumberAxis;
@@ -8,6 +9,10 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import main.model.Activity;
+import main.util.GanttChartBuilder;
+import main.util.IntervalBuilder;
+import org.jfree.chart.ChartPanel;
+import org.jfree.data.category.IntervalCategoryDataset;
 
 public class ChartTabController {
 
@@ -103,6 +108,14 @@ public class ChartTabController {
 
     public void showGanttOverview() {
         GridPane gridPane = new GridPane();
+
+        IntervalCategoryDataset dataSet = IntervalBuilder.buildDataSet();
+        GanttChartBuilder ganttChartBuilder = new GanttChartBuilder("Gantt", "X", "Y");
+        ChartPanel panel = ganttChartBuilder.buildChartPanel(dataSet);
+        SwingNode wrapperNode = new SwingNode();
+        wrapperNode.setContent(panel);
+        gridPane.add(wrapperNode, 0, 0);
+
         tabPane.getTabs().get(1).setContent(gridPane);
     }
 

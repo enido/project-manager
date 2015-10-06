@@ -6,6 +6,6 @@
          xmlns="http://javafx.com/javafx/8" fx:controller="main.TabMenuController" tabClosingPolicy="UNAVAILABLE">
     <tabs>
         <Tab text="Line Chart"/>
-        <Tab text="Untitled Tab 2"/>
+        <Tab text="Gantt Chart"/>
     </tabs>
 </TabPane>
