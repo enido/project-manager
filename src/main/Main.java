@@ -12,7 +12,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -25,9 +24,19 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.IOException;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
+import javafx.scene.control.Button;
+import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.GridPane;
+import javax.swing.JPanel;
+
+
 
 /**
  * @author krisli
@@ -35,12 +44,16 @@ import java.util.prefs.Preferences;
 public class Main extends Application {
 
     private Stage primaryStage;
-    private BorderPane rootLayout;
-    private TabPane tabRootLayout;
+    private BorderPane root;
+    private BorderPane[] ContentRootLayout = new BorderPane[100];
+    private TabPane ProjectTab;
     private ObservableList<Activity> tableData = FXCollections.observableArrayList();
     private Activity sum = new Activity();
     private ChartTabController chartTabController = new ChartTabController();
-    //sGanttChart<Activity> gantt = new GanttChart<Activity>(new Activity());
+    public int tabIndex = 0;
+    public int MAX_TABS = 15;
+    public Content[] content = new Content[MAX_TABS];
+    public SingleSelectionModel<Tab> sm;
 
     /**
      * @param args the command line arguments
@@ -53,26 +66,21 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         this.primaryStage = stage;
         this.primaryStage.setTitle("Main");
-
-        initRootLayout();
-
-        showActivityPaneOverview();
-        initTabRootLayout();
-        showTableOverview();
-
+         
+        initRoot();
     }
-
-    public void initRootLayout() {
+    
+    public void initRoot(){
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/RootLayout.fxml"));
-            rootLayout = (BorderPane) loader.load();
+            loader.setLocation(Main.class.getResource("view/Root.fxml"));
+            root = (BorderPane) loader.load();
 
-            Scene scene = new Scene(rootLayout);
-            // scene.getStylesheets().add(getClass().getResource("view/application.css").toExternalForm());
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("view/application.css").toExternalForm());
             primaryStage.setScene(scene);
 
-            RootLayoutController controller = loader.getController();
+            RootController controller = loader.getController();
             controller.setMainApp(this);
 
             primaryStage.show();
@@ -81,97 +89,25 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
-
-    public void initTabRootLayout() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/TabRoot.fxml"));
-            tabRootLayout = (TabPane) loader.load();
-
-            chartTabController.setTabPane(tabRootLayout);
-            chartTabController.setMainApp(this);
-            chartTabController.setActivitySum(sum);
-            chartTabController.showChartOverview();
-            chartTabController.showGanttOverview();
-            rootLayout.setCenter(tabRootLayout);
-
-            TabMenuController controller = loader.getController();
-            controller.setMainApp(this);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
+    
+    public void initContentLayout(Content contentData){
+        Content data;
+        if(contentData.isEmpty()){
+            content[tabIndex] = new Content();
+            content[tabIndex].setMainApp(this);
+            content[tabIndex].initialize();
+            data = content[tabIndex];
         }
+        else
+            data = contentData;
+        
+        BorderPane temp = data.getContentRoot();
+        ProjectTab.getTabs().get(tabIndex).setContent(temp);
+        temp.prefWidthProperty().bind(root.widthProperty());
+        temp.prefHeightProperty().bind(root.heightProperty());       
     }
-
-    public void showActivityPaneOverview() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/ActivityPane.fxml"));
-            AnchorPane activityPaneOverview = (AnchorPane) loader.load();
-
-            rootLayout.setLeft(activityPaneOverview);
-
-            ActivityPaneController controller = loader.getController();
-            controller.setMainApp(this);
-            controller.setTableData(tableData);
-            controller.startTreeView();
-            activityPaneOverview.getChildren().add(controller.getTree());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public void showTableOverview() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/TableLayout.fxml"));
-            AnchorPane tableOverview = (AnchorPane) loader.load();
-
-            rootLayout.setBottom(tableOverview);
-
-            TableOverviewController controller = loader.getController();
-            controller.setMainApp(this);
-            controller.setTableData(tableData);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void showGanttChartOverview() {
-
-    }
-
-    public boolean showInputDialog(Activity aktivitet) {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/InputDialog.fxml"));
-            AnchorPane page = (AnchorPane) loader.load();
-
-            Stage dialogStage = new Stage();
-            dialogStage.setTitle("Data Input");
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-            dialogStage.initOwner(primaryStage);
-            Scene scene = new Scene(page);
-            dialogStage.setScene(scene);
-
-
-            InputDialogController controller = loader.getController();
-            controller.setListData(tableData);
-            controller.setDialogStage(dialogStage);
-            controller.setData(aktivitet);
-
-            dialogStage.showAndWait();
-
-            return controller.isSaveClicked();
-        } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-    }
-
+    
+    
     public File getActivityFilePath() {
         Preferences prefs = Preferences.userNodeForPackage(Main.class);
         String filePath = prefs.get("filePath", null);
@@ -180,7 +116,6 @@ public class Main extends Application {
             return new File(filePath);
         else
             return null;
-
     }
 
     public void setActivityFilePath(File file) {
@@ -196,7 +131,6 @@ public class Main extends Application {
             //Update titullin e stage
             primaryStage.setTitle("PROING");
         }
-
     }
 
     public void loadActivityDataFromFile(File file) {
@@ -211,6 +145,12 @@ public class Main extends Application {
 
             tableData.clear();
             tableData.addAll(wrapper.getActivities());
+            content[tabIndex] = new Content();
+            content[tabIndex].setTableData(tableData);
+            content[tabIndex].setMainApp(this);
+            content[tabIndex].Refresh();
+            initContentLayout(content[tabIndex]);
+            incrementTabIndex();
 
             // Save the file path to the registry.
             setActivityFilePath(file);
@@ -219,7 +159,7 @@ public class Main extends Application {
             alert.setTitle("Error");
             alert.setHeaderText("Te dhenat nuk mund te ngarkoheshin!");
             alert.setContentText("Te dhenat nuk mund te ngarkoheshin nga skedari:\n" + file.getPath());
-
+            e.printStackTrace();
             alert.showAndWait();
         }
     }
@@ -231,10 +171,11 @@ public class Main extends Application {
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
+            sm = ProjectTab.getSelectionModel();
+            int selectedIndex = sm.getSelectedIndex();
             //Wrapping e te dhenave te activity
             ActivityListWrapper wrapper = new ActivityListWrapper();
-            wrapper.setActivities(tableData);
-
+            wrapper.setActivities(content[selectedIndex].getTableData());
 
             //Marshalling dhe ruajtja e XML ne skedar
             m.marshal(wrapper, file);
@@ -249,128 +190,18 @@ public class Main extends Application {
             alert.setContentText("Te dhenat nuk mund te ruhen ne skedarin:\n" + file.getPath());
 
             alert.showAndWait();
-
         }
-
     }
-
-
+    
+    public void setProjectTab(TabPane tabPane){
+        this.ProjectTab = tabPane;
+    }
+    
+    public void incrementTabIndex(){
+        this.tabIndex++;
+    }
+    
     public Stage getPrimaryStage() {
         return primaryStage;
     }
-
-    public ObservableList<Activity> getTableData() {
-        return tableData;
-    }
-
-    public Activity getSum() {
-        return sum;
-    }
-
-    public void refresh() {
-        CalculateAndSort();
-        calculateSum();
-        showActivityPaneOverview();
-        initTabRootLayout();
-        showTableOverview();
-    }
-
-    public void CalculateAndSort() {
-        ObservableList<Activity> temp;
-        int i = 0;
-        int j = 0;
-        int k;
-        int size = tableData.size();
-        long sumDur = 0;
-        double sumBudg = 0, sumPV = 0, sumAC = 0, sumEV = 0, sumCV = 0, sumSV = 0;
-        double totCPI, totSPI, totPP, totCP, sumPP = 0, sumCP = 0, sumCPI = 0, sumSPI = 0;
-        int parent;
-        int id;
-
-
-        //Calculation
-        for (i = 0; i < size; i++) {
-            k = 0;
-            sumDur = 0;
-            sumBudg = 0;
-            sumPV = 0;
-            sumAC = 0;
-            sumEV = 0;
-            sumCV = 0;
-            sumSV = 0;
-            totCPI = 0;
-            totSPI = 0;
-            totPP = 0;
-            totCP = 0;
-            sumPP = 0;
-            sumCP = 0;
-            sumCPI = 0;
-            sumSPI = 0;
-            parent = tableData.get(i).getParentValue();
-            id = tableData.get(i).getID();
-            if (parent == 0) {
-                for (j = i + 1; j < size; j++) {
-                    if (tableData.get(j).getParentValue() == id) {
-                        sumDur += tableData.get(j).getDuration();
-                        sumBudg += tableData.get(j).getBudget();
-                        sumPP += tableData.get(j).getPlannedProgress();
-                        sumCP += tableData.get(j).getCurrentProgress();
-                        sumPV += tableData.get(j).getPV();
-                        sumAC += tableData.get(j).getAC();
-                        sumEV += tableData.get(j).getEV();
-                        sumCV += tableData.get(j).getCV();
-                        sumSV += tableData.get(j).getSV();
-                        sumCPI += tableData.get(j).getCPI();
-                        sumSPI += tableData.get(j).getSPI();
-                        k++;
-
-                    }
-                }
-                if (k != 0 && sumAC != 0 && sumPV != 0) {
-                    totPP = (double) sumPP / k;
-                    totCP = (double) sumCP / k;
-                    totCPI = (double) sumEV / sumAC;
-                    totSPI = (double) sumEV / sumPV;
-                    if (k == 1) {
-                        totCPI = sumCPI;
-                        totSPI = sumSPI;
-                    }
-                }
-                tableData.get(i).setDuration(sumDur);
-                tableData.get(i).setBudget(sumBudg);
-                tableData.get(i).setPlannedProgress(totPP);
-                tableData.get(i).setCurrentProgress(totCP);
-                tableData.get(i).setPV(sumPV);
-                tableData.get(i).setAC(sumAC);
-                tableData.get(i).setEV(sumEV);
-                tableData.get(i).setCV(sumCV);
-                tableData.get(i).setSV(sumSV);
-                tableData.get(i).setCPI(totCPI);
-                tableData.get(i).setSPI(totSPI);
-                tableData.get(i).ConvertToStringProperty();
-            }
-
-        }
-
-    }
-
-    public void calculateSum() {
-        int size = tableData.size();
-        double tempEV = 0;
-        double tempPV = 0;
-        double tempAC = 0;
-
-        for (int i = 0; i < size; i++) {
-            Activity current = tableData.get(i);
-            if (current.getParentValue() == 0) {
-                tempEV += current.getEV();
-                tempPV += current.getPV();
-                tempAC += current.getAC();
-            }
-        }
-        sum.setEV(tempEV);
-        sum.setPV(tempPV);
-        sum.setAC(tempAC);
-    }
-
 }

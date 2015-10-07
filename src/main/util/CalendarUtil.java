@@ -14,7 +14,7 @@ public class CalendarUtil {
     /**
      * Returns the given date as a well formatted string. The above defined date
      * format is used.
-     *
+     * 
      * @param calendar date to be returned as a string
      * @return formatted string
      */
@@ -27,9 +27,9 @@ public class CalendarUtil {
 
     /**
      * Converts a String in the format "dd-MM-yyyy" to a Calendar object.
-     * <p>
+     * 
      * Returns null if the String could not be converted.
-     *
+     * 
      * @param dateString the date as String
      * @return the calendar object or null if it could not be converted
      */
@@ -45,7 +45,7 @@ public class CalendarUtil {
 
     /**
      * Checks the String whether it is a valid date.
-     *
+     * 
      * @param dateString
      * @return true if the String is a valid date
      */

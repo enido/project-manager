@@ -9,14 +9,18 @@ import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 
 /**
  * @author krisli
  */
-public class RootLayoutController {
+public class RootController {
 
-    private main.Main mainApp;
-
+    private Main mainApp;
+    @FXML
+    private TabPane ProjectTab;
+    
     public void setMainApp(main.Main mainApp) {
         this.mainApp = mainApp;
     }
@@ -24,7 +28,12 @@ public class RootLayoutController {
 
     @FXML
     private void handleNew() {
-
+        ProjectTab.getTabs().add(new Tab("New"));
+        mainApp.setProjectTab(ProjectTab);
+        Content temp = new Content();
+        temp.setEmpty(true);
+        mainApp.initContentLayout(temp);
+        mainApp.incrementTabIndex();
     }
 
     @FXML
@@ -40,10 +49,10 @@ public class RootLayoutController {
         File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
 
         if (file != null) {
+            ProjectTab.getTabs().add(new Tab(file.getName()));
+            mainApp.setProjectTab(ProjectTab);
             mainApp.loadActivityDataFromFile(file);
-            mainApp.refresh();
         }
-
     }
 
     @FXML

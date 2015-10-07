@@ -42,7 +42,7 @@ public class InputDialogController {
     private TextField aaTF; // actual Amount
     @FXML
     private TextField ppTF; // planned Progress
-    @FXML
+    @FXML 
     private TextField cpTF; // current Progress
     @FXML
     private TextField pvTF;
@@ -62,13 +62,13 @@ public class InputDialogController {
 
     @FXML
     private void initialize() {
-
+          
     }
 
     public void setListData(ObservableList<Activity> data) {
         this.temp = data;
 
-        ObservableList<String> units = FXCollections.observableArrayList();
+        ObservableList<String> units = FXCollections.observableArrayList(); 
         ObservableList<String> option = FXCollections.observableArrayList();
         int i = 0;
         option.add("none");
@@ -79,7 +79,7 @@ public class InputDialogController {
 
         comboBox.setValue("none");
         comboBox.setItems(option);
-
+        
         units.add("l");
         units.add("ml");
         units.add("m3");
@@ -89,10 +89,10 @@ public class InputDialogController {
         units.add("g");
         units.add("m");
         units.add("cm");
-
+        
         unitCombo.setValue("ton");
         unitCombo.setItems(units);
-
+        
     }
 
     public boolean isSaveClicked() {

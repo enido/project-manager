@@ -2,8 +2,8 @@ package main.model;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-
 import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -132,7 +132,7 @@ public class Activity {
     public StringProperty budgetProperty() {
         return budget;
     }
-
+    
     // UNIT
     public String getUnitString() {
         return unit.get();
@@ -145,7 +145,7 @@ public class Activity {
     public StringProperty unitProperty() {
         return unit;
     }
-
+    
     // PRICE
     public String getPriceString() {
         return price.get();
@@ -158,7 +158,7 @@ public class Activity {
     public StringProperty priceProperty() {
         return price;
     }
-
+    
     // PLANNED AMOUNT
     public String getPlannedAmountString() {
         return plannedAmount.get();
@@ -171,7 +171,7 @@ public class Activity {
     public StringProperty plannedAmountProperty() {
         return plannedAmount;
     }
-
+    
     // CURRENT AMOUNT
     public String getCurrentAmountString() {
         return currentAmount.get();
@@ -184,7 +184,7 @@ public class Activity {
     public StringProperty currentAmountProperty() {
         return currentAmount;
     }
-
+    
     // ACTUAL AMOUNT
     public String getActualAmountString() {
         return actualAmount.get();
@@ -340,7 +340,7 @@ public class Activity {
     public void setBudget(double Budget) {
         this.valBUDG = Budget;
     }
-
+    
     public double getPriceValue() {
         return valPRICE;
     }
@@ -348,28 +348,28 @@ public class Activity {
     public void setPriceValue(double PRC) {
         this.valPRICE = PRC;
     }
-
-    public double getPlannedAmount() {
+    
+    public double getPlannedAmount(){
         return valPA;
     }
-
-    public void setPlannedAmount(double PA) {
+    
+    public void setPlannedAmount(double PA){
         this.valPA = PA;
     }
-
-    public double getCurrentAmount() {
+    
+    public double getCurrentAmount(){
         return valCA;
     }
-
-    public void setCurrentAmount(double CA) {
+    
+    public void setCurrentAmount(double CA){
         this.valCA = CA;
     }
-
-    public double getActualAmount() {
+    
+    public double getActualAmount(){
         return valAA;
     }
-
-    public void setActualAmount(double AA) {
+    
+    public void setActualAmount(double AA){
         this.valAA = AA;
     }
 
@@ -456,20 +456,20 @@ public class Activity {
     public String toString(double data) {
         return "" + data;
     }
-
-    public Calendar getStartTimeValue() {
+    
+    public Calendar getStartTimeValue(){
         return this.startTime;
     }
-
-    public void setStartTimeValue(Calendar sT) {
+    
+    public void setStartTimeValue(Calendar sT){
         this.startTime = sT;
     }
-
-    public Calendar getEndTimeValue() {
+    
+    public Calendar getEndTimeValue(){
         return this.endTime;
     }
-
-    public void setEndTimeValue(Calendar eT) {
+    
+    public void setEndTimeValue(Calendar eT){
         this.endTime = eT;
     }
 
@@ -487,10 +487,10 @@ public class Activity {
         }
 
     }
-
+    
     public void getDateDiff(Calendar date1, Calendar date2, TimeUnit timeUnit) {
         long diff = date1.getTime().getTime() - date2.getTime().getTime();
-        setDuration(diff / 86400000);
+        setDuration(diff/86400000);
     }
 
 	/*
