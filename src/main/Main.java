@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -27,8 +28,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
-import javafx.scene.control.TabPane;
-import javafx.scene.layout.GridPane;
 
 /**
  * @author krisli
@@ -70,7 +69,7 @@ public class Main extends Application {
             rootLayout = (BorderPane) loader.load();
 
             Scene scene = new Scene(rootLayout);
-            scene.getStylesheets().add(getClass().getResource("view/application.css").toExternalForm());
+            // scene.getStylesheets().add(getClass().getResource("view/application.css").toExternalForm());
             primaryStage.setScene(scene);
 
             RootLayoutController controller = loader.getController();
@@ -83,24 +82,24 @@ public class Main extends Application {
         }
     }
 
-    public void initTabRootLayout(){
-        try{
+    public void initTabRootLayout() {
+        try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/TabRoot.fxml"));
             tabRootLayout = (TabPane) loader.load();
-            
+
             chartTabController.setTabPane(tabRootLayout);
             chartTabController.setMainApp(this);
             chartTabController.setActivitySum(sum);
-	    chartTabController.showChartOverview();
+            chartTabController.showChartOverview();
+            chartTabController.showGanttOverview();
             rootLayout.setCenter(tabRootLayout);
-            
+
             TabMenuController controller = loader.getController();
             controller.setMainApp(this);
-            
-            
-        }
-        catch(IOException e){
+
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -141,6 +140,10 @@ public class Main extends Application {
         }
     }
 
+    public void showGanttChartOverview() {
+
+    }
+
     public boolean showInputDialog(Activity aktivitet) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -166,23 +169,6 @@ public class Main extends Application {
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }
-    }
-
-    public void showChartOverview(){
-        try{
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/tabmenu/ChartTab.fxml"));
-            GridPane chartOverview = (GridPane) loader.load();
-            
-            tabRootLayout.getTabs().get(0).setContent(chartOverview);
-            
-            //TableOverviewController controller = loader.getController();
-            //controller.setMainApp(this);
-            
-        }
-        catch(IOException e){
-            e.printStackTrace();
         }
     }
 
@@ -277,11 +263,11 @@ public class Main extends Application {
         return tableData;
     }
 
-    public Activity getSum(){
+    public Activity getSum() {
         return sum;
     }
 
-    public void Refresh() {
+    public void refresh() {
         CalculateAndSort();
         calculateSum();
         showActivityPaneOverview();
@@ -300,7 +286,7 @@ public class Main extends Application {
         double totCPI, totSPI, totPP, totCP, sumPP = 0, sumCP = 0, sumCPI = 0, sumSPI = 0;
         int parent;
         int id;
-        
+
 
         //Calculation
         for (i = 0; i < size; i++) {
@@ -367,24 +353,24 @@ public class Main extends Application {
         }
 
     }
-    
-        public void calculateSum(){
-            int size = tableData.size();
-            double tempEV = 0;
-            double tempPV = 0;
-            double tempAC = 0;
-            
-            for(int i=0;i<size;i++){
-                Activity current = tableData.get(i);
-                if(current.getParentValue() == 0){
-                    tempEV += current.getEV();
-                    tempPV += current.getPV();
-                    tempAC += current.getAC();
-                }
+
+    public void calculateSum() {
+        int size = tableData.size();
+        double tempEV = 0;
+        double tempPV = 0;
+        double tempAC = 0;
+
+        for (int i = 0; i < size; i++) {
+            Activity current = tableData.get(i);
+            if (current.getParentValue() == 0) {
+                tempEV += current.getEV();
+                tempPV += current.getPV();
+                tempAC += current.getAC();
             }
-            sum.setEV(tempEV);
-            sum.setPV(tempPV);
-            sum.setAC(tempAC);
         }
+        sum.setEV(tempEV);
+        sum.setPV(tempPV);
+        sum.setAC(tempAC);
+    }
 
 }
