@@ -34,4 +34,3 @@
       <TabPane fx:id="ProjectTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
-
