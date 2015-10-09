@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
@@ -19,6 +20,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import main.model.Activity;
+import main.util.GanttChartBuilder;
+import main.util.IntervalBuilder;
+import org.jfree.chart.ChartPanel;
+import org.jfree.data.category.IntervalCategoryDataset;
 
 /**
  *
@@ -75,6 +80,8 @@ public class Content {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/TreePane.fxml"));
             AnchorPane activityPaneOverview = (AnchorPane) loader.load();
+
+           
 
             TreeViewController controller = loader.getController();
             controller.setMainApp(this);
@@ -147,6 +154,19 @@ public class Content {
         catch(IOException e){
             e.printStackTrace();
         }
+    }
+    
+        public void showGanttOverview() {
+            GridPane gridPane = new GridPane();
+
+            IntervalCategoryDataset dataSet = IntervalBuilder.buildDataSet(data);
+            GanttChartBuilder ganttChartBuilder = new GanttChartBuilder("Gantt", "X", "Y");
+            ChartPanel panel = ganttChartBuilder.buildChartPanel(dataSet);
+            SwingNode wrapperNode = new SwingNode();
+            wrapperNode.setContent(panel);
+            gridPane.add(wrapperNode, 0, 0);
+
+        tabRootLayout.getTabs().get(1).setContent(gridPane);
     }
     
     public void CalculateAndSort() {
@@ -251,6 +271,7 @@ public class Content {
         initTabRootLayout();
         showTreeView();
         showTableOverview();
+        showGanttOverview();
         mainApp.Refresh(index);
     }
     
@@ -259,6 +280,7 @@ public class Content {
         initTabRootLayout();
         showTreeView();
         showTableOverview();
+        showGanttOverview();
     }
     
     public Stage getPrimaryStage() {

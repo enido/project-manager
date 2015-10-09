@@ -384,6 +384,16 @@ public class Activity {
     public String getPlannedProgressPercentage() {
         return "" + valPP * 100 + "%";
     }
+    
+    public void setPlannedProgressFromPercentage(String PPP){
+        String temp;
+        Double val;
+        int percentageIndex = PPP.indexOf("%");
+        temp = PPP.substring(0, percentageIndex);
+        val = Double.parseDouble(temp);
+        val = val/100;
+        this.valPP = val;      
+    }
 
     public double getCurrentProgress() {
         return valCP;
@@ -395,6 +405,16 @@ public class Activity {
 
     public String getCurrentProgressPercentage() {
         return "" + valCP * 100 + "%";
+    }
+    
+    public void setCurrentProgressFromPercentage(String CPP){
+        String temp;
+        Double val;
+        int percentageIndex = CPP.indexOf("%");
+        temp = CPP.substring(0, percentageIndex);
+        val = Double.parseDouble(temp);
+        val = val/100;
+        this.valCP = val;      
     }
 
     public double getPV() {
@@ -454,7 +474,9 @@ public class Activity {
     }
 
     public String toString(double data) {
-        return "" + data;
+        String temp;
+        temp = String.format("%1$,.2f", data);
+        return temp;
     }
     
     public Calendar getStartTimeValue(){

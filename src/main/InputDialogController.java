@@ -8,6 +8,8 @@ package main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -90,7 +92,6 @@ public class InputDialogController {
         units.add("m");
         units.add("cm");
         
-        unitCombo.setValue("ton");
         unitCombo.setItems(units);
         
     }
@@ -103,8 +104,17 @@ public class InputDialogController {
     private void handleSave() {
 
         int parent;
+        String errorMessage= "";
         activity.setName(nameTF.getText());
-        activity.setID(Integer.parseInt(idTF.getText()));
+        if(idTF.getText() == null || idTF.getText().length() == 0){
+                errorMessage += "ID e aktivitetit nuk është e vlefshme\n";
+            }else{
+                try{
+                    activity.setID(Integer.parseInt(idTF.getText()));
+            }   catch (NumberFormatException e){
+                    errorMessage += "ID e aktivitetit nuk është e vlefshme (Duhet të jetë numër)\n";
+                }
+            }
         if (!startTimeTF.isDisabled()) {
             if (!comboBox.getValue().toString().contains("none"))
                 activity.setParentValue(Integer.parseInt(comboBox.getValue().toString()));
@@ -121,12 +131,30 @@ public class InputDialogController {
             activity.setAC(Double.parseDouble(acTF.getText()));
             activity.setPriceValue(Double.parseDouble(priceTF.getText()));
             activity.Calculate();
+            activity.ConvertToStringProperty();
+            saveClicked = true;
+            dialogStage.close();
 
+        } else{
+            if(nameTF.getText() == null || nameTF.getText().length() == 0){
+                errorMessage += "Emri i aktivitetit nuk është i vlefshëm\n";
+            }
+            if(!(errorMessage.length() == 0)){
+                //Trego mesazhin e errorit
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.initOwner(dialogStage);
+                alert.setTitle("Fusha jo të vlefshme");
+                alert.setHeaderText("Ju lutem korrigjoni fushat e pavlefshme");
+                alert.setContentText(errorMessage);
+
+                alert.showAndWait();
+            }
+            else{
+                activity.ConvertToStringProperty();
+                saveClicked = true;
+                dialogStage.close();
+            }
         }
-
-        activity.ConvertToStringProperty();
-        saveClicked = true;
-        dialogStage.close();
     }
 
     @FXML
@@ -178,6 +206,124 @@ public class InputDialogController {
             pvTF.setDisable(false);
             acTF.setDisable(false);
             priceTF.setDisable(false);
+        }
+    }
+    
+    private boolean isInputValid(){
+        String errorMessage = "";
+        
+        if(nameTF.getText() == null || nameTF.getText().length() == 0){
+            errorMessage += "Emri i aktivitetit nuk është i vlefshëm\n";
+        }
+        if(idTF.getText() == null || idTF.getText().length() == 0){
+            errorMessage += "ID e aktivitetit nuk është e vlefshme\n";
+        }else{
+            try{
+                Integer.parseInt(idTF.getText());
+            } catch (NumberFormatException e){
+                errorMessage += "ID e aktivitetit nuk është e vlefshme (Duhet të jetë numër)\n";
+            }
+        }
+        if(unitCombo.getValue()==null || unitCombo.getValue().toString().length() == 0){
+            errorMessage += "Njësia matëse nuk është zgjedhur\n";
+        }
+        if(budgTF.getText() == null || budgTF.getText().length() == 0){
+            errorMessage += "Buxheti i aktivitetit nuk është i vlefshëm\n";
+        }else{
+            try{
+                Double.parseDouble(budgTF.getText());
+            } catch (NumberFormatException e){
+                errorMessage += "Buxheti i aktivitetit nuk është i vlefshëm (Duhet të jetë numër)\n";
+            }
+        }
+        if(startTimeTF.getText() == null || startTimeTF.getText().length() == 0){
+            errorMessage += "Koha e fillimit nuk është e vlefshme\n";
+        }else{
+            if (!CalendarUtil.validString(startTimeTF.getText())) {
+                errorMessage += "No valid birthday. Use the format dd.mm.yyyy!\n";
+            }
+        }
+        if(endTimeTF.getText() == null || endTimeTF.getText().length() == 0){
+            errorMessage += "Koha e mbarimit nuk është e vlefshme\n";
+        }else{
+            if (!CalendarUtil.validString(endTimeTF.getText())) {
+                errorMessage += "No valid birthday. Use the format dd.mm.yyyy!\n";
+                }
+        }
+        if(paTF.getText() == null || paTF.getText().length() == 0){
+            errorMessage += "Sasia e planifikuar e aktivitetit nuk është e vlefshme\n";
+        }else{
+            try{
+                Double.parseDouble(paTF.getText());
+            } catch (NumberFormatException e){
+                errorMessage += "Sasia e planifikuar e aktivitetit nuk është e vlefshme (Duhet të jetë numër)\n";
+            }
+        }
+        if(caTF.getText() == null || caTF.getText().length() == 0){
+            errorMessage += "Sasia e aktivitetit nuk është e vlefshme\n";
+        }else{
+            try{
+                Double.parseDouble(caTF.getText());
+            } catch (NumberFormatException e){
+                errorMessage += "Sasia e aktivitetit nuk është e vlefshme (Duhet të jetë numër)\n";
+            }
+        }
+        if(aaTF.getText() == null || aaTF.getText().length() == 0){
+            errorMessage += "Sasia faktike e aktivitetit nuk është e vlefshme\n";
+        }else{
+            try{
+                Double.parseDouble(aaTF.getText());
+            } catch (NumberFormatException e){
+                errorMessage += "Sasia faktike e aktivitetit nuk është e vlefshme (Duhet të jetë numër)\n";
+            }
+        }
+        if(ppTF.getText() == null || ppTF.getText().length() == 0){
+            errorMessage += "Progresi i planifikuar i aktivitetit nuk është i vlefshëm\n";
+        }
+        if(cpTF.getText() == null || cpTF.getText().length() == 0){
+            errorMessage += "Progresi aktual i aktivitetit nuk është i vlefshëm\n";
+        }
+        if(pvTF.getText() == null || pvTF.getText().length() == 0){
+            errorMessage += "Vlera e planifikuar e aktivitetit nuk është e vlefshme\n";
+        }else{
+            try{
+                Double.parseDouble(pvTF.getText());
+            } catch (NumberFormatException e){
+                errorMessage += "Vlera e planifikuar e aktivitetit nuk është e vlefshme (Duhet të jetë numër)\n";
+            }
+        }
+        if(acTF.getText() == null || acTF.getText().length() == 0){
+            errorMessage += "Kosto aktuale e aktivitetit nuk është e vlefshme\n";
+        }else{
+            try{
+                Double.parseDouble(acTF.getText());
+            } catch (NumberFormatException e){
+                errorMessage += "Kosto aktuale e aktivitetit nuk është e vlefshme (Duhet të jetë numër)\n";
+            }
+        }
+        if(priceTF.getText() == null || priceTF.getText().length() == 0){
+            errorMessage += "Cmimi i aktivitetit nuk është i vlefshëm\n";
+        }else{
+            try{
+                Double.parseDouble(priceTF.getText());
+            } catch (NumberFormatException e){
+                errorMessage += "Cmimi i aktivitetit nuk është i vlefshëm (Duhet të jetë numër)\n";
+            }
+        }
+        
+        if(errorMessage.length()==0)
+            return true;
+        else{
+            //Trego mesazhin e errorit
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.initOwner(dialogStage);
+            alert.setTitle("Fusha jo të vlefshme");
+            alert.setHeaderText("Ju lutem korrigjoni fushat e pavlefshme");
+            alert.setContentText(errorMessage);
+
+            alert.showAndWait();
+
+            return false;
         }
     }
 
