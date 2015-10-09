@@ -33,6 +33,7 @@ public class Content {
     private Main mainApp;
     private TabPane tabRootLayout;
     public boolean empty = false;
+    private int index;
     
     public void initRootLayout(){
         try{
@@ -58,8 +59,11 @@ public class Content {
             chartTabController.setMainApp(this);
             chartTabController.setActivitySum(sum);
 	    chartTabController.showChartOverview();
+            tabRootLayout = chartTabController.getTabPane();
             
             RootLayout.setCenter(tabRootLayout);
+            
+            System.out.println("initTabRootLayout u therrit" +index);
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -72,13 +76,17 @@ public class Content {
             loader.setLocation(Main.class.getResource("view/TreePane.fxml"));
             AnchorPane activityPaneOverview = (AnchorPane) loader.load();
 
-            RootLayout.setLeft(activityPaneOverview);
+           
 
             TreeViewController controller = loader.getController();
-            controller.setMainApp(mainApp);
+            controller.setMainApp(this);
             controller.setTableData(data);
             controller.startTreeView();
             activityPaneOverview.getChildren().add(controller.getTree());
+            
+             RootLayout.setLeft(activityPaneOverview);
+             
+             System.out.println("showTreeOveerview u therrit" +index);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -96,6 +104,7 @@ public class Content {
             TableOverviewController controller = loader.getController();
             controller.setMainApp(this);
             controller.setTableData(data);
+            System.out.println("showTableOveerview u therrit" +index);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -113,7 +122,6 @@ public class Content {
             dialogStage.initOwner(mainApp.getPrimaryStage());
             Scene scene = new Scene(page);
             dialogStage.setScene(scene);
-
 
             InputDialogController controller = loader.getController();
             controller.setListData(data);
@@ -135,7 +143,8 @@ public class Content {
             loader.setLocation(Main.class.getResource("view/tabmenu/ChartTab.fxml"));
             GridPane chartOverview = (GridPane) loader.load();
             
-            tabRootLayout.getTabs().get(0).setContent(chartOverview);           
+            tabRootLayout.getTabs().get(0).setContent(chartOverview);
+            
         }
         catch(IOException e){
             e.printStackTrace();
@@ -215,9 +224,7 @@ public class Content {
                 data.get(i).setSPI(totSPI);
                 data.get(i).ConvertToStringProperty();
             }
-
         }
-
     }
     
     public void calculateSum(){
@@ -246,6 +253,7 @@ public class Content {
         initTabRootLayout();
         showTreeView();
         showTableOverview();
+        mainApp.Refresh(index);
     }
     
     public void initialize(){
@@ -285,5 +293,13 @@ public class Content {
     
     public void setEmpty(boolean val){
         this.empty = val;
+    }
+    
+    public void setIndex(int index){
+        this.index = index;
+    }
+    
+    public int getIndex(){
+        return index;
     }
 }

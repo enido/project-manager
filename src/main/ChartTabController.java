@@ -100,15 +100,8 @@ public class ChartTabController {
 		seriesMay.getData().add(new XYChart.Data(27, 26));
 		seriesMay.getData().add(new XYChart.Data(31, 26));
 
-		XYChart.Series series = new XYChart.Series();
-		series.setName("June");
-
-		series.getData().add(new XYChart.Data(0, 0));
-		series.getData().add(new XYChart.Data(3, 3));
-		series.getData().add(new XYChart.Data(5, 5));
-
 		areaChart1.getData().addAll(seriesEV, seriesPV, seriesAC);
-		areaChart2.getData().addAll(seriesMay, series);
+		areaChart2.getData().addAll(seriesMay);
 
 		areaChart1.setOnMouseMoved(new EventHandler<MouseEvent>() {
 			@Override
@@ -179,6 +172,10 @@ public class ChartTabController {
 	public void setTabPane(TabPane tabPane) {
 		this.tabPane = tabPane;
 	}
+        
+        public TabPane getTabPane(){
+            return tabPane;
+        }
 
 	public void setMainApp(Content mainApp) {
 		this.mainApp = mainApp;

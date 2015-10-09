@@ -95,6 +95,7 @@ public class Main extends Application {
         if(contentData.isEmpty()){
             content[tabIndex] = new Content();
             content[tabIndex].setMainApp(this);
+            content[tabIndex].setIndex(tabIndex);
             content[tabIndex].initialize();
             data = content[tabIndex];
         }
@@ -146,6 +147,7 @@ public class Main extends Application {
             tableData.clear();
             tableData.addAll(wrapper.getActivities());
             content[tabIndex] = new Content();
+            content[tabIndex].setIndex(tabIndex);
             content[tabIndex].setTableData(tableData);
             content[tabIndex].setMainApp(this);
             content[tabIndex].Refresh();
@@ -203,5 +205,15 @@ public class Main extends Application {
     
     public Stage getPrimaryStage() {
         return primaryStage;
+    }
+    
+    public void Refresh(int index){
+        BorderPane temp = content[index].getContentRoot();
+        System.out.println("Tab Index: "+tabIndex);
+        System.out.println("Content Index:"+index);
+        ProjectTab.getTabs().get(index).setContent(temp);
+        temp.prefWidthProperty().bind(root.widthProperty());
+        temp.prefHeightProperty().bind(root.heightProperty()); 
+        
     }
 }

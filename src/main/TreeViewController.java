@@ -23,7 +23,7 @@ import main.model.Activity;
 public class TreeViewController implements Initializable {
 
 	public TreeItem<String> dummyRoot = new TreeItem<String>();
-	private Main mainApp;
+	private Content mainApp;
 	private ObservableList<Activity> data;
 
 	private TreeView<String> treeView;
@@ -84,7 +84,7 @@ public class TreeViewController implements Initializable {
 		return Integer.parseInt(String.valueOf(str.charAt(0)));
 	}
 
-	public void setMainApp(Main mainApp) {
+	public void setMainApp(Content mainApp) {
 		this.mainApp = mainApp;
 	}
 
