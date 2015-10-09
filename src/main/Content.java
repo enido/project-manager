@@ -76,8 +76,6 @@ public class Content {
             loader.setLocation(Main.class.getResource("view/TreePane.fxml"));
             AnchorPane activityPaneOverview = (AnchorPane) loader.load();
 
-           
-
             TreeViewController controller = loader.getController();
             controller.setMainApp(this);
             controller.setTableData(data);
