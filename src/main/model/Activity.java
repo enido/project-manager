@@ -1,10 +1,12 @@
 package main.model;
 
+import java.text.SimpleDateFormat;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import main.util.CalendarUtil;
 
 /**
  * @author krisli
@@ -50,6 +52,17 @@ public class Activity {
     public double valSPI;
     public Calendar startTime;
     public Calendar endTime;
+    public double valETC;
+    public double valBAC;
+    public double valEAC;
+    
+    public double CPIone;
+    public double CPItwo;
+    public double CPIthree;
+    
+    public double SPIone;
+    public double SPItwo;
+    public double SPIthree;
 
     public int parent = 0;
 
@@ -407,6 +420,20 @@ public class Activity {
         return "" + valCP * 100 + "%";
     }
     
+        
+    public Calendar getCurrentProgressValue() {
+  double temp = getCurrentProgress();
+  long time = (long) ((getEndTimeValue().getTimeInMillis() - getStartTimeValue().getTimeInMillis()) * temp
+    + getStartTimeValue().getTimeInMillis());
+
+  Date itemDate = new Date(time);
+
+  String itemDateStr = new SimpleDateFormat("dd-MM-yyyy").format(itemDate);
+
+  return CalendarUtil.parse(itemDateStr);
+ }
+    
+    
     public void setCurrentProgressFromPercentage(String CPP){
         String temp;
         Double val;
@@ -472,6 +499,30 @@ public class Activity {
     public void setSPI(double SPI) {
         this.valSPI = SPI;
     }
+    
+    public double getBAC(){
+        return valBAC;
+    }
+    
+    public void setBAC(double bac){
+        this.valBAC = bac;
+    }
+    
+    public double getETC(){
+        return valETC;
+    }
+    
+    public void setETC(double etc){
+        this.valETC = etc;
+    }
+    
+    public double getEAC(){
+        return valEAC;
+    }
+    
+    public void setEAC(double eac){
+        this.valEAC = eac;
+    }
 
     public String toString(double data) {
         String temp;
@@ -494,7 +545,55 @@ public class Activity {
     public void setEndTimeValue(Calendar eT){
         this.endTime = eT;
     }
-
+    
+    public double getFirstCPI(){
+        return CPIone;
+    }
+    
+    public void setFirstCPI(double fCPI){
+        this.CPIone = fCPI;
+    }
+    
+    public double getSecondCPI(){
+        return CPItwo;
+    }
+    
+    public void setSecondCPI(double sCPI){
+        this.CPItwo = sCPI;
+    }
+    
+    public double getThirdCPI(){
+        return CPIthree;
+    }
+       
+    public void setThirdCPI(double tCPI){
+        this.CPIthree = tCPI;
+    }
+    
+    public double getFirstSPI(){
+        return SPIone;
+    }
+    
+    public void setFirstSPI(double fSPI){
+        this.SPIone = fSPI;
+    }
+    
+    public double getSecondSPI(){
+        return SPItwo;
+    }
+    
+    public void setSecondSPI(double sSPI){
+        this.SPItwo = sSPI;
+    }
+    
+    public double getThirdSPI(){
+        return SPIthree;
+    }
+    
+    public void setThirdSPI(double tSPI){
+        this.SPIthree = tSPI;
+    }
+    
     public void Calculate() {
         getDateDiff(endTime, startTime, TimeUnit.DAYS);
         if (valAC == 0 || valPV == 0) {

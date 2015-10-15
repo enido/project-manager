@@ -115,7 +115,7 @@ public class InputDialogController {
                     errorMessage += "ID e aktivitetit nuk është e vlefshme (Duhet të jetë numër)\n";
                 }
             }
-        if (!startTimeTF.isDisabled()) {
+        if (!startTimeTF.isDisabled() && isInputValid()) {
             if (!comboBox.getValue().toString().contains("none"))
                 activity.setParentValue(Integer.parseInt(comboBox.getValue().toString()));
             activity.setStartTimeValue(CalendarUtil.parse(startTimeTF.getText()));
@@ -149,7 +149,7 @@ public class InputDialogController {
 
                 alert.showAndWait();
             }
-            else{
+            else if(startTimeTF.isDisabled()){
                 activity.ConvertToStringProperty();
                 saveClicked = true;
                 dialogStage.close();

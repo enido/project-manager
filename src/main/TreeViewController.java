@@ -9,23 +9,25 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.MouseEvent;
 import main.model.Activity;
 
-/**
- * FXML Controller class
- *
- * @author krisli
- */
 public class TreeViewController implements Initializable {
 
-	public TreeItem<String> dummyRoot = new TreeItem<String>();
+	public TreeItem<String> dummyRoot = new TreeItem<String>("Activities");
 	private Content mainApp;
 	private ObservableList<Activity> data;
+	private Node rootNode;
 
+	ObservableList<String> tempData = FXCollections.observableArrayList();
 	private TreeView<String> treeView;
 
 	@Override
@@ -34,7 +36,6 @@ public class TreeViewController implements Initializable {
 
 	public void startTreeView() {
 		dummyRoot.setExpanded(true);
-
 		ArrayList<Float> floatList = new ArrayList<>();
 
 		for (int i = 0; i < data.size(); i++) {
@@ -76,8 +77,40 @@ public class TreeViewController implements Initializable {
 			}
 		}
 
+
 		treeView = new TreeView<String>(dummyRoot);
-		treeView.setShowRoot(false);
+		treeView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+				ArrayList<TreeItem<String>> tempList = new ArrayList<>();
+
+				if (mouseEvent.getClickCount() == 2) {
+					TreeItem<String> item = treeView.getSelectionModel().getSelectedItem(); 
+					if(treeView.getSelectionModel().getSelectedItem().getValue().toString().equals("Activities")){
+                                            for(int i=0;i<data.size();i++){
+                                                if(data.get(i).getParentValue()!=0)
+                                                    tempData.add(data.get(i).getIdString()+" "+data.get(i).getName());
+                                            }
+                                            mainApp.setData(tempData);
+                                            mainApp.showGanttOverview();
+                                        }
+                                        else{
+					tempList.addAll(item.getChildren());
+					for (int i = 0; i < tempList.size(); i++) {
+						tempData.add(tempList.get(i).getValue());
+						System.out.println(tempData.get(i));
+					}
+					mainApp.setData(tempData);
+					mainApp.showGanttOverview();
+					tempList.clear();
+					tempData.clear();
+                                        }
+				}
+			}
+		});
+		treeView.setShowRoot(true);
+
 	}
 
 	public int checkVal(String str) {
@@ -90,6 +123,10 @@ public class TreeViewController implements Initializable {
 
 	public void setTableData(ObservableList<Activity> activityData) {
 		this.data = activityData;
+	}
+
+	public void setGanttData(ObservableList<String> tempData) {
+		this.tempData = tempData;
 	}
 
 	public TreeView<String> getTree() {

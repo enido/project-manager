@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -39,6 +40,7 @@ public class Content {
     private TabPane tabRootLayout;
     public boolean empty = false;
     private int index;
+    private ObservableList<Activity>  temp = FXCollections.observableArrayList();
     
     public void initRootLayout(){
         try{
@@ -79,17 +81,17 @@ public class Content {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/TreePane.fxml"));
-            AnchorPane activityPaneOverview = (AnchorPane) loader.load();
+            ScrollPane activityPaneOverview = (ScrollPane) loader.load();
 
-           
 
             TreeViewController controller = loader.getController();
             controller.setMainApp(this);
             controller.setTableData(data);
             controller.startTreeView();
-            activityPaneOverview.getChildren().add(controller.getTree());
+            activityPaneOverview.setContent((controller.getTree()));
             
              RootLayout.setLeft(activityPaneOverview);
+             
              
              System.out.println("showTreeOveerview u therrit" +index);
 
@@ -156,10 +158,16 @@ public class Content {
         }
     }
     
-        public void showGanttOverview() {
+    public void showGanttOverview() {
             GridPane gridPane = new GridPane();
-
-            IntervalCategoryDataset dataSet = IntervalBuilder.buildDataSet(data);
+            
+            if(temp.isEmpty() || temp == null){
+                temp = data;
+                for(int i=0;i<temp.size();i++)
+                    System.out.println("Emri: "+temp.get(i).getName());
+            }
+            
+            IntervalCategoryDataset dataSet = IntervalBuilder.buildDataSet(temp);
             GanttChartBuilder ganttChartBuilder = new GanttChartBuilder("Gantt", "X", "Y");
             ChartPanel panel = ganttChartBuilder.buildChartPanel(dataSet);
             SwingNode wrapperNode = new SwingNode();
@@ -167,7 +175,7 @@ public class Content {
             gridPane.add(wrapperNode, 0, 0);
 
         tabRootLayout.getTabs().get(1).setContent(gridPane);
-    }
+    }   
     
     public void CalculateAndSort() {
         ObservableList<Activity> temp;
@@ -250,6 +258,7 @@ public class Content {
             double tempEV = 0;
             double tempPV = 0;
             double tempAC = 0;
+            double tempBUDG = 0;
             
             for(int i=0;i<size;i++){
                 Activity current = data.get(i);
@@ -257,11 +266,16 @@ public class Content {
                     tempEV += current.getEV();
                     tempPV += current.getPV();
                     tempAC += current.getAC();
+                    tempBUDG += current.getBudget();
                 }
             }
             sum.setEV(tempEV);
             sum.setPV(tempPV);
             sum.setAC(tempAC);
+            sum.setBAC(tempBUDG);
+            double ETC = tempBUDG - tempEV;
+            sum.setETC(ETC);
+            sum.setEAC(tempAC + ETC);
     }
     
     public void Refresh() {
@@ -284,7 +298,7 @@ public class Content {
     }
     
     public Stage getPrimaryStage() {
-        return primaryStage;
+        return mainApp.getPrimaryStage();
     }
     
     public BorderPane getContentRoot(){
@@ -321,5 +335,28 @@ public class Content {
     
     public int getIndex(){
         return index;
+    }
+    
+    public void setData(ObservableList<String> treeData){
+        temp = FXCollections.observableArrayList();
+        for(int i=0;i<treeData.size();i++){
+            String index = treeData.get(i).toString();
+            System.out.println(treeData.size());
+            index = index.substring(0, 4);
+            int parent = Integer.parseInt(index.substring(0, 1));
+            int id;
+            if(index.charAt(3) == ' ')
+                id = Integer.parseInt(index.substring(2,3));
+            else
+                id = Integer.parseInt(index.substring(2,4));
+            
+            for(int j=0;j<data.size();j++){
+                Activity tempData = data.get(j);
+                if(tempData.getParentValue() == parent && tempData.getID() == id ){
+                    temp.add(tempData);
+                    break;
+                }
+            }
+        }
     }
 }

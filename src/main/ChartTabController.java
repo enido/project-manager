@@ -1,28 +1,54 @@
 package main;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.CubicCurve;
 import jfxutils.chart.ChartPanManager;
 import jfxutils.chart.JFXChartUtil;
 import jfxutils.chart.StableTicksAxis;
 import main.model.Activity;
+import main.model.CurvedFittedAreaChart;
+import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javax.swing.GroupLayout.Alignment;
 
 public class ChartTabController {
 
 	TabPane tabPane;
-	private Activity sum;
+	private Activity sum; 
 	private Content mainApp;
+        private Activity temp;
 
 	public ChartTabController() {
 	}
@@ -52,8 +78,8 @@ public class ChartTabController {
 		xAxis1.setLabel("Koha");
 		yAxis1.setLabel("Kosto");
 
-		final CurvedFittedAreaChart areaChart2 = new CurvedFittedAreaChart(xAxis2, yAxis2);
-		areaChart2.setTitle("Temperature Monitoring (in Degrees F)");
+		CurvedFittedAreaChart areaChart2 = new CurvedFittedAreaChart(xAxis2, yAxis2);
+		areaChart2.setTitle("Temperature Monitoring");
 		xAxis2.setLabel("X");
 		yAxis2.setLabel("Y");
 
@@ -78,13 +104,27 @@ public class ChartTabController {
 		seriesPV.getData().add(new XYChart.Data(0, 0));
 		seriesPV.getData().add(new XYChart.Data(12, sum.getPV() / 2));
 		seriesPV.getData().add(new XYChart.Data(20, sum.getPV()));
-
+                
+                XYChart.Series seriesBAC = new XYChart.Series();
+                seriesBAC.setName("BAC");
+                seriesBAC.getData().add(new XYChart.Data(30, sum.getBAC()));
+                seriesBAC.getData().add(new XYChart.Data(25, sum.getBAC()/1.2));
+                seriesBAC.getData().add(new XYChart.Data(20, sum.getPV()));
+                seriesBAC.getData().add(new XYChart.Data(22, sum.getPV()+0.325*sum.getPV()));
+                
 		XYChart.Series seriesAC = new XYChart.Series();
 		seriesAC.setName("AC");
 
 		seriesAC.getData().add(new XYChart.Data(0, 0));
 		seriesAC.getData().add(new XYChart.Data(12, sum.getAC() / 2));
 		seriesAC.getData().add(new XYChart.Data(20, sum.getAC()));
+                
+                XYChart.Series seriesEAC = new XYChart.Series();
+                seriesEAC.setName("EAC");
+                seriesEAC.getData().add(new XYChart.Data(30, sum.getEAC()));
+                seriesEAC.getData().add(new XYChart.Data(25, sum.getEAC()/1.2));
+                seriesEAC.getData().add(new XYChart.Data(20, sum.getAC()));
+                seriesEAC.getData().add(new XYChart.Data(22, sum.getAC()+0.325*sum.getAC()));
 
 		XYChart.Series seriesMay = new XYChart.Series();
 		seriesMay.setName("May");
@@ -99,10 +139,18 @@ public class ChartTabController {
 		seriesMay.getData().add(new XYChart.Data(24, 23));
 		seriesMay.getData().add(new XYChart.Data(27, 26));
 		seriesMay.getData().add(new XYChart.Data(31, 26));
+                
+                XYChart.Series Prove = new XYChart.Series();
+                Prove.setName("Prove");
+                Prove.getData().add(new XYChart.Data(0,0));
+                Prove.getData().add(new XYChart.Data(1,1));
+                Prove.getData().add(new XYChart.Data(10,10));
 
-		areaChart1.getData().addAll(seriesEV, seriesPV, seriesAC);
-		areaChart2.getData().addAll(seriesMay);
-
+		areaChart1.getData().addAll(seriesEV, seriesPV, seriesAC, seriesBAC, seriesEAC);
+		areaChart2.getData().addAll(Prove);
+                
+                
+                
 		areaChart1.setOnMouseMoved(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
@@ -167,6 +215,113 @@ public class ChartTabController {
 		});
 
 		tabPane.getTabs().get(0).setContent(gridPane);
+                
+                
+                
+                /*******************CPI & SPI Charts**************************/
+                
+                temp = new Activity();
+                if(mainApp.getTableData().size()!=0)
+                    temp = mainApp.getTableData().get(0);
+                else{
+                    temp.setFirstCPI(0);
+                    temp.setSecondCPI(0);
+                    temp.setThirdCPI(0);
+                    temp.setFirstSPI(0);
+                    temp.setSecondSPI(0);
+                    temp.setThirdSPI(0);
+                }
+                
+                // --------------------LINE CHART----------------------------//
+                final NumberAxis xAxis = new NumberAxis();
+                final NumberAxis yAxis = new NumberAxis();
+                final LineChart cpiChart = new LineChart(xAxis, yAxis);
+                cpiChart.setTitle("CPI dhe SPI");
+                
+                XYChart.Series cpiSeries = new XYChart.Series();
+                cpiSeries.setName("CPI");
+                if(temp.getFirstCPI()!=0)
+                    cpiSeries.getData().add(new XYChart.Data(5, temp.getFirstCPI()));
+                if(temp.getSecondCPI()!=0)
+                    cpiSeries.getData().add(new XYChart.Data(10,temp.getSecondCPI()));
+                if(temp.getThirdCPI()!=0)
+                cpiSeries.getData().add(new XYChart.Data(15,temp.getThirdCPI()));
+                
+                XYChart.Series spiSeries = new XYChart.Series();
+                spiSeries.setName("SPI");
+                if(temp.getFirstSPI()!=0)
+                    spiSeries.getData().add(new XYChart.Data(5, temp.getFirstSPI()));
+                if(temp.getSecondSPI()!=0)
+                    spiSeries.getData().add(new XYChart.Data(10,temp.getSecondSPI()));
+                if(temp.getThirdSPI()!=0)
+                    spiSeries.getData().add(new XYChart.Data(15,temp.getThirdSPI()));
+                
+                cpiChart.getData().addAll(cpiSeries, spiSeries);
+                
+                // --------------------BAR CHART----------------------------//
+               
+                final CategoryAxis boshtiX = new CategoryAxis();
+                final NumberAxis boshtiY = new NumberAxis();
+                
+                final BarChart<String,Number> bc =  new BarChart<String,Number>(boshtiX,boshtiY);
+                
+                XYChart.Series series1 = new XYChart.Series();
+                series1.setName("CPI");
+                series1.getData().add(new XYChart.Data("1", temp.getFirstCPI()));
+                series1.getData().add(new XYChart.Data("2", temp.getSecondCPI()));
+                series1.getData().add(new XYChart.Data("3", temp.getThirdCPI()));
+                
+                XYChart.Series series2 = new XYChart.Series();
+                series2.setName("SPI");
+                series2.getData().add(new XYChart.Data("1", temp.getFirstSPI()));
+                series2.getData().add(new XYChart.Data("2", temp.getSecondSPI()));
+                series2.getData().add(new XYChart.Data("3", temp.getThirdSPI()));
+                
+                bc.setBarGap(5);
+                bc.setCategoryGap(20);
+                
+                bc.getData().addAll(series1, series2);
+                 
+                GridPane gridPane2 = new GridPane();
+		gridPane2.setPrefHeight(400.0);
+		gridPane2.setPrefWidth(1100.0);
+		gridPane2.setHgap(35);
+		gridPane2.setPadding(new Insets(0, 15, 0, 0));
+                
+                // First chart
+		GridPane.setHalignment(cpiChart, HPos.RIGHT);
+		gridPane2.add(cpiChart, 0, 0);
+                gridPane2.add(bc, 1, 0);
+                
+                Button add = new Button("Add Value");
+                
+                add.setOnAction(new EventHandler<ActionEvent>(){
+                    
+                    @Override
+                    public void handle(ActionEvent event) {
+                        if(mainApp.getTableData().size()!=0){
+                            boolean saveClicked = showCpiDialog();
+                            if(saveClicked){
+                                mainApp.Refresh();
+                            }
+                        }
+                        else{
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.initOwner(mainApp.getPrimaryStage());
+                            alert.setTitle("Error");
+                            alert.setHeaderText("Nuk u gjend asnje aktivitet");
+                            alert.setContentText("Ju lutem, krijoni te pakten nje aktivitet ne tabele\nper te proceduar");
+                            
+                            alert.showAndWait();
+                            }
+                    }
+                    
+                });
+                
+                gridPane2.add(add, 0, 1, 2, 1);
+                gridPane.getColumnConstraints().get(1).halignmentProperty().setValue(HPos.CENTER);
+                tabPane.getTabs().get(2).setContent(gridPane2);
+                
 	}
 
 	public void setTabPane(TabPane tabPane) {
@@ -192,4 +347,34 @@ public class ChartTabController {
 		chart.setData(FXCollections.<XYChart.Series<Number, Number>> emptyObservableList());
 		chart.setData(data);
 	}
+        
+        public boolean showCpiDialog(){
+            try{
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(Main.class.getResource("view/CpiDialog.fxml"));
+                AnchorPane page = (AnchorPane) loader.load();
+                
+                Stage dialogStage = new Stage();
+                dialogStage.setTitle("Vlerat e CPI dhe SPI");
+                dialogStage.initModality(Modality.WINDOW_MODAL);
+                dialogStage.initOwner(mainApp.getPrimaryStage());
+                Scene scene = new Scene(page);
+                dialogStage.setScene(scene);
+                
+                CpiDialogController controller = loader.getController();
+                controller.setData(mainApp.getTableData().get(0));
+                controller.setPromptText();
+                controller.setDialogStage(dialogStage);
+                
+                dialogStage.showAndWait();
+                
+                return controller.isSaveClicked();
+                
+                } catch (IOException ex) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    return false;              
+                }
+        }
+            
 }
+
