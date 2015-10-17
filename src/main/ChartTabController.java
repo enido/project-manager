@@ -70,26 +70,17 @@ public class ChartTabController {
 		final StableTicksAxis xAxis1 = new StableTicksAxis();
 		final StableTicksAxis yAxis1 = new StableTicksAxis();
 
-		final StableTicksAxis xAxis2 = new StableTicksAxis();
-		final StableTicksAxis yAxis2 = new StableTicksAxis();
-
-		final CurvedFittedAreaChart areaChart1 = new CurvedFittedAreaChart(xAxis1, yAxis1);
+		/********************FIRST CHART**********************/
+                
+                final CurvedFittedAreaChart areaChart1 = new CurvedFittedAreaChart(xAxis1, yAxis1);
 		areaChart1.setTitle("Grafik");
 		xAxis1.setLabel("Koha");
 		yAxis1.setLabel("Kosto");
-
-		CurvedFittedAreaChart areaChart2 = new CurvedFittedAreaChart(xAxis2, yAxis2);
-		areaChart2.setTitle("Temperature Monitoring");
-		xAxis2.setLabel("X");
-		yAxis2.setLabel("Y");
-
+                
 		// First chart
 		GridPane.setHalignment(areaChart1, HPos.RIGHT);
 		gridPane.add(areaChart1, 0, 0);
 
-		// Second chart
-		GridPane.setHalignment(areaChart2, HPos.RIGHT);
-		gridPane.add(areaChart2, 1, 0);
 
 		XYChart.Series seriesEV = new XYChart.Series();
 		seriesEV.setName("EV");
@@ -125,31 +116,38 @@ public class ChartTabController {
                 seriesEAC.getData().add(new XYChart.Data(25, sum.getEAC()/1.2));
                 seriesEAC.getData().add(new XYChart.Data(20, sum.getAC()));
                 seriesEAC.getData().add(new XYChart.Data(22, sum.getAC()+0.325*sum.getAC()));
-
-		XYChart.Series seriesMay = new XYChart.Series();
-		seriesMay.setName("May");
-		seriesMay.getData().add(new XYChart.Data(1, 20));
-		seriesMay.getData().add(new XYChart.Data(3, 15));
-		seriesMay.getData().add(new XYChart.Data(6, 13));
-		seriesMay.getData().add(new XYChart.Data(9, 12));
-		seriesMay.getData().add(new XYChart.Data(12, 14));
-		seriesMay.getData().add(new XYChart.Data(15, 18));
-		seriesMay.getData().add(new XYChart.Data(18, 25));
-		seriesMay.getData().add(new XYChart.Data(21, 25));
-		seriesMay.getData().add(new XYChart.Data(24, 23));
-		seriesMay.getData().add(new XYChart.Data(27, 26));
-		seriesMay.getData().add(new XYChart.Data(31, 26));
-                
-                XYChart.Series Prove = new XYChart.Series();
-                Prove.setName("Prove");
-                Prove.getData().add(new XYChart.Data(0,0));
-                Prove.getData().add(new XYChart.Data(1,1));
-                Prove.getData().add(new XYChart.Data(10,10));
-
+               
 		areaChart1.getData().addAll(seriesEV, seriesPV, seriesAC, seriesBAC, seriesEAC);
-		areaChart2.getData().addAll(Prove);
                 
+                /********************SECOND CHART**********************/
+                	          
+		final NumberAxis xAxis2 = new NumberAxis();
+		final NumberAxis yAxis2 = new NumberAxis(0, sum.getPV()+sum.getPV()/10, sum.getPV()/3 );             
                 
+                CurvedFittedAreaChart areaChart2 = new CurvedFittedAreaChart(xAxis2, yAxis2);
+		areaChart2.setTitle("PROVE");
+		xAxis2.setLabel("X");
+		yAxis2.setLabel("Y");
+                
+                XYChart.Series seriesEV2 = new XYChart.Series();
+                seriesEV2.setName("EV");
+                seriesEV2.getData().add(new XYChart.Data(0, 0));
+		seriesEV2.getData().add(new XYChart.Data(20, sum.getEV()));
+                
+                XYChart.Series seriesPV2 = new XYChart.Series();
+                seriesPV2.setName("PV");
+                seriesPV2.getData().add(new XYChart.Data(0, 0));
+		seriesPV2.getData().add(new XYChart.Data(20, sum.getPV()));
+                
+                XYChart.Series seriesAC2 = new XYChart.Series();
+		seriesAC2.setName("AC");
+		seriesAC2.getData().add(new XYChart.Data(0, 0));
+		seriesAC2.getData().add(new XYChart.Data(20, sum.getAC()));
+                
+                areaChart2.getData().addAll(seriesEV2, seriesPV2, seriesAC2);
+                               
+		GridPane.setHalignment(areaChart2, HPos.RIGHT);
+		gridPane.add(areaChart2, 1, 0);                           
                 
 		areaChart1.setOnMouseMoved(new EventHandler<MouseEvent>() {
 			@Override
@@ -374,7 +372,5 @@ public class ChartTabController {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     return false;              
                 }
-        }
-            
+        }            
 }
-

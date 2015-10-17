@@ -41,15 +41,18 @@ public class Content {
     public boolean empty = false;
     private int index;
     private ObservableList<Activity>  temp = FXCollections.observableArrayList();
+    public TableOverviewController controller;
     
     public void initRootLayout(){
         try{
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Content.class.getResource("view/ContentRoot.fxml"));
+            loader.setLocation(Main.class.getResource("view/ContentRoot.fxml"));
             RootLayout = (BorderPane) loader.load();
             
             ContentRootController controller = loader.getController();
             controller.setMainApp(this);
+            
+            System.out.println("initRootLayout u therrit(" +index+")");
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -70,7 +73,7 @@ public class Content {
             
             RootLayout.setCenter(tabRootLayout);
             
-            System.out.println("initTabRootLayout u therrit" +index);
+            System.out.println("initTabRootLayout u therrit(" +index+")");
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -88,12 +91,13 @@ public class Content {
             controller.setMainApp(this);
             controller.setTableData(data);
             controller.startTreeView();
+            controller.treeIndex++;
             activityPaneOverview.setContent((controller.getTree()));
             
-             RootLayout.setLeft(activityPaneOverview);
+            RootLayout.setLeft(activityPaneOverview);
              
              
-             System.out.println("showTreeOveerview u therrit" +index);
+             System.out.println("showTreeOveerview u therrit(" +index+")");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -103,15 +107,18 @@ public class Content {
     public void showTableOverview() {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("view/TableLayout.fxml"));
+            loader.setLocation(Content.class.getResource("view/TableLayout.fxml"));
             AnchorPane tableOverview = (AnchorPane) loader.load();
 
             RootLayout.setBottom(tableOverview);
 
-            TableOverviewController controller = loader.getController();
+            controller = loader.getController();
             controller.setMainApp(this);
+            controller.tableIndex++;
             controller.setTableData(data);
-            System.out.println("showTableOveerview u therrit" +index);
+
+            System.out.println("Content Index: "+index);
+            System.out.println("showTableOveerview u therrit (" +index+")\n-------------------------------");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -150,8 +157,7 @@ public class Content {
             loader.setLocation(Main.class.getResource("view/tabmenu/ChartTab.fxml"));
             GridPane chartOverview = (GridPane) loader.load();
             
-            tabRootLayout.getTabs().get(0).setContent(chartOverview);
-            
+            tabRootLayout.getTabs().get(0).setContent(chartOverview);      
         }
         catch(IOException e){
             e.printStackTrace();
@@ -163,8 +169,7 @@ public class Content {
             
             if(temp.isEmpty() || temp == null){
                 temp = data;
-                for(int i=0;i<temp.size();i++)
-                    System.out.println("Emri: "+temp.get(i).getName());
+                for(int i=0;i<temp.size();i++);
             }
             
             IntervalCategoryDataset dataSet = IntervalBuilder.buildDataSet(temp);
@@ -279,6 +284,7 @@ public class Content {
     }
     
     public void Refresh() {
+        System.out.println("/--Refresh--\\");
         CalculateAndSort();
         calculateSum();
         initRootLayout();
@@ -290,6 +296,7 @@ public class Content {
     }
     
     public void initialize(){
+        System.out.println("/--Initialize--\\");
         initRootLayout();
         initTabRootLayout();
         showTreeView();
@@ -337,11 +344,14 @@ public class Content {
         return index;
     }
     
+    public void setTableController(TableOverviewController controller){
+        this.controller = controller;
+    }
+    
     public void setData(ObservableList<String> treeData){
         temp = FXCollections.observableArrayList();
         for(int i=0;i<treeData.size();i++){
             String index = treeData.get(i).toString();
-            System.out.println(treeData.size());
             index = index.substring(0, 4);
             int parent = Integer.parseInt(index.substring(0, 1));
             int id;

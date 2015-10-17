@@ -26,6 +26,7 @@ public class TreeViewController implements Initializable {
 	private Content mainApp;
 	private ObservableList<Activity> data;
 	private Node rootNode;
+        public static int treeIndex = 0;
 
 	ObservableList<String> tempData = FXCollections.observableArrayList();
 	private TreeView<String> treeView;
@@ -43,7 +44,7 @@ public class TreeViewController implements Initializable {
 			Float tempFloat = Float.parseFloat(tempString);
 			floatList.add(tempFloat);
 		}
-
+                System.out.println("Tree Index: "+treeIndex);
 		TreeItem<String> root;
 		TreeItem<String> item;
 
@@ -73,7 +74,6 @@ public class TreeViewController implements Initializable {
 					tempItem = new TreeItem<String>(tempStr.get(j));
 					rootList.get(i).getChildren().add(tempItem);
 				}
-				// System.out.println(itemList.get(i));
 			}
 		}
 
@@ -99,7 +99,6 @@ public class TreeViewController implements Initializable {
 					tempList.addAll(item.getChildren());
 					for (int i = 0; i < tempList.size(); i++) {
 						tempData.add(tempList.get(i).getValue());
-						System.out.println(tempData.get(i));
 					}
 					mainApp.setData(tempData);
 					mainApp.showGanttOverview();

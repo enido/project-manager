@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
@@ -36,24 +38,24 @@ public class RootController {
         mainApp.incrementTabIndex();
     }
 
-    @FXML
-    private void handleOpen() {
-        FileChooser fileChooser = new FileChooser();
+        @FXML
+        private void handleOpen() {
+            FileChooser fileChooser = new FileChooser();
 
-        //Set extension filter
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                "XML files (*.xml)", "*.xml");
-        fileChooser.getExtensionFilters().add(extFilter);
+            //Set extension filter
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                    "XML files (*.xml)", "*.xml");
+            fileChooser.getExtensionFilters().add(extFilter);
 
-        // Show save File Dialog
-        File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+            // Show save File Dialog
+            File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
 
-        if (file != null) {
-            ProjectTab.getTabs().add(new Tab(file.getName()));
-            mainApp.setProjectTab(ProjectTab);
-            mainApp.loadActivityDataFromFile(file);
+            if (file != null) {
+                ProjectTab.getTabs().add(new Tab(file.getName()));
+                mainApp.setProjectTab(ProjectTab);
+                mainApp.loadActivityDataFromFile(file);
+            }
         }
-    }
 
     @FXML
     private void handleSave() {

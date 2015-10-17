@@ -29,7 +29,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
+import javafx.scene.control.SelectionModel;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -66,7 +69,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         this.primaryStage = stage;
         this.primaryStage.setTitle("Main");
-         
+        
         initRoot();
     }
     
@@ -84,6 +87,8 @@ public class Main extends Application {
             controller.setMainApp(this);
 
             primaryStage.show();
+            
+            System.out.println("*******MAIN: INIT ROOT********\n\n");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -150,7 +155,7 @@ public class Main extends Application {
             content[tabIndex].setIndex(tabIndex);
             content[tabIndex].setTableData(tableData);
             content[tabIndex].setMainApp(this);
-            content[tabIndex].Refresh();
+            content[tabIndex].initialize();
             initContentLayout(content[tabIndex]);
             incrementTabIndex();
 
@@ -209,8 +214,10 @@ public class Main extends Application {
     
     public void Refresh(int index){
         BorderPane temp = content[index].getContentRoot();
+        System.out.println("~~~~~~~~~~~~~~");
         System.out.println("Tab Index: "+tabIndex);
         System.out.println("Content Index:"+index);
+        System.out.println("~~~~~~~~~~~~~~");
         ProjectTab.getTabs().get(index).setContent(temp);
         temp.prefWidthProperty().bind(root.widthProperty());
         temp.prefHeightProperty().bind(root.heightProperty()); 

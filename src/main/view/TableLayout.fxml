@@ -68,12 +68,12 @@
 						<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 					</rowConstraints>
 					<children>
-						<Button fx:id="add" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleAdd" text="Add" GridPane.halignment="CENTER">
+						<Button id="button" fx:id="delete" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleDelete" prefWidth="100.0" text="Fshi" GridPane.halignment="CENTER">
 							<GridPane.margin>
-								<Insets right="20.0" />
+								<Insets left="150.0" right="20.0" />
 							</GridPane.margin>
 						</Button>
-						<Button fx:id="delete" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleDelete" text="Delete" GridPane.halignment="CENTER">
+						<Button id="button" fx:id="add" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleAdd" prefWidth="100.0" text="Shto" GridPane.halignment="CENTER">
 							<GridPane.margin>
 								<Insets right="150.0" />
 							</GridPane.margin>

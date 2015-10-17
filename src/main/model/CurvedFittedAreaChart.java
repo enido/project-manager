@@ -58,8 +58,6 @@ public class CurvedFittedAreaChart extends AreaChart<Number, Number> {
 				final double x = line.getX(), y = line.getY();
 				dataPoints[i] = new Point2D(x, y);
 			}
-                        System.out.println("X("+i+")"+dataPoints[i].getX());
-                        System.out.println("Y("+i+")"+dataPoints[i].getY());
 		}
 		// next we need to know the zero Y value
 		final double zeroY = ((MoveTo) fillElements.get(0)).getY();
