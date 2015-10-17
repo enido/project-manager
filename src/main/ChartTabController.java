@@ -248,6 +248,7 @@ public class ChartTabController {
                 bc.setCategoryGap(20);
                 
                 bc.getData().addAll(series1, series2);
+                bc.setTitle("CPI & SPI (Bar Chart)");
                  
                 GridPane gridPane2 = new GridPane();
 		gridPane2.setPrefHeight(400.0);
@@ -260,7 +261,7 @@ public class ChartTabController {
 		gridPane2.add(cpiChart, 0, 0);
                 gridPane2.add(bc, 1, 0);
                 
-                Button add = new Button("Add Value");
+                Button add = new Button("Shto vlerë");
                 
                 add.setOnAction(new EventHandler<ActionEvent>(){
                     

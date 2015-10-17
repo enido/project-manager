@@ -5,7 +5,7 @@
 
 <TabPane id="TabPane" prefHeight="500.0" prefWidth="600.0" stylesheets="@DarkTheme.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.ChartTabController">
     <tabs>
-        <Tab id="Tab" style="-fx-background-color: rgba(66,66,66,1.0);" text="Line Chart" />
+        <Tab id="Tab" text="Line Chart" />
         <Tab id="Tab" text="Gantt Chart" />
         <Tab id="Tab" text="Test Chart" />
     </tabs>

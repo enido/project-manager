@@ -3,15 +3,19 @@
 }
 
 .chart-plot-background {
-    -fx-background-color: lightgoldenrodyellow;
+    -fx-background-color: rgba(133,133,133,1.0);
 }
 
 .chart-series-area-line { 
     -fx-stroke-width: 4.0px; 
 }
 
-.chart-area-symbol {
+.axis{
+    -fx-tick-label-fill: #ffffff;
+}
 
+.chart-area-symbol {
+    -fx-text-fill: #ffffff;
 }
 
 .chart-legend {

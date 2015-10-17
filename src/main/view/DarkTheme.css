@@ -2,6 +2,11 @@
     -fx-background-color: #1d1d1d;
 }
 
+.tree-cell{
+    -fx-background-color: rgba(133,133,133,1.0);
+    -fx-text-fill: #ffffff;
+}
+    
 .tab-pane{
     -fx-background-color:rgba(93,93,93,1.0);
 }
@@ -61,11 +66,21 @@
     -fx-background-color: -fx-focus-color;
 }
 
-
-.text-field {
-    -fx-font-size: 12pt;
-    -fx-font-family: "Segoe UI Semibold";
+.tree-view {
+    -fx-background-color:rgba(133,133,133,1.0);
 }
+
+.menu-bar .label {
+    -fx-font-size: 10pt;
+    -fx-font-family: "Helvetica";
+    -fx-text-fill: black;
+    -fx-opacity: 0.9;
+}
+.label {
+    -fx-text-fill: #ffffff;
+    -fx-font-family:"Helvetica"; 
+}
+
 
 
 

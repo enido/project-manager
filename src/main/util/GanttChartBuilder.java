@@ -3,10 +3,14 @@
  import java.awt.BasicStroke;
  import java.awt.Color;
  import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Paint;
 
  import org.jfree.chart.ChartFactory;
  import org.jfree.chart.ChartPanel;
  import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.DateAxis;
  import org.jfree.chart.plot.CategoryPlot;
  import org.jfree.chart.renderer.category.CategoryItemRenderer;
  import org.jfree.chart.renderer.category.GanttRenderer;
@@ -33,7 +37,8 @@
 
  	public ChartPanel buildChartPanel(IntervalCategoryDataset dataSet) {
  		JFreeChart chart = ChartFactory.createGanttChart(title, xLabel, yLabel, dataSet, false, true, false);
- 		chart.setBackgroundPaint(new Color(244, 244, 244));
+ 		chart.setBackgroundPaint(new Color(93,93,93));
+                
 
  		LegendTitle legend = new LegendTitle(chart.getPlot());
  		legend.setBorder(0, 0, 0, 0);
@@ -45,17 +50,25 @@
  		CategoryPlot plot = chart.getCategoryPlot();
  		((GanttRenderer) plot.getRenderer()).setBarPainter(new StandardBarPainter());
 
- 		plot.setBackgroundPaint(new Color(250, 250, 210));
+ 		plot.setBackgroundPaint(new Color(133,133,133));
  		plot.setRangeGridlinesVisible(true);
  		plot.setRangeGridlinePaint(new Color(227, 227, 227));
  		plot.setRangeGridlineStroke(new BasicStroke(1.5F));
 
  		CategoryItemRenderer renderer = plot.getRenderer();
  		renderer.setSeriesPaint(0, new Color(250, 102, 54));
- 		renderer.setSeriesPaint(1, new Color(104, 171, 102));
-
+ 		renderer.setSeriesPaint(1, new Color(104, 171, 102)); 
+                
+                CategoryAxis axis = (CategoryAxis) plot.getDomainAxis();
+                axis.setTickLabelPaint(new Color(255,255,255));
+                axis.setTickLabelFont(new Font("Sans-Serif", Font.PLAIN, 12));
+                
+                DateAxis axis2 = (DateAxis) plot.getRangeAxis();
+                axis2.setTickLabelPaint(new Color(255,255,255));
+                axis2.setTickLabelFont(new Font("Sans-Serif", Font.PLAIN, 12));
+                
  		ChartPanel panel = new ChartPanel(chart);
- 		panel.setPreferredSize(new Dimension(1100, 400));
+ 		panel.setPreferredSize(new Dimension(1200, 365));
 
  		return panel;
  	}

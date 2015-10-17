@@ -92,7 +92,9 @@ public class Content {
             controller.startTreeView();
             activityPaneOverview.setContent((controller.getTree()));
             
-             RootLayout.setLeft(activityPaneOverview);
+            activityPaneOverview.getStylesheets().add(Main.class.getResource("view/DarkTheme.css").toExternalForm());
+            
+            RootLayout.setLeft(activityPaneOverview);
              
              
              System.out.println("showTreeOveerview u therrit" +index);
