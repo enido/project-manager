@@ -142,9 +142,10 @@ public class TableOverviewController {
                     activityData.get(index).setBudgetString(t.getNewValue());
                 ((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setBudgetString(t.getNewValue());
-                activityData.get(index).setBudget(Double.parseDouble(t.getNewValue()));
+                activityData.get(index).setBudget(Double.parseDouble(unformatString(t.getNewValue())));
                 activityData.get(index).Calculate();
-                activityData.get(index).ConvertToStringProperty();}
+                activityData.get(index).ConvertToStringProperty();
+                System.out.println(unformatString(t.getNewValue()));}
             }
         });
 
@@ -444,4 +445,15 @@ public class TableOverviewController {
 
         alert.showAndWait();
     }
+    
+     public static String unformatString(String str) {
+        String tmp = new String();
+        tmp = str;
+
+        for (int i = 0; i < tmp.length(); i++) {
+            if (tmp.contains(","))
+                tmp = tmp.replace(",", "");
+        }  
+        return tmp;
+ }
 }

@@ -124,7 +124,7 @@ public class ChartTabController {
 		final NumberAxis xAxis2 = new NumberAxis();
 		final NumberAxis yAxis2 = new NumberAxis(0, sum.getPV()+sum.getPV()/10, sum.getPV()/3 );             
                 
-                CurvedFittedAreaChart areaChart2 = new CurvedFittedAreaChart(xAxis2, yAxis2);
+                LineChart areaChart2 = new LineChart(xAxis2, yAxis2);
 		areaChart2.setTitle("PROVE");
 		xAxis2.setLabel("X");
 		yAxis2.setLabel("Y");
@@ -179,38 +179,7 @@ public class ChartTabController {
 			}
 		});
 
-		areaChart2.setOnMouseMoved(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent mouseEvent) {
-				double xStart = areaChart2.getXAxis().getLocalToParentTransform().getTx();
-				double axisXRelativeMousePosition = mouseEvent.getX() - xStart;
-			}
-		});
-
-		ChartPanManager panner2 = new ChartPanManager(areaChart2);
-		panner2.setMouseFilter(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent mouseEvent) {
-				if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-					// let it through
-				} 
-                                else if(mouseEvent.getButton()==MouseButton.SECONDARY)
-                                        autoZoom(areaChart2);
-                                else
-                                    mouseEvent.consume();
-			}
-		});
-		panner2.start();
-
-		JFXChartUtil.setupZooming(areaChart2, new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent mouseEvent) {
-				if (mouseEvent.getButton() != MouseButton.MIDDLE || mouseEvent.isShortcutDown())
-					mouseEvent.consume();
-                                else if(mouseEvent.getButton()==MouseButton.SECONDARY)
-                                        autoZoom(areaChart2);
-			}
-		});
+		
 
 		tabPane.getTabs().get(0).setContent(gridPane);
                 
