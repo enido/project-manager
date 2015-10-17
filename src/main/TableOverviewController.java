@@ -145,6 +145,7 @@ public class TableOverviewController {
                 activityData.get(index).setBudget(Double.parseDouble(unformatString(t.getNewValue())));
                 activityData.get(index).Calculate();
                 activityData.get(index).ConvertToStringProperty();
+                mainApp.Refresh();
                 System.out.println(unformatString(t.getNewValue()));}
             }
         });
@@ -176,9 +177,10 @@ public class TableOverviewController {
                     activityData.get(index).setPriceString(t.getNewValue());
                 ((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setPriceString(t.getNewValue());
-                activityData.get(index).setPriceValue(Double.parseDouble(t.getNewValue()));
+                activityData.get(index).setPriceValue(Double.parseDouble(unformatString(t.getNewValue())));
                 activityData.get(index).Calculate();
-                activityData.get(index).ConvertToStringProperty();}
+                activityData.get(index).ConvertToStringProperty();
+                mainApp.Refresh();}
             }
         });
         
@@ -196,9 +198,10 @@ public class TableOverviewController {
                     activityData.get(index).setPlannedAmountString(t.getNewValue());
                 ((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setPlannedAmountString(t.getNewValue());
-                activityData.get(index).setPlannedAmount(Double.parseDouble(t.getNewValue()));
+                activityData.get(index).setPlannedAmount(Double.parseDouble(unformatString(t.getNewValue())));
                 activityData.get(index).Calculate();
-                activityData.get(index).ConvertToStringProperty();}
+                activityData.get(index).ConvertToStringProperty();
+                mainApp.Refresh();}
             }
         });
         
@@ -216,9 +219,10 @@ public class TableOverviewController {
                     activityData.get(index).setCurrentAmountString(t.getNewValue());
                 ((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setCurrentAmountString(t.getNewValue());
-                activityData.get(index).setCurrentAmount(Double.parseDouble(t.getNewValue()));
+                activityData.get(index).setCurrentAmount(Double.parseDouble(unformatString(t.getNewValue())));
                 activityData.get(index).Calculate();
-                activityData.get(index).ConvertToStringProperty();}
+                activityData.get(index).ConvertToStringProperty();
+                mainApp.Refresh();}
             }
         });
         
@@ -236,9 +240,10 @@ public class TableOverviewController {
                     activityData.get(index).setActualAmountString(t.getNewValue());
                 ((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setActualAmountString(t.getNewValue());
-                activityData.get(index).setActualAmount(Double.parseDouble(t.getNewValue()));
+                activityData.get(index).setActualAmount(Double.parseDouble(unformatString(t.getNewValue())));
                 activityData.get(index).Calculate();
-                activityData.get(index).ConvertToStringProperty();}
+                activityData.get(index).ConvertToStringProperty();
+                mainApp.Refresh();}
             }
         });
 
@@ -257,9 +262,9 @@ public class TableOverviewController {
                 ((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setPlannedProgressString(t.getNewValue());
                 activityData.get(index).setPlannedProgressFromPercentage(t.getNewValue());
-                System.out.println("PP :"+activityData.get(index).getPlannedProgress());
                 activityData.get(index).Calculate();
-                activityData.get(index).ConvertToStringProperty();}
+                activityData.get(index).ConvertToStringProperty();
+                mainApp.Refresh();}
             }
         });
 
@@ -278,9 +283,9 @@ public class TableOverviewController {
                 ((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setCurrentProgressString(t.getNewValue());
                 activityData.get(index).setCurrentProgressFromPercentage(t.getNewValue());
-                System.out.println("CP :"+activityData.get(index).getCurrentProgress());
                 activityData.get(index).Calculate();
-                activityData.get(index).ConvertToStringProperty();}
+                activityData.get(index).ConvertToStringProperty();
+                mainApp.Refresh();}
             }
         });
 
@@ -298,9 +303,10 @@ public class TableOverviewController {
                     activityData.get(index).setPvString(t.getNewValue());
                 ((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setPvString(t.getNewValue());
-                activityData.get(index).setPV(Double.parseDouble(t.getNewValue()));
+                activityData.get(index).setPV(Double.parseDouble(unformatString(t.getNewValue())));
                 activityData.get(index).Calculate();
-                activityData.get(index).ConvertToStringProperty();}
+                activityData.get(index).ConvertToStringProperty();
+                mainApp.Refresh();}
             }
         });
 
@@ -318,9 +324,10 @@ public class TableOverviewController {
                     activityData.get(index).setAcString(t.getNewValue());
                 ((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
                         .setAcString(t.getNewValue());
-                activityData.get(index).setAC(Double.parseDouble(t.getNewValue()));
+                activityData.get(index).setAC(Double.parseDouble(unformatString(t.getNewValue())));
                 activityData.get(index).Calculate();
-                activityData.get(index).ConvertToStringProperty();}
+                activityData.get(index).ConvertToStringProperty();
+                mainApp.Refresh();}
             }
         });
 
