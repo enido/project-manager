@@ -344,3 +344,9 @@ public class ChartTabController {
                 }
         }            
 }
+
+//EV JESHILE, PV BLU, AC TE KUQE
+
+//TCPI = (BAC - EV) / (BAC - AC)
+
+//TSPI = (BAC - EV) / (BAC - PV)

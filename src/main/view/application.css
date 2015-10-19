@@ -22,3 +22,10 @@
    -fx-background-color:  transparent;
    -fx-padding: -5.0px 5.0px 5.0px 5.0px;
 }
+
+.highlightRow{
+    	-fx-font-weight: bold;
+	-fx-text-fill: #FFFFFF;
+	-fx-font-size: 9.0pt;
+	-fx-background-color: rgba(77.0,77.0,77.0,1.0);
+}

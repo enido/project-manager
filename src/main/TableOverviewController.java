@@ -1,5 +1,7 @@
 package main;
 
+import main.model.EditingCell;
+import main.model.NotEditableCell;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
