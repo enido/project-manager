@@ -268,7 +268,7 @@ public class TableOverviewController {
 						.setPlannedProgressString(t.getNewValue());
 
 				System.out.println(t.getOldValue());
-				activityData.get(index).setPlannedProgressFromPercentage(unformatStringPercentage(t.getNewValue()));
+				activityData.get(index).setPlannedProgressFromPercentage(t.getNewValue());
 				activityData.get(index).Calculate();
 				activityData.get(index).ConvertToStringProperty();
 				mainApp.Refresh();
@@ -286,7 +286,7 @@ public class TableOverviewController {
 				activityData.get(index).setCurrentProgressString(t.getNewValue());
 				((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
 						.setCurrentProgressString(t.getNewValue());
-				activityData.get(index).setCurrentProgressFromPercentage(unformatStringPercentage(t.getNewValue()));
+				activityData.get(index).setCurrentProgressFromPercentage(t.getNewValue());
 				activityData.get(index).Calculate();
 				activityData.get(index).ConvertToStringProperty();
 				mainApp.Refresh();
@@ -457,38 +457,6 @@ public class TableOverviewController {
 			if (tmp.contains(","))
 				tmp = tmp.replace(",", "");
 		}
-		return tmp;
-	}
-
-	public static String removePercentage(String str) {
-		String tmp = "";
-
-		for (int i = 0; i < str.length(); i++) {
-			if (str.contains("%"))
-				tmp = str.replace("%", "");
-		}
-		return tmp;
-	}
-
-	public static String removeEmptySpaces(String str) {
-		String tmp = "";
-
-		for (int i = 0; i < str.length(); i++) {
-			if (str.contains(" "))
-				tmp = str.replace(" ", "");
-		}
-		return tmp;
-	}
-
-	public static String unformatStringPercentage(String str) {
-		String tmp1 = removePercentage(str);
-		String tmp = removeEmptySpaces(str);
-
-		for (int i = 0; i < tmp.length(); i++) {
-			if (tmp.contains(","))
-				tmp = tmp.replace(",", "");
-		}
-
 		return tmp;
 	}
 }

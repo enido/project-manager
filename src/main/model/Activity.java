@@ -402,6 +402,8 @@ public class Activity {
         String temp;
         Double val;
         int percentageIndex = PPP.indexOf("%");
+        if(percentageIndex == -1)
+            percentageIndex = PPP.length();
         temp = PPP.substring(0, percentageIndex);
         val = Double.parseDouble(temp);
         val = val/100;
@@ -438,6 +440,8 @@ public class Activity {
         String temp;
         Double val;
         int percentageIndex = CPP.indexOf("%");
+        if(percentageIndex == -1)
+            percentageIndex = CPP.length();
         temp = CPP.substring(0, percentageIndex);
         val = Double.parseDouble(temp);
         val = val/100;
