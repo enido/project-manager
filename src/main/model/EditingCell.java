@@ -22,8 +22,6 @@ public class EditingCell extends TableCell<Activity, String> {
 		if (textField == null) {
 			createTextField();
 		}
-
-		textField.getStyleClass().add("textFieldClass");
 		setGraphic(textField);
 		setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 		textField.selectAll();
@@ -41,9 +39,8 @@ public class EditingCell extends TableCell<Activity, String> {
 	public void updateItem(String item, boolean empty) {
 		super.updateItem(item, empty);
 
+		setDisable(false);
 		getStyleClass().remove("highlightRow");
-		// setEditable(true);
-		// setDisabled(false);
 
 		if (empty) {
 			setText(null);
@@ -60,22 +57,21 @@ public class EditingCell extends TableCell<Activity, String> {
 				setText(getString());
 				setContentDisplay(ContentDisplay.TEXT_ONLY);
 			}
-
-			TableRow row = getTableRow();
-			if (row != null) {
-				Activity activity = (Activity) row.getItem();
-				if (activity != null && activity.getParentValue() == 0) {
-					setEditable(false);
-					setDisable(true);
-					getStyleClass().add("highlightRow");
-				}
+		}
+		TableRow row = getTableRow();
+		if (row != null) {
+			Activity activity = (Activity) row.getItem();
+			if (activity != null && activity.getParentValue() == 0) {
+				setDisable(true);
+				getStyleClass().add("highlightRow");
 			}
 		}
 	}
 
 	private void createTextField() {
 		textField = new TextField(getString());
-		//textField.setMinWidth(this.getWidth() - this.getGraphicTextGap() * 2);
+		// textField.setMinWidth(this.getWidth() - this.getGraphicTextGap() *
+		// 2);
 		textField.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
 			@Override
