@@ -19,6 +19,10 @@
     -fx-background-color: rgba(93,93,93,1.0);
 }
 
+.tab-pane .tab-header-area .tab-header-background{
+    -fx-background-color: rgba(133,133,133,1.0);
+}
+
 .tab-pane .tab .tab-label{
     -fx-font-size: 10pt;
     -fx-font-family: "Helvetica";
