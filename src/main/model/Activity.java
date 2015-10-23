@@ -402,7 +402,10 @@ public class Activity {
     }
 
     public String getPlannedProgressPercentage() {
-        return "" + valPP * 100 + "%";
+        String temp;
+        temp = String.format("%1$.2f", valPP*100);
+        temp+="%";
+        return temp;
     }
     
     public void setPlannedProgressFromPercentage(String PPP){
@@ -426,21 +429,24 @@ public class Activity {
     }
 
     public String getCurrentProgressPercentage() {
-        return "" + valCP * 100 + "%";
+        String temp;
+        temp = String.format("%1$,.2f", valCP*100);
+        temp+="%";
+        return temp;
     }
     
         
     public Calendar getCurrentProgressValue() {
-  double temp = getCurrentProgress();
-  long time = (long) ((getEndTimeValue().getTimeInMillis() - getStartTimeValue().getTimeInMillis()) * temp
-    + getStartTimeValue().getTimeInMillis());
+        double temp = getCurrentProgress();
+        long time = (long) ((getEndTimeValue().getTimeInMillis() - getStartTimeValue().getTimeInMillis()) * temp
+                            + getStartTimeValue().getTimeInMillis());
 
-  Date itemDate = new Date(time);
+        Date itemDate = new Date(time);
 
-  String itemDateStr = new SimpleDateFormat("dd-MM-yyyy").format(itemDate);
+        String itemDateStr = new SimpleDateFormat("dd-MM-yyyy").format(itemDate);
 
-  return CalendarUtil.parse(itemDateStr);
- }
+        return CalendarUtil.parse(itemDateStr);
+    }
     
     
     public void setCurrentProgressFromPercentage(String CPP){
