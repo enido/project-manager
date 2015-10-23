@@ -1,6 +1,7 @@
 package main;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -23,13 +24,16 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.CubicCurve;
 import jfxutils.chart.ChartPanManager;
 import jfxutils.chart.JFXChartUtil;
@@ -42,6 +46,7 @@ import javafx.scene.shape.Path;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.swing.GroupLayout.Alignment;
+import main.util.CalendarUtil;
 
 public class ChartTabController {
 
@@ -200,28 +205,34 @@ public class ChartTabController {
                 }
                 
                 // --------------------LINE CHART----------------------------//
-                final NumberAxis xAxis = new NumberAxis();
+                final CategoryAxis xAxis = new CategoryAxis();
                 final NumberAxis yAxis = new NumberAxis();
                 final LineChart cpiChart = new LineChart(xAxis, yAxis);
                 cpiChart.setTitle("CPI dhe SPI");
                 
+                xAxis.setLabel("Data");
+                
                 XYChart.Series cpiSeries = new XYChart.Series();
                 cpiSeries.setName("CPI");
                 if(temp.getFirstCPI()!=0)
-                    cpiSeries.getData().add(new XYChart.Data(5, temp.getFirstCPI()));
+                    cpiSeries.getData().add(new XYChart.Data(CalendarUtil.format(temp.getFirstDate()), temp.getFirstCPI()));
                 if(temp.getSecondCPI()!=0)
-                    cpiSeries.getData().add(new XYChart.Data(10,temp.getSecondCPI()));
+                    cpiSeries.getData().add(new XYChart.Data(CalendarUtil.format(temp.getSecondDate()),temp.getSecondCPI()));
                 if(temp.getThirdCPI()!=0)
-                cpiSeries.getData().add(new XYChart.Data(15,temp.getThirdCPI()));
-                
+                    cpiSeries.getData().add(new XYChart.Data(CalendarUtil.format(temp.getThirdDate()),temp.getThirdCPI()));
+                if(sum.getTcpiValue()!=0)
+                    cpiSeries.getData().add(new XYChart.Data("fund", sum.getTcpiValue()));
+                     
                 XYChart.Series spiSeries = new XYChart.Series();
                 spiSeries.setName("SPI");
                 if(temp.getFirstSPI()!=0)
-                    spiSeries.getData().add(new XYChart.Data(5, temp.getFirstSPI()));
+                    spiSeries.getData().add(new XYChart.Data(CalendarUtil.format(temp.getFirstDate()), temp.getFirstSPI()));
                 if(temp.getSecondSPI()!=0)
-                    spiSeries.getData().add(new XYChart.Data(10,temp.getSecondSPI()));
+                    spiSeries.getData().add(new XYChart.Data(CalendarUtil.format(temp.getSecondDate()),temp.getSecondSPI()));
                 if(temp.getThirdSPI()!=0)
-                    spiSeries.getData().add(new XYChart.Data(15,temp.getThirdSPI()));
+                    spiSeries.getData().add(new XYChart.Data(CalendarUtil.format(temp.getThirdDate()),temp.getThirdSPI()));
+                if(sum.getTspiValue()!=0)
+                    spiSeries.getData().add(new XYChart.Data("fund", sum.getTspiValue()));
                 
                 cpiChart.getData().addAll(cpiSeries, spiSeries);
                 
@@ -256,13 +267,24 @@ public class ChartTabController {
 		gridPane2.setHgap(35);
 		gridPane2.setPadding(new Insets(0, 15, 0, 0));
                 
-                // First chart
 		GridPane.setHalignment(cpiChart, HPos.RIGHT);
 		gridPane2.add(cpiChart, 0, 0);
                 gridPane2.add(bc, 1, 0);
                 
                 Button add = new Button("Shto vlerë");
                 
+                Label tcpiLabel = new Label();
+                Label tspiLabel = new Label();
+                
+                tcpiLabel.setText("  TCPI="+sum.getTcpiValue());
+                tcpiLabel.setTextFill(Color.WHITE);
+                tspiLabel.setText("  TSPI="+sum.getTspiValue());
+                tspiLabel.setTextFill(Color.WHITE);
+                
+                FlowPane pane = new FlowPane();
+                
+                pane.getChildren().addAll(add, tcpiLabel, tspiLabel);
+               
                 add.setOnAction(new EventHandler<ActionEvent>(){
                     
                     @Override
@@ -286,7 +308,7 @@ public class ChartTabController {
                     
                 });
                 
-                gridPane2.add(add, 0, 1, 2, 1);
+                gridPane2.add(pane, 0, 1, 2, 1);
                 gridPane.getColumnConstraints().get(1).halignmentProperty().setValue(HPos.CENTER);
                 tabPane.getTabs().get(2).setContent(gridPane2);
                 

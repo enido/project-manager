@@ -41,7 +41,8 @@ public class NotEditableCell extends TableCell<Activity, String> {
 		super.updateItem(item, empty);
 
 		getStyleClass().remove("highlightRow");
-		setDisable(false);
+		// setEditable(true);
+		// setDisabled(false);
 
 		if (empty) {
 			setText(null);
@@ -67,6 +68,7 @@ public class NotEditableCell extends TableCell<Activity, String> {
 					setDisable(true);
 					getStyleClass().add("highlightRow");
 				} else {
+					setEditable(false);
 					setDisable(true);
 				}
 			}

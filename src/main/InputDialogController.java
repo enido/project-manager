@@ -240,14 +240,14 @@ public class InputDialogController {
             errorMessage += "Koha e fillimit nuk është e vlefshme\n";
         }else{
             if (!CalendarUtil.validString(startTimeTF.getText())) {
-                errorMessage += "No valid birthday. Use the format dd.mm.yyyy!\n";
+                errorMessage += "Ju lutem perdorni formatin dd-mm-vvvv!\n";
             }
         }
         if(endTimeTF.getText() == null || endTimeTF.getText().length() == 0){
             errorMessage += "Koha e mbarimit nuk është e vlefshme\n";
         }else{
             if (!CalendarUtil.validString(endTimeTF.getText())) {
-                errorMessage += "No valid birthday. Use the format dd.mm.yyyy!\n";
+                errorMessage += "Ju lutem perdorni formatin format dd-mm-vvvv!\n";
                 }
         }
         if(paTF.getText() == null || paTF.getText().length() == 0){

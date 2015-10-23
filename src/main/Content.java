@@ -280,6 +280,10 @@ public class Content {
             double ETC = tempBUDG - tempEV;
             sum.setETC(ETC);
             sum.setEAC(tempAC + ETC);
+            double TCPI = (tempBUDG-tempEV)/(tempBUDG - tempAC);
+            sum.setTcpiValue(TCPI);
+            double TSPI = (tempBUDG-tempEV)/(tempBUDG - tempPV);
+            sum.setTspiValue(TSPI);
     }
     
     public void Refresh() {

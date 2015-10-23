@@ -63,6 +63,13 @@ public class Activity {
     public double SPIone;
     public double SPItwo;
     public double SPIthree;
+    
+    public Calendar date1;
+    public Calendar date2;
+    public Calendar date3;
+    
+    public double TCPI;
+    public double TSPI;
 
     public int parent = 0;
 
@@ -597,6 +604,47 @@ public class Activity {
     public void setThirdSPI(double tSPI){
         this.SPIthree = tSPI;
     }
+    
+    public Calendar getFirstDate(){
+        return date1;
+    }
+    
+    public void setFirstDate(Calendar d1){
+        this.date1 = d1;
+    }
+    
+    public Calendar getSecondDate(){
+        return date2;
+    }
+    
+    public void setSecondDate(Calendar d2){
+        this.date2 = d2;
+    }
+    
+    public Calendar getThirdDate(){
+        return date3;
+    }
+    
+    public void setThirdDate(Calendar d3){
+        this.date3 = d3;
+    }
+    
+    public double getTcpiValue(){
+        return TCPI;
+    }
+    
+    public void setTcpiValue(double tcpi){
+        this.TCPI = tcpi;
+    }
+    
+    public double getTspiValue(){
+        return TSPI;
+    }
+    
+    public void setTspiValue(double tspi){
+        this.TSPI = tspi;
+    }
+    
     
     public void Calculate() {
         getDateDiff(endTime, startTime, TimeUnit.DAYS);

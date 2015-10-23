@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import main.model.Activity;
+import main.util.CalendarUtil;
 
 /**
  *
@@ -33,6 +34,12 @@ public class CpiDialogController {
 	public TextField secondSPI;
         @FXML
 	public TextField thirdSPI;
+        @FXML
+        public TextField d1TF;
+        @FXML
+        public TextField d2TF;
+        @FXML
+        public TextField d3TF;
         @FXML
 	public Button save;
         @FXML
@@ -54,6 +61,9 @@ public class CpiDialogController {
 		firstSPI.setText("" + data.getFirstSPI());
 		secondSPI.setText("" + data.getSecondSPI());
 		thirdSPI.setText("" + data.getThirdSPI());
+                d1TF.setText(""+CalendarUtil.format(data.getFirstDate()));
+                d2TF.setText(""+CalendarUtil.format(data.getSecondDate()));
+                d3TF.setText(""+CalendarUtil.format(data.getThirdDate()));
 	}
 
 	@FXML
@@ -65,6 +75,9 @@ public class CpiDialogController {
 		data.setSecondSPI(Double.parseDouble(secondSPI.getText()));
 		data.setThirdCPI(Double.parseDouble(thirdCPI.getText()));
 		data.setThirdSPI(Double.parseDouble(thirdSPI.getText()));
+                data.setFirstDate(CalendarUtil.parse(d1TF.getText()));
+                data.setSecondDate(CalendarUtil.parse(d2TF.getText()));
+                data.setThirdDate(CalendarUtil.parse(d3TF.getText()));
 		saveClicked = true;
 		dialogStage.close();
             }
@@ -133,6 +146,30 @@ public class CpiDialogController {
 		} catch (NumberFormatException e) {
 			errorMessage += "SPI e tretë nuk është e vlefshme (Duhet të jetë numër)\n";
 		}
+                
+                if(d1TF.getText() == null || d1TF.getText().contains("null") || d1TF.getText().length() == 0){
+                    data.setFirstDate(null);
+                }else{
+                if (!CalendarUtil.validString(d1TF.getText())) {
+                    errorMessage += "Ju lutem perdorni formatin dd-mm-vvvv!\n";
+                     }
+                }
+                
+                if(d2TF.getText() == null || d2TF.getText().contains("null") || d2TF.getText().length() == 0){
+                    data.setSecondDate(null);
+                }else{
+                if (!CalendarUtil.validString(d2TF.getText())) {
+                    errorMessage += "Ju lutem perdorni formatin dd-mm-vvvv!\n";
+                     }
+                }
+                
+                if(d3TF.getText() == null || d3TF.getText().contains("null") || d3TF.getText().length() == 0){
+                    data.setThirdDate(null);
+                }else{
+                if (!CalendarUtil.validString(d3TF.getText())) {
+                    errorMessage += "Ju lutem perdorni formatin dd-mm-vvvv!\n";
+                     }
+                }
 
 		if (errorMessage.length() == 0) return true;
 		else {
