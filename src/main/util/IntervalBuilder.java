@@ -17,7 +17,6 @@ public class IntervalBuilder {
 	public static IntervalCategoryDataset buildDataSet(ObservableList < Activity > data) {
 
 		TaskSeries s1 = new TaskSeries("Scheduled");
-		TaskSeries s2 = new TaskSeries("Actual");
 
 		if (!data.isEmpty() || data != null) {
 
@@ -29,16 +28,12 @@ public class IntervalBuilder {
 					// t1.setPercentComplete(temp.getCurrentProgress());
 					s1.add(t1);
 
-					Task t2 = new Task(taskName, temp.getStartTimeValue().getTime(),
-					temp.getCurrentProgressValue().getTime());
-					s2.add(t2);
 				}
 			}
 		}
 
 		TaskSeriesCollection collection = new TaskSeriesCollection();
 		collection.add(s1);
-		collection.add(s2);
 
 		return collection;
 	}

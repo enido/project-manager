@@ -24,6 +24,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.ScrollEvent;
 import javafx.util.Callback;
 import main.model.Activity;
+import main.model.SelectableRow;
 
 public class TableOverviewController {
 
@@ -53,7 +54,10 @@ public class TableOverviewController {
 
 	@FXML
 	private TableColumn<Activity, String> priceColumn;
-
+        
+        @FXML
+	private TableColumn<Activity, String> staticAmountColumn;
+        
 	@FXML
 	private TableColumn<Activity, String> plannedAmountColumn;
 
@@ -62,9 +66,6 @@ public class TableOverviewController {
 
 	@FXML
 	private TableColumn<Activity, String> actualAmountColumn;
-
-	@FXML
-	private TableColumn<Activity, String> plannedProgressColumn;
 
 	@FXML
 	private TableColumn<Activity, String> currentProgressColumn;
@@ -100,7 +101,7 @@ public class TableOverviewController {
 
 	@FXML
 	public void initialize() {
-
+                
 		Callback<TableColumn<Activity, String>, TableCell<Activity, String>> cellFactory = new Callback<TableColumn<Activity, String>, TableCell<Activity, String>>() {
 
 			@Override
@@ -116,6 +117,15 @@ public class TableOverviewController {
 				return new NotEditableCell();
 			}
 		};
+                
+                Callback<TableColumn<Activity, String>, TableCell<Activity, String>> cellFactorySelectableRow = new Callback<TableColumn<Activity, String>, TableCell<Activity, String>>() {
+
+			@Override
+			public TableCell call(TableColumn p) {
+				return new SelectableRow();
+			}
+		};
+
 
 		activityTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -204,6 +214,22 @@ public class TableOverviewController {
 				mainApp.Refresh();
 			}
 		});
+                staticAmountColumn.setCellValueFactory(cellData -> cellData.getValue().staticAmountProperty());
+		staticAmountColumn.setCellFactory(cellFactory);
+		staticAmountColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
+
+			@Override
+			public void handle(CellEditEvent<Activity, String> t) {
+				int index = activityData.indexOf(t.getTableView().getItems().get(t.getTablePosition().getRow()));
+				activityData.get(index).setStaticAmountString(t.getNewValue());
+				((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+						.setStaticAmountString(t.getNewValue());
+				activityData.get(index).setStaticAmount(Double.parseDouble(unformatStringNumber(t.getNewValue())));
+				activityData.get(index).Calculate();
+				activityData.get(index).ConvertToStringProperty();
+				mainApp.Refresh();
+			}
+		});
 
 		plannedAmountColumn.setCellValueFactory(cellData -> cellData.getValue().plannedAmountProperty());
 		plannedAmountColumn.setCellFactory(cellFactory);
@@ -250,25 +276,6 @@ public class TableOverviewController {
 				((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
 						.setActualAmountString(t.getNewValue());
 				activityData.get(index).setActualAmount(Double.parseDouble(unformatStringNumber(t.getNewValue())));
-				activityData.get(index).Calculate();
-				activityData.get(index).ConvertToStringProperty();
-				mainApp.Refresh();
-			}
-		});
-
-		plannedProgressColumn.setCellValueFactory(cellData -> cellData.getValue().plannedProgressProperty());
-		plannedProgressColumn.setCellFactory(cellFactory);
-		plannedProgressColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
-
-			@Override
-			public void handle(CellEditEvent<Activity, String> t) {
-				int index = activityData.indexOf(t.getTableView().getItems().get(t.getTablePosition().getRow()));
-				activityData.get(index).setPlannedProgressString(t.getNewValue());
-				((Activity) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-						.setPlannedProgressString(t.getNewValue());
-
-				System.out.println(t.getOldValue());
-				activityData.get(index).setPlannedProgressFromPercentage(t.getNewValue());
 				activityData.get(index).Calculate();
 				activityData.get(index).ConvertToStringProperty();
 				mainApp.Refresh();

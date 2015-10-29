@@ -3,7 +3,7 @@
 }
 
 .chart-plot-background {
-    -fx-background-color: rgba(133,133,133,1.0);
+    -fx-background-color: rgba(133.0,133.0,133.0,1.0);
 }
 
 .chart-series-area-line { 
@@ -23,9 +23,29 @@
    -fx-padding: -5.0px 5.0px 5.0px 5.0px;
 }
 
-.highlightRow{
+.highlightRow {
     	-fx-font-weight: bold;
 	-fx-text-fill: #FFFFFF;
 	-fx-font-size: 9.0pt;
 	-fx-background-color: rgba(77.0,77.0,77.0,1.0);
 }
+
+.default-color0.chart-series-line { -fx-stroke: #78c930; }
+.default-color1.chart-series-line { -fx-stroke: #5f6dac; }
+.default-color2.chart-series-line { -fx-stroke: #ec4d0b; }
+.default-color4.chart-series-line { -fx-stroke: #ffba49; }
+ 
+.default-color0.chart-line-symbol { -fx-background-color: #78c930, #ffffff; }
+.default-color1.chart-line-symbol { -fx-background-color: #5f6dac, #ffffff; }
+.default-color2.chart-line-symbol { -fx-background-color: #ec4d0b, #ffffff; }
+.default-color4.chart-line-symbol { -fx-background-color: #ffba49, #ffffff; }
+
+.default-color0.chart-area-symbol { -fx-background-color: #78c930, #ffffff; }
+.default-color1.chart-area-symbol { -fx-background-color: #5f6dac, #ffffff; }
+.default-color2.chart-area-symbol { -fx-background-color: #ec4d0b, #ffffff; }
+.default-color4.chart-area-symbol { -fx-background-color: #ffba49, #ffffff; }
+ 
+.default-color0.chart-series-area-line { -fx-stroke: #78c930; }
+.default-color1.chart-series-area-line { -fx-stroke: #5f6dac; }
+.default-color2.chart-series-area-line { -fx-stroke: #ec4d0b; } 
+.default-color4.chart-series-area-line { -fx-stroke: #ffba49; } 

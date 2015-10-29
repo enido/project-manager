@@ -3,7 +3,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-<TabPane id="TabPane" prefHeight="500.0" prefWidth="600.0" stylesheets="@DarkTheme.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.ChartTabController">
+<TabPane id="TabPane" stylesheets="@DarkTheme.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.ChartTabController">
     <tabs>
         <Tab id="Tab" text="Line Chart" />
         <Tab id="Tab" text="Gantt Chart" />

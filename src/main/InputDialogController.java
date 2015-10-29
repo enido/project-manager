@@ -37,19 +37,13 @@ public class InputDialogController {
     @FXML
     private TextField priceTF;
     @FXML
+    private TextField saTF; // static Amount
+    @FXML
     private TextField paTF; // planned Amount
     @FXML
     private TextField caTF; // current Amount
     @FXML
     private TextField aaTF; // actual Amount
-    @FXML
-    private TextField ppTF; // planned Progress
-    @FXML 
-    private TextField cpTF; // current Progress
-    @FXML
-    private TextField pvTF;
-    @FXML
-    private TextField acTF;
     @FXML
     private Button cancel;
     @FXML
@@ -83,7 +77,9 @@ public class InputDialogController {
         comboBox.setItems(option);
         
         units.add("l");
+        units.add("cp");
         units.add("ml");
+        units.add("m2");
         units.add("m3");
         units.add("ton");
         units.add("kv");
@@ -122,13 +118,10 @@ public class InputDialogController {
             activity.setEndTimeValue(CalendarUtil.parse(endTimeTF.getText()));
             activity.setBudget(Double.parseDouble(budgTF.getText()));
             activity.setUnitString(unitCombo.getValue().toString());
+            activity.setStaticAmount(Double.parseDouble(saTF.getText()));
             activity.setPlannedAmount(Double.parseDouble(paTF.getText()));
             activity.setCurrentAmount(Double.parseDouble(caTF.getText()));
             activity.setActualAmount(Double.parseDouble(aaTF.getText()));
-            activity.setPlannedProgress(Double.parseDouble(ppTF.getText()));
-            activity.setCurrentProgress(Double.parseDouble(cpTF.getText()));
-            activity.setPV(Double.parseDouble(pvTF.getText()));
-            activity.setAC(Double.parseDouble(acTF.getText()));
             activity.setPriceValue(Double.parseDouble(priceTF.getText()));
             activity.Calculate();
             activity.ConvertToStringProperty();
@@ -184,27 +177,21 @@ public class InputDialogController {
             unitCombo.setDisable(true);
             startTimeTF.setDisable(true);
             endTimeTF.setDisable(true);
+            saTF.setDisable(true);
             paTF.setDisable(true);
             caTF.setDisable(true);
             aaTF.setDisable(true);
             budgTF.setDisable(true);
-            ppTF.setDisable(true);
-            cpTF.setDisable(true);
-            pvTF.setDisable(true);
-            acTF.setDisable(true);
             priceTF.setDisable(true);
         } else {
             unitCombo.setDisable(false);
             startTimeTF.setDisable(false);
             endTimeTF.setDisable(false);
             budgTF.setDisable(false);
+            saTF.setDisable(false);
             paTF.setDisable(false);
             caTF.setDisable(false);
             aaTF.setDisable(false);
-            ppTF.setDisable(false);
-            cpTF.setDisable(false);
-            pvTF.setDisable(false);
-            acTF.setDisable(false);
             priceTF.setDisable(false);
         }
     }
@@ -250,6 +237,15 @@ public class InputDialogController {
                 errorMessage += "Ju lutem perdorni formatin format dd-mm-vvvv!\n";
                 }
         }
+        if(saTF.getText() == null || saTF.getText().length() == 0){
+            errorMessage += "Sasia statike e planifikuar e aktivitetit nuk është e vlefshme\n";
+        }else{
+            try{
+                Double.parseDouble(saTF.getText());
+            } catch (NumberFormatException e){
+                errorMessage += "Sasia statike e planifikuar e aktivitetit nuk është e vlefshme (Duhet të jetë numër)\n";
+            }
+        }
         if(paTF.getText() == null || paTF.getText().length() == 0){
             errorMessage += "Sasia e planifikuar e aktivitetit nuk është e vlefshme\n";
         }else{
@@ -275,30 +271,6 @@ public class InputDialogController {
                 Double.parseDouble(aaTF.getText());
             } catch (NumberFormatException e){
                 errorMessage += "Sasia faktike e aktivitetit nuk është e vlefshme (Duhet të jetë numër)\n";
-            }
-        }
-        if(ppTF.getText() == null || ppTF.getText().length() == 0){
-            errorMessage += "Progresi i planifikuar i aktivitetit nuk është i vlefshëm\n";
-        }
-        if(cpTF.getText() == null || cpTF.getText().length() == 0){
-            errorMessage += "Progresi aktual i aktivitetit nuk është i vlefshëm\n";
-        }
-        if(pvTF.getText() == null || pvTF.getText().length() == 0){
-            errorMessage += "Vlera e planifikuar e aktivitetit nuk është e vlefshme\n";
-        }else{
-            try{
-                Double.parseDouble(pvTF.getText());
-            } catch (NumberFormatException e){
-                errorMessage += "Vlera e planifikuar e aktivitetit nuk është e vlefshme (Duhet të jetë numër)\n";
-            }
-        }
-        if(acTF.getText() == null || acTF.getText().length() == 0){
-            errorMessage += "Kosto aktuale e aktivitetit nuk është e vlefshme\n";
-        }else{
-            try{
-                Double.parseDouble(acTF.getText());
-            } catch (NumberFormatException e){
-                errorMessage += "Kosto aktuale e aktivitetit nuk është e vlefshme (Duhet të jetë numër)\n";
             }
         }
         if(priceTF.getText() == null || priceTF.getText().length() == 0){

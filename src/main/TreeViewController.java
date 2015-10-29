@@ -12,7 +12,6 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
@@ -26,7 +25,7 @@ public class TreeViewController implements Initializable {
 	private Content mainApp;
 	private ObservableList<Activity> data;
 	private Node rootNode;
-        public static int treeIndex = 0;
+	public static int treeIndex = 0;
 
 	ObservableList<String> tempData = FXCollections.observableArrayList();
 	private TreeView<String> treeView;
@@ -44,7 +43,7 @@ public class TreeViewController implements Initializable {
 			Float tempFloat = Float.parseFloat(tempString);
 			floatList.add(tempFloat);
 		}
-                System.out.println("Tree Index: "+treeIndex);
+		System.out.println("Tree Index: " + treeIndex);
 		TreeItem<String> root;
 		TreeItem<String> item;
 
@@ -77,8 +76,8 @@ public class TreeViewController implements Initializable {
 			}
 		}
 
-
 		treeView = new TreeView<String>(dummyRoot);
+		//treeView.setPrefHeight(10000);
 		treeView.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -86,25 +85,24 @@ public class TreeViewController implements Initializable {
 				ArrayList<TreeItem<String>> tempList = new ArrayList<>();
 
 				if (mouseEvent.getClickCount() == 2) {
-					TreeItem<String> item = treeView.getSelectionModel().getSelectedItem(); 
-					if(treeView.getSelectionModel().getSelectedItem().getValue().toString().equals("Activities")){
-                                            for(int i=0;i<data.size();i++){
-                                                if(data.get(i).getParentValue()!=0)
-                                                    tempData.add(data.get(i).getIdString()+" "+data.get(i).getName());
-                                            }
-                                            mainApp.setData(tempData);
-                                            mainApp.showGanttOverview();
-                                        }
-                                        else{
-					tempList.addAll(item.getChildren());
-					for (int i = 0; i < tempList.size(); i++) {
-						tempData.add(tempList.get(i).getValue());
+					TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
+					if (treeView.getSelectionModel().getSelectedItem().getValue().toString().equals("Activities")) {
+						for (int i = 0; i < data.size(); i++) {
+							if (data.get(i).getParentValue() != 0)
+								tempData.add(data.get(i).getIdString() + " " + data.get(i).getName());
+						}
+						mainApp.setData(tempData);
+						mainApp.showGanttOverview();
+					} else {
+						tempList.addAll(item.getChildren());
+						for (int i = 0; i < tempList.size(); i++) {
+							tempData.add(tempList.get(i).getValue());
+						}
+						mainApp.setData(tempData);
+						mainApp.showGanttOverview();
+						tempList.clear();
+						tempData.clear();
 					}
-					mainApp.setData(tempData);
-					mainApp.showGanttOverview();
-					tempList.clear();
-					tempData.clear();
-                                        }
 				}
 			}
 		});

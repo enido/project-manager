@@ -20,6 +20,7 @@ public class Activity {
     private final StringProperty budget;
     private final StringProperty unit;
     private final StringProperty price;
+    private final StringProperty staticAmount;
     private final StringProperty plannedAmount;
     private final StringProperty currentAmount;
     private final StringProperty actualAmount;
@@ -38,6 +39,7 @@ public class Activity {
     public long valDUR;
     public double valBUDG;
     public double valPRICE;
+    public double valSA; // Static Amount (SA) -- sasia statike e planifikuar
     public double valPA; // Planned Amount(PA)
     public double valCA; // Current Amount(CA)
     public double valAA; // Actual Amount(AA)
@@ -74,10 +76,10 @@ public class Activity {
     public int parent = 0;
 
     public Activity() {
-        this("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+        this("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
     }
 
-    public Activity(String name, String id, String duration, String budget, String unit, String price, String plannedAmount, String currentAmount, String actualAmount, String plannedProgress, String current_progress,
+    public Activity(String name, String id, String duration, String budget, String unit, String price, String staticAmount, String plannedAmount, String currentAmount, String actualAmount, String plannedProgress, String current_progress,
                     String pv, String ac, String ev, String cv, String sv, String cpi, String spi) {
         this.name = new SimpleStringProperty(name);
         this.id = new SimpleStringProperty(id);
@@ -85,6 +87,7 @@ public class Activity {
         this.budget = new SimpleStringProperty(budget);
         this.unit = new SimpleStringProperty(unit);
         this.price = new SimpleStringProperty(price);
+        this.staticAmount = new SimpleStringProperty(staticAmount);
         this.plannedAmount = new SimpleStringProperty(plannedAmount);
         this.currentAmount = new SimpleStringProperty(currentAmount);
         this.actualAmount = new SimpleStringProperty(actualAmount);
@@ -177,6 +180,19 @@ public class Activity {
 
     public StringProperty priceProperty() {
         return price;
+    }
+    
+    //STATIC AMOUNT
+    public String getStaticAmountString(){
+        return staticAmount.get();
+    }
+    
+    public void setStaticAmountString(String data){
+        staticAmount.set(data);
+    }
+    
+    public StringProperty staticAmountProperty(){
+        return staticAmount;
     }
     
     // PLANNED AMOUNT
@@ -367,6 +383,14 @@ public class Activity {
 
     public void setPriceValue(double PRC) {
         this.valPRICE = PRC;
+    }
+    
+    public double getStaticAmount(){
+        return valSA;
+    }
+    
+    public void setStaticAmount(double SA){
+        this.valSA = SA;
     }
     
     public double getPlannedAmount(){
@@ -652,19 +676,24 @@ public class Activity {
     }
     
     
+
     public void Calculate() {
         getDateDiff(endTime, startTime, TimeUnit.DAYS);
-        if (valAC == 0 || valPV == 0) {
-            valCPI = 0;
-            valSPI = 0;
-        } else {
+        
+            valCP = valAA / valPA;
+            valPV = valPA * valPRICE;
+            valAC = valCA * valPRICE;
             valEV = valPRICE * valAA;
             valCV = valEV - valAC;
             valSV = valEV - valPV;
+            if (valAC == 0 || valPV == 0) {
+                valCPI = 0;
+                valSPI = 0;
+            }
+            else{
             valCPI = valEV / valAC;
             valSPI = valEV / valPV;
-        }
-
+            }
     }
     
     public void getDateDiff(Calendar date1, Calendar date2, TimeUnit timeUnit) {
@@ -687,6 +716,7 @@ public class Activity {
         setDurationString("" + valDUR);
         setBudgetString(toString(valBUDG));
         setPriceString(toString(valPRICE));
+        setStaticAmountString(toString(valSA));
         setPlannedAmountString(toString(valPA));
         setCurrentAmountString(toString(valCA));
         setActualAmountString(toString(valAA));
@@ -709,3 +739,7 @@ public class Activity {
         this.parent = p;
     }
 }
+
+//PV = SASIE PLANIFIKUAR * CMIMI
+//AC = SASI FAKTIKE (CURRENT) * CMIMI
+//Fut sassine e preventivit statik
