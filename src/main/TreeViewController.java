@@ -21,7 +21,7 @@ import main.model.Activity;
 
 public class TreeViewController implements Initializable {
 
-	public TreeItem<String> dummyRoot = new TreeItem<String>("Activities");
+	public TreeItem<String> dummyRoot = new TreeItem<String>("Aktivitete");
 	private Content mainApp;
 	private ObservableList<Activity> data;
 	private Node rootNode;
@@ -86,7 +86,7 @@ public class TreeViewController implements Initializable {
 
 				if (mouseEvent.getClickCount() == 2) {
 					TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
-					if (treeView.getSelectionModel().getSelectedItem().getValue().toString().equals("Activities")) {
+					if (treeView.getSelectionModel().getSelectedItem().getValue().toString().equals("Aktivitete")) {
 						for (int i = 0; i < data.size(); i++) {
 							if (data.get(i).getParentValue() != 0)
 								tempData.add(data.get(i).getIdString() + " " + data.get(i).getName());

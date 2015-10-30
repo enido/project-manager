@@ -84,35 +84,35 @@ public class ChartTabController {
 		gridPane.add(areaChart1, 0, 0);
 
 		XYChart.Series seriesEV = new XYChart.Series();
-		seriesEV.setName("EV");
+		seriesEV.setName("VF");
 
 		seriesEV.getData().add(new XYChart.Data(0, 0));
 		seriesEV.getData().add(new XYChart.Data(12, sum.getEV() / 2));
 		seriesEV.getData().add(new XYChart.Data(20, sum.getEV()));
 
 		XYChart.Series seriesPV = new XYChart.Series();
-		seriesPV.setName("PV");
+		seriesPV.setName("VP");
 
 		seriesPV.getData().add(new XYChart.Data(0, 0));
 		seriesPV.getData().add(new XYChart.Data(12, sum.getPV() / 2));
 		seriesPV.getData().add(new XYChart.Data(20, sum.getPV()));
 
 		XYChart.Series seriesBAC = new XYChart.Series();
-		seriesBAC.setName("BAC");
+		seriesBAC.setName("VPP");
 		seriesBAC.getData().add(new XYChart.Data(30, sum.getBAC()));
 		seriesBAC.getData().add(new XYChart.Data(25, sum.getBAC() / 1.2));
 		seriesBAC.getData().add(new XYChart.Data(20, sum.getPV()));
 		seriesBAC.getData().add(new XYChart.Data(22, sum.getPV() + 0.325 * sum.getPV()));
 
 		XYChart.Series seriesAC = new XYChart.Series();
-		seriesAC.setName("AC");
+		seriesAC.setName("KA");
 
 		seriesAC.getData().add(new XYChart.Data(0, 0));
 		seriesAC.getData().add(new XYChart.Data(12, sum.getAC() / 2));
 		seriesAC.getData().add(new XYChart.Data(20, sum.getAC()));
 
 		XYChart.Series seriesEAC = new XYChart.Series();
-		seriesEAC.setName("EAC");
+		seriesEAC.setName("PP");
 		seriesEAC.getData().add(new XYChart.Data(30, sum.getEAC()));
 		seriesEAC.getData().add(new XYChart.Data(25, sum.getEAC() / 1.2));
 		seriesEAC.getData().add(new XYChart.Data(20, sum.getAC()));
@@ -122,22 +122,22 @@ public class ChartTabController {
 
 		/******************** SECOND GRID COLUMN **********************/
 
-		ArrayList<String> tempData = new ArrayList<>();
+		ObservableList<Activity> tempData = FXCollections.observableArrayList();
 		Button display = new Button("Shfaq");
 		display.getStyleClass().add("Kot");
 		Button resetZoom = new Button("Reset");
-
-		Label ev = new Label("EV - Display certain information Display certain information Display certain information");
+                
+		Label ev = new Label("VF - "+sum.toString(sum.getEV()));
 		ev.setWrapText(true);
 		ev.getStyleClass().add("ModifiedStyle1");
-		Label pv = new Label("PV - Display certain information Display certain information Display certain information");
+		Label pv = new Label("VP - "+sum.toString(sum.getPV()));
 		pv.getStyleClass().add("ModifiedStyle");
 		pv.setWrapText(true);
-		Label ac = new Label("PV - Display certain information Display certain information Display certain information");
+		Label ac = new Label("KA - "+sum.toString(sum.getAC()));
 		ac.getStyleClass().add("ModifiedStyle");
 		ac.setWrapText(true);
 
-		ToggleGroup group = new ToggleGroup();
+		/*ToggleGroup group = new ToggleGroup();
 
 		RadioButton rb1 = new RadioButton("Home");
 		rb1.setToggleGroup(group);
@@ -150,7 +150,7 @@ public class ChartTabController {
 
 		RadioButton rb3 = new RadioButton("Contacts");
 		rb3.setToggleGroup(group);
-		rb3.getStyleClass().add("ModifiedStyle");
+		rb3.getStyleClass().add("ModifiedStyle");*/
 
 		AnchorPane anchorPane = new AnchorPane();
 		VBox firstVBox = new VBox();
@@ -168,11 +168,11 @@ public class ChartTabController {
 		hBox.getStyleClass().add("ScrollPane");
 		hBox.getChildren().addAll(display, resetZoom);
 
-		firstVBox.getChildren().addAll(scrollPane, hBox, ev, pv, ac, rb1, rb2, rb3);
+		firstVBox.getChildren().addAll(scrollPane, hBox, ev, pv, ac);
 
 		for (int i = 0; i < data.size(); i++) {
 			if (data.get(i).getParentValue() == 0) {
-				tempData.add(data.get(i).getName());
+				tempData.add(data.get(i));
 			}
 		}
 
@@ -182,21 +182,45 @@ public class ChartTabController {
 		vBox.setSpacing(15);
 		vBox.setAlignment(Pos.TOP_LEFT);
 
-		CheckBox allActivities = new CheckBox("All Activities");
+		CheckBox allActivities = new CheckBox("Gjithë Aktivitetet");
 
 		allActivities.getStyleClass().add("CheckBox");
 
-		CheckBox checkBox;
+		ArrayList<CheckBox> checkBox = new ArrayList();
 
 		for (int i = 0; i < tempData.size(); i++) {
-			checkBox = new CheckBox();
-			checkBox.setText(tempData.get(i));
-			checkBox.getStyleClass().add("CheckBox");
-			vBox.getChildren().add(checkBox);
+			checkBox.add(new CheckBox());
+			checkBox.get(i).setText(tempData.get(i).getName());
+			checkBox.get(i).getStyleClass().add("CheckBox");
+			vBox.getChildren().add(checkBox.get(i));
 		}
 
 		vBox.getChildren().add(allActivities);
+                                                
+                display.setOnAction(new EventHandler<ActionEvent>() {
 
+			@Override
+			public void handle(ActionEvent event) {
+                            ObservableList<Activity> dummy = FXCollections.observableArrayList();
+                            
+                            for(int i=0;i<tempData.size();i++){
+                                if(checkBox.get(i).isSelected()){
+                                    dummy.add(tempData.get(i));
+                                }
+                            }
+                            
+                            mainApp.Refresh(calculateSum(dummy));
+                        }
+		});
+                
+                resetZoom.setOnAction(new EventHandler<ActionEvent>(){
+                    
+                    @Override
+                    public void handle(ActionEvent event){
+                        mainApp.Refresh();
+                    }
+                });
+                
 		scrollPane.setContent(vBox);
 
 		anchorPane.getChildren().add(firstVBox);
@@ -263,12 +287,12 @@ public class ChartTabController {
 		final CategoryAxis xAxis = new CategoryAxis();
 		final NumberAxis yAxis = new NumberAxis();
 		final LineChart cpiChart = new LineChart(xAxis, yAxis);
-		cpiChart.setTitle("CPI dhe SPI");
+		cpiChart.setTitle("IPK dhe IPP");
 
 		xAxis.setLabel("Data");
 
 		XYChart.Series cpiSeries = new XYChart.Series();
-		cpiSeries.setName("CPI");
+		cpiSeries.setName("IPK");
 		if (temp.getFirstCPI() != 0)
 			cpiSeries.getData().add(new XYChart.Data(CalendarUtil.format(temp.getFirstDate()), temp.getFirstCPI()));
 		if (temp.getSecondCPI() != 0)
@@ -279,7 +303,7 @@ public class ChartTabController {
 			cpiSeries.getData().add(new XYChart.Data("fund", sum.getTcpiValue()));
 
 		XYChart.Series spiSeries = new XYChart.Series();
-		spiSeries.setName("SPI");
+		spiSeries.setName("IPP");
 		if (temp.getFirstSPI() != 0)
 			spiSeries.getData().add(new XYChart.Data(CalendarUtil.format(temp.getFirstDate()), temp.getFirstSPI()));
 		if (temp.getSecondSPI() != 0)
@@ -299,13 +323,13 @@ public class ChartTabController {
 		final BarChart<String, Number> bc = new BarChart<String, Number>(boshtiX, boshtiY);
 
 		XYChart.Series series1 = new XYChart.Series();
-		series1.setName("CPI");
+		series1.setName("IPK");
 		series1.getData().add(new XYChart.Data("1", temp.getFirstCPI()));
 		series1.getData().add(new XYChart.Data("2", temp.getSecondCPI()));
 		series1.getData().add(new XYChart.Data("3", temp.getThirdCPI()));
 
 		XYChart.Series series2 = new XYChart.Series();
-		series2.setName("SPI");
+		series2.setName("IPP");
 		series2.getData().add(new XYChart.Data("1", temp.getFirstSPI()));
 		series2.getData().add(new XYChart.Data("2", temp.getSecondSPI()));
 		series2.getData().add(new XYChart.Data("3", temp.getThirdSPI()));
@@ -314,7 +338,7 @@ public class ChartTabController {
 		bc.setCategoryGap(20);
 
 		bc.getData().addAll(series1, series2);
-		bc.setTitle("CPI & SPI (Bar Chart)");
+		bc.setTitle("IPK & IPP (Bar Chart)");
 
 		GridPane gridPane2 = new GridPane();
 		gridPane2.setPrefHeight(400.0);
@@ -403,7 +427,7 @@ public class ChartTabController {
 			AnchorPane page = (AnchorPane) loader.load();
 
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Vlerat e CPI dhe SPI");
+			dialogStage.setTitle("Vlerat e IPK dhe IPP");
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(mainApp.getPrimaryStage());
 			Scene scene = new Scene(page);
@@ -423,6 +447,40 @@ public class ChartTabController {
 			return false;
 		}
 	}
+        
+        public Activity calculateSum(ObservableList<Activity> activities) {
+		int size = activities.size();
+		double tempEV = 0;
+		double tempPV = 0;
+		double tempAC = 0;
+		double tempBUDG = 0;
+                
+                Activity dummy = new Activity();
+
+		for (int i = 0; i < size; i++) {
+			Activity current = activities.get(i);
+			if (current.getParentValue() == 0) {
+				tempEV += current.getEV();
+				tempPV += current.getPV();
+				tempAC += current.getAC();
+				tempBUDG += current.getBudget();
+			}
+		}
+		dummy.setEV(tempEV);
+		dummy.setPV(tempPV);
+		dummy.setAC(tempAC);
+		dummy.setBAC(tempBUDG);
+		double ETC = tempBUDG - tempEV;
+		dummy.setETC(ETC);
+		dummy.setEAC(tempAC + ETC);
+		double TCPI = (tempBUDG - tempEV) / (tempBUDG - tempAC);
+		dummy.setTcpiValue(TCPI);
+		double TSPI = (tempBUDG - tempEV) / (tempBUDG - tempPV);
+		dummy.setTspiValue(TSPI);
+                
+                return dummy;
+	}
+        
 }
 
 // EV JESHILE, PV BLU, AC TE KUQE

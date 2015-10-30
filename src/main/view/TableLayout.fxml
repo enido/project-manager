@@ -19,41 +19,41 @@
 			<children>
 				<TableView fx:id="activityTable" editable="true" prefHeight="180.0" prefWidth="200.0" GridPane.vgrow="ALWAYS">
 					<columns>
-						<TableColumn fx:id="nameColumn" prefWidth="100.0" text="Name">
+						<TableColumn fx:id="nameColumn" prefWidth="100.0" text="Emri">
 						</TableColumn>
 						<TableColumn fx:id="idColumn" prefWidth="30.0" text="ID">
 						</TableColumn>
-						<TableColumn fx:id="durationColumn" prefWidth="70.0" text="Dur.">
+						<TableColumn fx:id="durationColumn" prefWidth="70.0" text="Kohëzgjatja">
 						</TableColumn>
-						<TableColumn fx:id="budgetColumn" prefWidth="75.0" text="Budget">
+						<TableColumn fx:id="budgetColumn" prefWidth="75.0" text="Buxheti">
 						</TableColumn>
-						<TableColumn fx:id="unitColumn" prefWidth="75.0" text="Unit">
+						<TableColumn fx:id="unitColumn" prefWidth="75.0" text="Njësia">
 						</TableColumn>
-                                                <TableColumn fx:id="staticAmountColumn" prefWidth="75.0" text="Static Amount">
+                                                <TableColumn fx:id="staticAmountColumn" prefWidth="75.0" text="Sasia statike preventizuar">
 						</TableColumn>
-						<TableColumn fx:id="plannedAmountColumn" prefWidth="75.0" text="Planned Amount">
+						<TableColumn fx:id="plannedAmountColumn" prefWidth="75.0" text="Sasia e planifikuar">
 						</TableColumn>
 						<TableColumn fx:id="priceColumn" prefWidth="75.0" text="Price">
 						</TableColumn>
-						<TableColumn fx:id="currentAmountColumn" prefWidth="75.0" text="Current Amount">
+						<TableColumn fx:id="currentAmountColumn" prefWidth="75.0" text="Sasia aktuale">
 						</TableColumn>
-						<TableColumn fx:id="actualAmountColumn" prefWidth="75.0" text="Actual Amount">
+						<TableColumn fx:id="actualAmountColumn" prefWidth="75.0" text="Sasia faktike">
 						</TableColumn>
-						<TableColumn fx:id="currentProgressColumn" prefWidth="90.0" text="Current progress">
+						<TableColumn fx:id="currentProgressColumn" prefWidth="90.0" text="Avancimi real">
 						</TableColumn>
-						<TableColumn fx:id="pvColumn" prefWidth="75.0" text="PV">
+						<TableColumn fx:id="pvColumn" prefWidth="75.0" text="VP">
 						</TableColumn>
-						<TableColumn fx:id="acColumn" prefWidth="40.0" text="AC">
+						<TableColumn fx:id="acColumn" prefWidth="40.0" text="KA">
 						</TableColumn>
-						<TableColumn fx:id="evColumn" prefWidth="55.0" text="EV">
+						<TableColumn fx:id="evColumn" prefWidth="55.0" text="VF">
 						</TableColumn>
-						<TableColumn fx:id="cvColumn" prefWidth="55.0" text="CV">
+						<TableColumn fx:id="cvColumn" prefWidth="55.0" text="NK">
 						</TableColumn>
-						<TableColumn fx:id="svColumn" prefWidth="55.0" text="SV">
+						<TableColumn fx:id="svColumn" prefWidth="55.0" text="NP">
 						</TableColumn>
-						<TableColumn fx:id="cpiColumn" prefWidth="55.0" text="CPI">
+						<TableColumn fx:id="cpiColumn" prefWidth="55.0" text="IPK">
 						</TableColumn>
-						<TableColumn fx:id="spiColumn" prefWidth="55.0" text="SPI">
+						<TableColumn fx:id="spiColumn" prefWidth="55.0" text="IPP">
 						</TableColumn>
 					</columns>
 					<items>
@@ -72,7 +72,7 @@
 								<Insets right="20.0" />
 							</HBox.margin>
 						</Button>
-						<Button id="button" fx:id="delete" mnemonicParsing="false" onAction="#handleDelete" text="Fshij">
+						<Button id="button" fx:id="delete" mnemonicParsing="false" onAction="#handleDelete" text="Fshi">
 							<HBox.margin>
 								<Insets left="20.0" />
 							</HBox.margin>

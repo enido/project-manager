@@ -22,7 +22,7 @@
          <children>
             <FlowPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Label text="CPI (1)">
+                  <Label text="IPK (1)">
                      <FlowPane.margin>
                         <Insets left="20.0" top="30.0" />
                      </FlowPane.margin>
@@ -36,7 +36,7 @@
             </FlowPane>
             <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                <children>
-                  <Label text="CPI (2)">
+                  <Label text="IPK (2)">
                      <FlowPane.margin>
                         <Insets left="20.0" top="30.0" />
                      </FlowPane.margin>
@@ -50,7 +50,7 @@
             </FlowPane>
             <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                <children>
-                  <Label text="CPI (3)">
+                  <Label text="IPK (3)">
                      <FlowPane.margin>
                         <Insets left="20.0" top="30.0" />
                      </FlowPane.margin>
@@ -64,7 +64,7 @@
             </FlowPane>
             <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                <children>
-                  <Label text="SPI (1)">
+                  <Label text="IPP (1)">
                      <FlowPane.margin>
                         <Insets left="20.0" top="30.0" />
                      </FlowPane.margin>
@@ -78,7 +78,7 @@
             </FlowPane>
             <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <Label text="SPI (2)">
+                  <Label text="IPP (2)">
                      <FlowPane.margin>
                         <Insets left="20.0" top="30.0" />
                      </FlowPane.margin>
@@ -92,7 +92,7 @@
             </FlowPane>
             <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <Label text="SPI (3)">
+                  <Label text="IPP (3)">
                      <FlowPane.margin>
                         <Insets left="20.0" top="30.0" />
                      </FlowPane.margin>
