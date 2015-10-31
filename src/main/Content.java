@@ -6,6 +6,8 @@
 package main;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -267,8 +269,27 @@ public class Content {
 				data.get(i).setSPI(totSPI);
 				data.get(i).ConvertToStringProperty();
 			}
+                        Rendit();
 		}
 	}
+        
+        
+        private void Rendit(){
+            for(int i=1;i<data.size();i++){
+                for(int j=i;j>0;j--){
+                    if(data.get(j).getParentValue() == data.get(j-1).getParentValue() && data.get(j).getParentValue() !=0 ){
+                       if(data.get(j-1).getID() > data.get(j).getID()){
+                           Collections.swap(data, j, j-1);
+                       }
+                    }
+                    else if(Double.parseDouble(data.get(j-1).getIdString()) > Double.parseDouble(data.get(j).getIdString())){
+                            Collections.swap(data, j, j-1);
+                    }
+                }
+                System.out.println("Renditja: "+data.get(i).getIdString());
+            }
+        }
+        
 
 	public void calculateSum() {
 		int size = data.size();

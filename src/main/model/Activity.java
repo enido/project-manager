@@ -679,8 +679,12 @@ public class Activity {
 
     public void Calculate() {
         getDateDiff(endTime, startTime, TimeUnit.DAYS);
-        
-            valCP = valAA / valPA;
+            
+        if(valSA == 0)
+            valCP = 0;
+        else{
+            valCP = valAA / valSA;
+        }
             valPV = valPA * valPRICE;
             valAC = valCA * valPRICE;
             valEV = valPRICE * valAA;
