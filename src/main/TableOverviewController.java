@@ -186,7 +186,7 @@ public class TableOverviewController {
 		});
 
 		unitColumn.setCellValueFactory(cellData -> cellData.getValue().unitProperty());
-		unitColumn.setCellFactory(cellFactoryNotEditable);
+		unitColumn.setCellFactory(cellFactory);
 		unitColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Activity, String>>() {
 
 			@Override

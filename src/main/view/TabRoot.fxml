@@ -5,8 +5,8 @@
 
 <TabPane id="TabPane" stylesheets="@DarkTheme.css" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.ChartTabController">
     <tabs>
-        <Tab id="Tab" text="Line Chart" />
-        <Tab id="Tab" text="Gantt Chart" />
-        <Tab id="Tab" text="Test Chart" />
+        <Tab id="Tab" text="Grafiku i Projektit" />
+        <Tab id="Tab" text="Grafiku Gantt" />
+        <Tab id="Tab" text="Grafiku IPK dhe IPP" />
     </tabs>
 </TabPane>

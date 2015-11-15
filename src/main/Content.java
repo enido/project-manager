@@ -204,13 +204,14 @@ public class Content {
 		int size = data.size();
 		long sumDur = 0;
 		double sumBudg = 0, sumPV = 0, sumAC = 0, sumEV = 0, sumCV = 0, sumSV = 0;
-		double totCPI, totSPI, totPP, totCP, sumPP = 0, sumCP = 0, sumCPI = 0, sumSPI = 0;
+		double totCPI, totSPI, totPP, totCP, sumPP = 0, sumCP = 0, sumCPI = 0, sumSPI = 0, sumPrice=0;
 		int parent;
 		int id;
 
-		// Calculation
+		// Llogaritja  
 		for (i = 0; i < size; i++) {
 			k = 0;
+                        sumPrice = 0;
 			sumDur = 0;
 			sumBudg = 0;
 			sumPV = 0;
@@ -232,9 +233,10 @@ public class Content {
 				for (j = i + 1; j < size; j++) {
 					if (data.get(j).getParentValue() == id) {
 						sumDur += data.get(j).getDuration();
+                                                sumPrice += data.get(j).getPriceValue();
 						sumBudg += data.get(j).getBudget();
 						sumPP += data.get(j).getPlannedProgress();
-						sumCP += data.get(j).getCurrentProgress();
+						sumCP += data.get(j).getCurrentProgress() * data.get(j).getPriceValue();
 						sumPV += data.get(j).getPV();
 						sumAC += data.get(j).getAC();
 						sumEV += data.get(j).getEV();
@@ -248,7 +250,7 @@ public class Content {
 				}
 				if (k != 0 && sumAC != 0 && sumPV != 0) {
 					totPP = (double) sumPP / k;
-					totCP = (double) sumCP / k;
+					totCP = (double) sumCP / sumPrice;
 					totCPI = (double) sumEV / sumAC;
 					totSPI = (double) sumEV / sumPV;
 					if (k == 1) {
@@ -293,10 +295,14 @@ public class Content {
 
 	public void calculateSum() {
 		int size = data.size();
+                int k=0;
 		double tempEV = 0;
 		double tempPV = 0;
 		double tempAC = 0;
 		double tempBUDG = 0;
+                double tempProg = 0;
+                double tempCPI = 0;
+                double tempSPI = 0;
 
 		for (int i = 0; i < size; i++) {
 			Activity current = data.get(i);
@@ -305,13 +311,24 @@ public class Content {
 				tempPV += current.getPV();
 				tempAC += current.getAC();
 				tempBUDG += current.getBudget();
+                                tempProg += current.getCurrentProgress();
+                                k++;
 			}
 		}
+                
+                tempProg = tempProg/k;   
+                tempCPI = tempEV / tempAC;
+                tempSPI = tempEV / tempPV;
+                
+                sum.setCPI(tempCPI);
+                sum.setSPI(tempSPI);
+                sum.setCurrentProgress(tempProg);
+                sum.setBudget(tempBUDG);
 		sum.setEV(tempEV);
 		sum.setPV(tempPV);
 		sum.setAC(tempAC);
 		sum.setBAC(tempBUDG);
-		double ETC = tempBUDG - tempEV;
+		double ETC = tempBUDG - tempEV / (tempCPI * tempSPI);
 		sum.setETC(ETC);
 		sum.setEAC(tempAC + ETC);
 		double TCPI = (tempBUDG - tempEV) / (tempBUDG - tempAC);

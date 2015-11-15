@@ -110,8 +110,13 @@ public class TreeViewController implements Initializable {
 
 	}
 
-	public int checkVal(String str) {
-		return Integer.parseInt(String.valueOf(str.charAt(0)));
+	public static int checkVal(String str) {
+		String tmpStr = "";
+		if (str.contains(".")) {
+			String temp[] = str.split("\\.");
+			tmpStr = temp[0];
+		}
+		return Integer.parseInt(String.valueOf(tmpStr));
 	}
 
 	public void setMainApp(Content mainApp) {

@@ -33,7 +33,7 @@
 						</TableColumn>
 						<TableColumn fx:id="plannedAmountColumn" prefWidth="75.0" text="Sasia e planifikuar">
 						</TableColumn>
-						<TableColumn fx:id="priceColumn" prefWidth="75.0" text="Price">
+						<TableColumn fx:id="priceColumn" prefWidth="75.0" text="Çmimi">
 						</TableColumn>
 						<TableColumn fx:id="currentAmountColumn" prefWidth="75.0" text="Sasia aktuale">
 						</TableColumn>

@@ -98,7 +98,7 @@ public class ChartTabController {
 		seriesPV.getData().add(new XYChart.Data(20, sum.getPV()));
 
 		XYChart.Series seriesBAC = new XYChart.Series();
-		seriesBAC.setName("VPP");
+		seriesBAC.setName("PrevP");
 		seriesBAC.getData().add(new XYChart.Data(30, sum.getBAC()));
 		seriesBAC.getData().add(new XYChart.Data(25, sum.getBAC() / 1.2));
 		seriesBAC.getData().add(new XYChart.Data(20, sum.getPV()));
@@ -112,13 +112,13 @@ public class ChartTabController {
 		seriesAC.getData().add(new XYChart.Data(20, sum.getAC()));
 
 		XYChart.Series seriesEAC = new XYChart.Series();
-		seriesEAC.setName("PP");
+		seriesEAC.setName("VPërf");
 		seriesEAC.getData().add(new XYChart.Data(30, sum.getEAC()));
 		seriesEAC.getData().add(new XYChart.Data(25, sum.getEAC() / 1.2));
 		seriesEAC.getData().add(new XYChart.Data(20, sum.getAC()));
 		seriesEAC.getData().add(new XYChart.Data(22, sum.getAC() + 0.325 * sum.getAC()));
 
-		areaChart1.getData().addAll(seriesEV, seriesPV, seriesAC, seriesBAC, seriesEAC);
+		areaChart1.getData().addAll(seriesEV, seriesPV, seriesAC);
 
 		/******************** SECOND GRID COLUMN **********************/
 
@@ -127,6 +127,12 @@ public class ChartTabController {
 		display.getStyleClass().add("Kot");
 		Button resetZoom = new Button("Reset");
                 
+                Label prog = new Label("Avancimi - "+sum.getCurrentProgressPercentage());
+                prog.setWrapText(true);
+                prog.getStyleClass().add("ModifiedStyle1");
+                Label budg = new Label("Buxheti - "+sum.toString(sum.getBudget()));
+                budg.setWrapText(true);
+                budg.getStyleClass().add("ModifiedStyle1");
 		Label ev = new Label("VF - "+sum.toString(sum.getEV()));
 		ev.setWrapText(true);
 		ev.getStyleClass().add("ModifiedStyle1");
@@ -136,6 +142,12 @@ public class ChartTabController {
 		Label ac = new Label("KA - "+sum.toString(sum.getAC()));
 		ac.getStyleClass().add("ModifiedStyle");
 		ac.setWrapText(true);
+                Label cpi = new Label("IPK - "+sum.toString(sum.getCPI()));
+		cpi.getStyleClass().add("ModifiedStyle");
+		cpi.setWrapText(true);
+                Label spi = new Label("IPP - "+sum.toString(sum.getSPI()));
+		spi.getStyleClass().add("ModifiedStyle");
+		spi.setWrapText(true);
 
 		/*ToggleGroup group = new ToggleGroup();
 
@@ -168,7 +180,7 @@ public class ChartTabController {
 		hBox.getStyleClass().add("ScrollPane");
 		hBox.getChildren().addAll(display, resetZoom);
 
-		firstVBox.getChildren().addAll(scrollPane, hBox, ev, pv, ac);
+		firstVBox.getChildren().addAll(scrollPane, hBox, prog, budg, ev, pv, ac, cpi, spi);
 
 		for (int i = 0; i < data.size(); i++) {
 			if (data.get(i).getParentValue() == 0) {
@@ -299,8 +311,8 @@ public class ChartTabController {
 			cpiSeries.getData().add(new XYChart.Data(CalendarUtil.format(temp.getSecondDate()), temp.getSecondCPI()));
 		if (temp.getThirdCPI() != 0)
 			cpiSeries.getData().add(new XYChart.Data(CalendarUtil.format(temp.getThirdDate()), temp.getThirdCPI()));
-		if (sum.getTcpiValue() != 0)
-			cpiSeries.getData().add(new XYChart.Data("fund", sum.getTcpiValue()));
+		/*if (sum.getTcpiValue() != 0)
+			cpiSeries.getData().add(new XYChart.Data("fund", sum.getTcpiValue()));*/
 
 		XYChart.Series spiSeries = new XYChart.Series();
 		spiSeries.setName("IPP");
@@ -310,8 +322,8 @@ public class ChartTabController {
 			spiSeries.getData().add(new XYChart.Data(CalendarUtil.format(temp.getSecondDate()), temp.getSecondSPI()));
 		if (temp.getThirdSPI() != 0)
 			spiSeries.getData().add(new XYChart.Data(CalendarUtil.format(temp.getThirdDate()), temp.getThirdSPI()));
-		if (sum.getTspiValue() != 0)
-			spiSeries.getData().add(new XYChart.Data("fund", sum.getTspiValue()));
+		/*if (sum.getTspiValue() != 0)
+			spiSeries.getData().add(new XYChart.Data("fund", sum.getTspiValue()));*/
 
 		cpiChart.getData().addAll(cpiSeries, spiSeries);
 
@@ -362,7 +374,7 @@ public class ChartTabController {
 
 		FlowPane pane = new FlowPane();
 
-		pane.getChildren().addAll(add, tcpiLabel, tspiLabel);
+		pane.getChildren().addAll(add);//, tcpiLabel, tspiLabel);
 
 		add.setOnAction(new EventHandler<ActionEvent>() {
 
