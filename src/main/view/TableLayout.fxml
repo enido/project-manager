@@ -19,15 +19,15 @@
 			<children>
 				<TableView fx:id="activityTable" editable="true" prefHeight="180.0" prefWidth="200.0" GridPane.vgrow="ALWAYS">
 					<columns>
-						<TableColumn fx:id="nameColumn" prefWidth="100.0" text="Emri">
+                                            	<TableColumn fx:id="idColumn" minWidth="40.0" prefWidth="45.0" maxWidth="50.0" text="ID">
 						</TableColumn>
-						<TableColumn fx:id="idColumn" prefWidth="30.0" text="ID">
+						<TableColumn fx:id="nameColumn" minWidth="50.0" prefWidth="250.0" text="Emri">
 						</TableColumn>
-						<TableColumn fx:id="durationColumn" prefWidth="70.0" text="Kohëzgjatja">
+						<TableColumn fx:id="durationColumn" minWidth="50.0" prefWidth="60.0" maxWidth="70.0" text="Kohëzgjatja">
 						</TableColumn>
 						<TableColumn fx:id="budgetColumn" prefWidth="75.0" text="Buxheti">
 						</TableColumn>
-						<TableColumn fx:id="unitColumn" prefWidth="75.0" text="Njësia">
+						<TableColumn fx:id="unitColumn" minWidth="45.0" prefWidth="50.0" maxWidth="55.0" text="Njësia">
 						</TableColumn>
                                                 <TableColumn fx:id="staticAmountColumn" prefWidth="75.0" text="Sasia statike preventizuar">
 						</TableColumn>

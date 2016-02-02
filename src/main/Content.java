@@ -8,6 +8,7 @@ package main;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,6 +47,7 @@ public class Content {
 	public boolean empty = false;
 	private int index;
 	private ObservableList<Activity> temp = FXCollections.observableArrayList();
+        public int Settings[] = new int[10];
 
 	public void initRootLayout() {
 		try {
@@ -179,14 +181,16 @@ public class Content {
 
 	public void showGanttOverview() {
 		GridPane gridPane = new GridPane();
-
+                boolean isTempEmpty = false;
+                
 		if (temp.isEmpty() || temp == null) {
 			temp = data;
 			for (int i = 0; i < temp.size(); i++)
 				System.out.println("Emri: " + temp.get(i).getName());
+                        isTempEmpty = true;
 		}
 
-		IntervalCategoryDataset dataSet = IntervalBuilder.buildDataSet(temp);
+		IntervalCategoryDataset dataSet = IntervalBuilder.buildDataSet(temp, isTempEmpty);
 		GanttChartBuilder ganttChartBuilder = new GanttChartBuilder("Gantt", "X", "Y");
 		ChartPanel panel = ganttChartBuilder.buildChartPanel(dataSet);
 		SwingNode wrapperNode = new SwingNode();
@@ -233,7 +237,6 @@ public class Content {
 				for (j = i + 1; j < size; j++) {
 					if (data.get(j).getParentValue() == id) {
 						sumDur += data.get(j).getDuration();
-                                                sumPrice += data.get(j).getPriceValue();
 						sumBudg += data.get(j).getBudget();
 						sumPP += data.get(j).getPlannedProgress();
 						sumCP += data.get(j).getCurrentProgress() * data.get(j).getPriceValue();
@@ -244,8 +247,9 @@ public class Content {
 						sumSV += data.get(j).getSV();
 						sumCPI += data.get(j).getCPI();
 						sumSPI += data.get(j).getSPI();
-						k++;
-
+						if(data.get(j).getCurrentProgress() != 0)
+                                                    sumPrice += data.get(j).getPriceValue();
+                                                k++;
 					}
 				}
 				if (k != 0 && sumAC != 0 && sumPV != 0) {
@@ -275,7 +279,6 @@ public class Content {
 		}
 	}
         
-        
         private void Rendit(){
             for(int i=1;i<data.size();i++){
                 for(int j=i;j>0;j--){
@@ -292,7 +295,45 @@ public class Content {
             }
         }
         
-
+        public long minDate(){
+            int i = 0;
+            int parent = 0;
+            int size = data.size();
+            Date dummy = new Date();
+            long min = dummy.getTime();
+            long k;
+            
+            for(i=0;i<size;i++){
+                Activity current = data.get(i);
+                if(current.getParentValue() != 0){
+                    k = current.getStartTimeValue().getTime().getTime();
+                    if(min>k){
+                        min = k;
+                    }
+                }
+            }           
+            return min;   
+        }
+        
+        public long maxDate(){
+            int i = 0;
+            int parent = 0;
+            int size = data.size();
+            Date dummy = new Date();
+            long max = dummy.getTime();
+            
+            for(i=0;i<size;i++){
+                Activity current = data.get(i);
+                if(current.getParentValue() != 0){
+                    long k = current.getEndTimeValue().getTime().getTime();
+                    if(max<k){
+                        max = k;
+                    }
+                }
+            }           
+            return max; 
+        }
+        
 	public void calculateSum() {
 		int size = data.size();
                 int k=0;
@@ -303,6 +344,11 @@ public class Content {
                 double tempProg = 0;
                 double tempCPI = 0;
                 double tempSPI = 0;
+                double tempAP = 0;
+                long start;
+                long end;
+                double diff;
+                double dur;
 
 		for (int i = 0; i < size; i++) {
 			Activity current = data.get(i);
@@ -312,14 +358,24 @@ public class Content {
 				tempAC += current.getAC();
 				tempBUDG += current.getBudget();
                                 tempProg += current.getCurrentProgress();
-                                k++;
+                                if(current.getCurrentProgress() !=0)
+                                    k++;
 			}
 		}
                 
                 tempProg = tempProg/k;   
                 tempCPI = tempEV / tempAC;
                 tempSPI = tempEV / tempPV;
+                                
+                start = minDate();
+                end = maxDate();
+                dur = (double)(end - start)/86400000;
+                Date today = new Date();                
+                double dummy = (today.getTime()- start)/86400000;                               
+                diff = 123;                              
+                tempAP = diff/tempSPI;
                 
+                sum.setApValue(tempAP);
                 sum.setCPI(tempCPI);
                 sum.setSPI(tempSPI);
                 sum.setCurrentProgress(tempProg);
@@ -328,15 +384,16 @@ public class Content {
 		sum.setPV(tempPV);
 		sum.setAC(tempAC);
 		sum.setBAC(tempBUDG);
-		double ETC = tempBUDG - tempEV / (tempCPI * tempSPI);
+		double ETC = (tempBUDG - tempEV) / (tempCPI*tempSPI);
 		sum.setETC(ETC);
 		sum.setEAC(tempAC + ETC);
-		double TCPI = (tempBUDG - tempEV) / (tempBUDG - tempAC);
+		double TCPI = (tempBUDG - tempEV) / ((tempBUDG - tempAC)*(tempCPI*tempSPI));
 		sum.setTcpiValue(TCPI);
 		double TSPI = (tempBUDG - tempEV) / (tempBUDG - tempPV);
 		sum.setTspiValue(TSPI);
 	}
-
+        
+     
 	public void Refresh() {
 		CalculateAndSort();
 		calculateSum();
@@ -406,6 +463,14 @@ public class Content {
 	public int getIndex() {
 		return index;
 	}
+        
+        public int[] getSettings(){
+            return Settings;
+        }
+        
+        public void setSettings(int[] settings){
+            this.Settings = settings;
+        }
 
 	public void setData(ObservableList<String> treeData) {
 		temp = FXCollections.observableArrayList();

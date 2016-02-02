@@ -23,6 +23,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import main.model.Activity;
@@ -45,6 +46,7 @@ public class Main extends Application {
 	public Content[] content = new Content[MAX_TABS];
 	public SingleSelectionModel<Tab> sm;
 	public TableOverviewController controller[] = new TableOverviewController[MAX_TABS];
+        private int Settings[] = new int[10];
 
 	/**
 	 * @param args
@@ -116,6 +118,7 @@ public class Main extends Application {
 
 			// Update titullin e stage
 			primaryStage.setTitle("PROING - " + file.getName());
+                        
 		} else {
 			prefs.remove("filePath");
 
@@ -195,6 +198,14 @@ public class Main extends Application {
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
+        
+        public int[] getSettings(){
+            return Settings;
+        }
+        
+        public void setSettings(int[] Settings){
+            this.Settings = Settings;
+        }
 
         public void Refresh(int index) {
 		BorderPane temp = content[index].getContentRoot();

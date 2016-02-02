@@ -72,6 +72,8 @@ public class Activity {
     
     public double TCPI;
     public double TSPI;
+    
+    public double AP; //Afati deri ne Perfundim
 
     public int parent = 0;
 
@@ -675,19 +677,30 @@ public class Activity {
         this.TSPI = tspi;
     }
     
+    public double getApValue(){
+        return AP;
+    }
     
-
+    public void setApValue(double ap){
+        this.AP = ap;
+    }
+    
     public void Calculate() {
         getDateDiff(endTime, startTime, TimeUnit.DAYS);
             
-        if(valSA == 0)
-            valCP = 0;
+        if(valSA == 0){
+            if(valAA == 0)
+                valCP = 0;
+            else
+                valCP = 1;
+        }
         else{
             valCP = valAA / valSA;
+            
         }
             valPV = valPA * valPRICE;
-            valAC = valCA * valPRICE;
-            valEV = valPRICE * valAA;
+            valAC = valAA * valPRICE;
+            valEV = valPRICE * valCA;
             valCV = valEV - valAC;
             valSV = valEV - valPV;
             if (valAC == 0 || valPV == 0) {

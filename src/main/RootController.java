@@ -9,10 +9,18 @@ import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * @author krisli
@@ -20,6 +28,7 @@ import javafx.scene.control.TabPane;
 public class RootController {
 
     private Main mainApp;
+  
     @FXML
     private TabPane ProjectTab;
     
@@ -86,6 +95,36 @@ public class RootController {
             }
             mainApp.saveActivityDataToFile(file);
         }
+    }
+    
+    @FXML
+    private boolean handleSettings(){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("view/Settings.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+            
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Cilesimet");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(mainApp.getPrimaryStage());
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+            
+            SettingsController controller = new SettingsController();
+            controller.setSettings(mainApp.getSettings());
+            //controller.initData();
+            controller.setDialogStage(dialogStage);
+            
+            
+            dialogStage.showAndWait();
+            
+            return controller.isSaveClicked();           
+        }
+        catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+	}
     }
 
     @FXML

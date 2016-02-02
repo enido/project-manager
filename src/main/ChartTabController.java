@@ -52,6 +52,7 @@ public class ChartTabController {
 	private Content mainApp;
 	private Activity temp;
 	private ObservableList<Activity> data = FXCollections.observableArrayList();
+        private boolean showEac = true;
 
 	int counter = 0;
 
@@ -87,15 +88,15 @@ public class ChartTabController {
 		seriesEV.setName("VF");
 
 		seriesEV.getData().add(new XYChart.Data(0, 0));
-		seriesEV.getData().add(new XYChart.Data(12, sum.getEV() / 2));
-		seriesEV.getData().add(new XYChart.Data(20, sum.getEV()));
+		seriesEV.getData().add(new XYChart.Data(382, sum.getEV() / 2));
+		seriesEV.getData().add(new XYChart.Data(638, sum.getEV()));
 
 		XYChart.Series seriesPV = new XYChart.Series();
 		seriesPV.setName("VP");
 
 		seriesPV.getData().add(new XYChart.Data(0, 0));
-		seriesPV.getData().add(new XYChart.Data(12, sum.getPV() / 2));
-		seriesPV.getData().add(new XYChart.Data(20, sum.getPV()));
+		seriesPV.getData().add(new XYChart.Data(382, sum.getPV() / 2));
+		seriesPV.getData().add(new XYChart.Data(638, sum.getPV()));
 
 		XYChart.Series seriesBAC = new XYChart.Series();
 		seriesBAC.setName("PrevP");
@@ -108,17 +109,19 @@ public class ChartTabController {
 		seriesAC.setName("KA");
 
 		seriesAC.getData().add(new XYChart.Data(0, 0));
-		seriesAC.getData().add(new XYChart.Data(12, sum.getAC() / 2));
-		seriesAC.getData().add(new XYChart.Data(20, sum.getAC()));
-
+		seriesAC.getData().add(new XYChart.Data(382, sum.getAC() / 2));
+		seriesAC.getData().add(new XYChart.Data(638, sum.getAC()));
+                
 		XYChart.Series seriesEAC = new XYChart.Series();
 		seriesEAC.setName("VPërf");
-		seriesEAC.getData().add(new XYChart.Data(30, sum.getEAC()));
-		seriesEAC.getData().add(new XYChart.Data(25, sum.getEAC() / 1.2));
-		seriesEAC.getData().add(new XYChart.Data(20, sum.getAC()));
-		seriesEAC.getData().add(new XYChart.Data(22, sum.getAC() + 0.325 * sum.getAC()));
+		seriesEAC.getData().add(new XYChart.Data(762, sum.getEAC()));
+		seriesEAC.getData().add(new XYChart.Data(718, sum.getEAC() / 1.08));
+                seriesEAC.getData().add(new XYChart.Data(680, sum.getAC() +(0.15*sum.getAC())));
+		seriesEAC.getData().add(new XYChart.Data(638, sum.getAC()));
 
 		areaChart1.getData().addAll(seriesEV, seriesPV, seriesAC);
+                if(showEac)
+                    areaChart1.getData().add(seriesEAC);
 
 		/******************** SECOND GRID COLUMN **********************/
 
@@ -129,13 +132,13 @@ public class ChartTabController {
                 
                 Label prog = new Label("Avancimi - "+sum.getCurrentProgressPercentage());
                 prog.setWrapText(true);
-                prog.getStyleClass().add("ModifiedStyle1");
+                prog.getStyleClass().add("ModifiedStyle");
                 Label budg = new Label("Buxheti - "+sum.toString(sum.getBudget()));
                 budg.setWrapText(true);
-                budg.getStyleClass().add("ModifiedStyle1");
+                budg.getStyleClass().add("ModifiedStyle");
 		Label ev = new Label("VF - "+sum.toString(sum.getEV()));
 		ev.setWrapText(true);
-		ev.getStyleClass().add("ModifiedStyle1");
+		ev.getStyleClass().add("ModifiedStyle");
 		Label pv = new Label("VP - "+sum.toString(sum.getPV()));
 		pv.getStyleClass().add("ModifiedStyle");
 		pv.setWrapText(true);
@@ -148,6 +151,18 @@ public class ChartTabController {
                 Label spi = new Label("IPP - "+sum.toString(sum.getSPI()));
 		spi.getStyleClass().add("ModifiedStyle");
 		spi.setWrapText(true);
+                Label ap = new Label("AP - "+sum.toString(sum.getApValue()));
+		ap.getStyleClass().add("ModifiedStyle");
+		ap.setWrapText(true);
+                Label eac = new Label("VPerf - "+sum.toString(sum.getEAC()));
+		eac.getStyleClass().add("ModifiedStyle");
+		eac.setWrapText(true);
+                Label etc = new Label("VPm - "+sum.toString(sum.getETC()));
+		etc.getStyleClass().add("ModifiedStyle");
+		etc.setWrapText(true);
+                Label tcpi = new Label("IPKA - "+sum.toString(sum.getTcpiValue()));
+		tcpi.getStyleClass().add("ModifiedStyle");
+		tcpi.setWrapText(true);
 
 		/*ToggleGroup group = new ToggleGroup();
 
@@ -180,7 +195,7 @@ public class ChartTabController {
 		hBox.getStyleClass().add("ScrollPane");
 		hBox.getChildren().addAll(display, resetZoom);
 
-		firstVBox.getChildren().addAll(scrollPane, hBox, prog, budg, ev, pv, ac, cpi, spi);
+		firstVBox.getChildren().addAll(scrollPane, hBox, prog, budg, ev, pv, ac, cpi, spi, tcpi, ap);
 
 		for (int i = 0; i < data.size(); i++) {
 			if (data.get(i).getParentValue() == 0) {
@@ -220,7 +235,7 @@ public class ChartTabController {
                                     dummy.add(tempData.get(i));
                                 }
                             }
-                            
+                            showEac = false;
                             mainApp.Refresh(calculateSum(dummy));
                         }
 		});
@@ -229,6 +244,7 @@ public class ChartTabController {
                     
                     @Override
                     public void handle(ActionEvent event){
+                        showEac = true;
                         mainApp.Refresh();
                     }
                 });
@@ -367,14 +383,14 @@ public class ChartTabController {
 		Label tcpiLabel = new Label();
 		Label tspiLabel = new Label();
 
-		tcpiLabel.setText("  TCPI=" + sum.getTcpiValue());
+		tcpiLabel.setText("  IPKA=" + sum.getTcpiValue());
 		tcpiLabel.setTextFill(Color.WHITE);
-		tspiLabel.setText("  TSPI=" + sum.getTspiValue());
+		tspiLabel.setText("  IPPA=" + sum.getTspiValue());
 		tspiLabel.setTextFill(Color.WHITE);
 
 		FlowPane pane = new FlowPane();
 
-		pane.getChildren().addAll(add);//, tcpiLabel, tspiLabel);
+		pane.getChildren().addAll(add, tcpiLabel, tspiLabel);
 
 		add.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -423,6 +439,14 @@ public class ChartTabController {
 	public void setActivitySum(Activity sum) {
 		this.sum = sum;
 	}
+        
+        public void setShowEac(boolean showEac){
+            this.showEac = showEac;
+        }
+        
+        public boolean getShowEac(){
+            return this.showEac; 
+       }
 
 	public void autoZoom(CurvedFittedAreaChart chart) {
 		chart.getXAxis().setAutoRanging(true);
@@ -462,10 +486,14 @@ public class ChartTabController {
         
         public Activity calculateSum(ObservableList<Activity> activities) {
 		int size = activities.size();
+                int k = 0;
 		double tempEV = 0;
 		double tempPV = 0;
 		double tempAC = 0;
 		double tempBUDG = 0;
+                double tempCPI = 0;
+                double tempSPI = 0;
+                double tempProg = 0;
                 
                 Activity dummy = new Activity();
 
@@ -476,8 +504,19 @@ public class ChartTabController {
 				tempPV += current.getPV();
 				tempAC += current.getAC();
 				tempBUDG += current.getBudget();
+                                tempProg += current.getCurrentProgress();
+                                k++;
 			}
 		}
+                
+                tempProg = tempProg/k;   
+                tempCPI = tempEV / tempAC;
+                tempSPI = tempEV / tempPV;
+                              
+                dummy.setCPI(tempCPI);
+                dummy.setSPI(tempSPI);
+                dummy.setCurrentProgress(tempProg);
+                dummy.setBudget(tempBUDG);
 		dummy.setEV(tempEV);
 		dummy.setPV(tempPV);
 		dummy.setAC(tempAC);
