@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main;
+package main.controller;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
+import main.Content;
 import main.model.Activity;
 
 public class TreeViewController implements Initializable {

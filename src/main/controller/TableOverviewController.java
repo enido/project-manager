@@ -1,5 +1,6 @@
-package main;
+package main.controller;
 
+import main.Content;
 import main.model.EditingCell;
 import main.model.NotEditableCell;
 import java.util.ArrayList;

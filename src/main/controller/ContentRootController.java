@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main;
+package main.controller;
 
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
+import main.Content;
 
 import java.io.File;
 

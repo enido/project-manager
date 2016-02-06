@@ -23,9 +23,11 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import main.controller.ChartTabController;
+import main.controller.RootController;
+import main.controller.TableOverviewController;
 import main.model.Activity;
 import main.model.ActivityListWrapper;
 
@@ -62,6 +64,49 @@ public class Main extends Application {
 		this.primaryStage.setTitle("Main");
 
 		initRoot();
+
+		//Content enido = new Content();
+
+
+
+
+		content[tabIndex] = new Content();
+		content[tabIndex].setMainApp(this);
+		content[tabIndex].setIndex(tabIndex);
+		content[tabIndex].initialize();
+
+		BorderPane temp = content[tabIndex].getContentRoot();
+
+		ProjectTab.getTabs().add(new Tab("New"));
+//		this.setProjectTab();
+		ProjectTab.getTabs().get(tabIndex).setContent(temp);
+
+		temp.prefWidthProperty().bind(root.widthProperty());
+		temp.prefHeightProperty().bind(root.heightProperty());
+
+		//ProjectTab = new TabPane();
+		//ProjectTab.getTabs().add(new Tab("New"));
+		//enido.setEmpty(true);
+		//initContentLayout(enido);
+		//incrementTabIndex();
+
+//		tabIndex = 1;
+//
+//		Content test[] = new Content[tabIndex];
+//		test[tabIndex].setEmpty(true);
+//
+//		test[tabIndex].setMainApp(this);
+//		test[tabIndex].setIndex(tabIndex);
+//
+//		initContentLayout(test[tabIndex]);
+
+//		Content enido = new Content();
+//		enido.setEmpty(true);
+//		enido.setMainApp(this);
+//		BorderPane temp = enido.getContentRoot();
+//		ProjectTab.getTabs().add(new Tab("New"));
+//		initContentLayout(enido);
+//		incrementTabIndex();
 	}
 
 	public void initRoot() {
@@ -75,6 +120,7 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 
 			RootController controller = loader.getController();
+			this.ProjectTab = controller.getProjectTab();
 			controller.setMainApp(this);
 
 			primaryStage.show();

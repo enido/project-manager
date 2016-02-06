@@ -1,4 +1,4 @@
-package main;
+package main.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,10 +23,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -41,6 +39,8 @@ import javafx.stage.Stage;
 import jfxutils.chart.ChartPanManager;
 import jfxutils.chart.JFXChartUtil;
 import jfxutils.chart.StableTicksAxis;
+import main.Content;
+import main.Main;
 import main.model.Activity;
 import main.model.CurvedFittedAreaChart;
 import main.util.CalendarUtil;

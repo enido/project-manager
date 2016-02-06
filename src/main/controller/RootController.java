@@ -3,17 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main;
+package main.controller;
 
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
+import java.beans.EventHandler;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
@@ -21,6 +22,8 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import main.Content;
+import main.Main;
 
 /**
  * @author krisli
@@ -31,7 +34,12 @@ public class RootController {
   
     @FXML
     private TabPane ProjectTab;
-    
+
+    public TabPane getProjectTab() {
+        ProjectTab.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
+        return ProjectTab;
+    }
+
     public void setMainApp(main.Main mainApp) {
         this.mainApp = mainApp;
     }
@@ -39,6 +47,7 @@ public class RootController {
 
     @FXML
     private void handleNew() {
+
         ProjectTab.getTabs().add(new Tab("New"));
         mainApp.setProjectTab(ProjectTab);
         Content temp = new Content();
@@ -130,6 +139,16 @@ public class RootController {
     @FXML
     private void handleExit() {
         System.exit(0);
+    }
+
+    @FXML
+    private void handetTabRemoval(Tab tab){
+        javafx.event.EventHandler<Event> handler = tab.getOnClosed();
+        if (null != handler) {
+            handler.handle(null);
+        } else {
+            tab.getTabPane().getTabs().remove(tab);
+        }
     }
 
 }

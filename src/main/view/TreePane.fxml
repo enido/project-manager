@@ -5,4 +5,4 @@
 <?import javafx.scene.layout.*?>
 
 
-<AnchorPane stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.TreeViewController" />
+<AnchorPane stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controller.TreeViewController" />
